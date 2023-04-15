@@ -1,0 +1,174 @@
+/* Estilos personalizados */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+display: flex;
+flex-direction: column;
+
+}
+/* Encabezado y navegación */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    transition: all 0.3s;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Acerca de mí */
+#acerca-de .container {
+    margin-top: 50px;
+  }
+
+#acerca-de {
+    background-color: #f8f9fa;
+    margin-top: 50px;
+}
+
+#acerca-de h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#acerca-de p {
+    font-size: 18px;
+}
+
+.custom-size {
+    width: 530px; 
+    height: auto; /* Esto mantendrá la proporción de la imagen */
+  }
+
+/* Habilidades */
+#habilidades {
+    background-color: #ffffff;
+}
+
+#habilidades h2 {
+    font-weight: bold;
+}
+
+
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Portafolio */
+#portafolio {
+    background-color: #f8f9fa;
+}
+
+#portafolio h2 {
+    font-weight: bold;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Contacto */
+#contacto {
+    background-color: #ffffff;
+}
+
+#contacto h2 {
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: #cccccc;
+    text-decoration: none;
+}
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (max-width: 992px) {
+    .navbar-collapse {
+        background-color: #343a40;
+    }
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .circle:hover {
+    transform: scale(1.1);
+    text-decoration: none;
+  }
+  
+  .circle i {
+    font-size: 3rem;
+    color: white;
+  }
+  
+  .whatsapp {
+    background-color: #25d366;
+  }
+  
+  .linkedin {
+    background-color: #0077b5;
+  }
+  
+  .github {
+    background-color: #333;
+  }
+  
+  .telegram {
+    background-color: #0088cc;
+  }
+  
+  .discord {
+    background-color: #7289da;
+  }
+  
+  .phone {
+    background-color: #34b7f1;
+  }
+  
+  .contact-label {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #666;
+  }
+  footer {
+    
+    text-align: center;
+  }
+  
+
+/*estilos personalizados */

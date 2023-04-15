@@ -1,0 +1,23 @@
+.comic-dialog {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 14px;
+    display: none;
+    width: 250px;
+    box-sizing: border-box;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  

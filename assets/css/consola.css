@@ -1,0 +1,36 @@
+/* CSS */
+.game-console {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 9999;
+    text-align: center;
+  }
+ 
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .game-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid black;
+    padding: 20px;
+    z-index: 1000;
+  }

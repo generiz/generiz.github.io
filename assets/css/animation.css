@@ -1,0 +1,13 @@
+/* animacion de la foto */
+
+.img-fluid.rounded-circle {
+    filter: grayscale(100%);
+  }
+  .img-fluid.rounded-circle:hover {
+    filter: grayscale(0%);
+    transition: filter 0.3s ease-in-out;
+  }
+  
+  /*   */
+
+  
