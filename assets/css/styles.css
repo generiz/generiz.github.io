@@ -176,6 +176,14 @@ footer a:hover {
     
     text-align: center;
   }
-  
+  @media (max-width: 576px) {
+    .contacto-sm-center {
+      display: flex;
+      justify-content: center;
+    }
+    .contact-label{
+      display: none;
+    }
+  }
 
 /*estilos personalizados */
