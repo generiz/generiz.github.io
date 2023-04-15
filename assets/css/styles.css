@@ -67,8 +67,15 @@ header {
 }
 
 /* Portafolio */
+.projects-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 #portafolio {
     background-color: #f8f9fa;
+    
 }
 
 #portafolio h2 {
