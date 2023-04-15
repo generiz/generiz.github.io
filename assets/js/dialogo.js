@@ -5,7 +5,7 @@ function showEasterEggHint() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(showEasterEggHint, 5000);
+    setTimeout(showEasterEggHint, 10000);
     document.getElementById("close-hint-btn").addEventListener("click", function () {
       document.getElementById("easter-egg-hint").style.display = "none";
     });

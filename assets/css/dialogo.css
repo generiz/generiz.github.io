@@ -20,4 +20,13 @@
     font-weight: bold;
     cursor: pointer;
   }
+  @media screen and (min-width: 768px) {
+    .game-console {
+      display: none;
+    }
+  
+    .desktop-only {
+      display: block;
+    }
+  }
   
