@@ -1,4 +1,8 @@
 /* Estilos personalizados */
+.office {
+  background-image: url("assets/imagenes/migue.jpg")
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
