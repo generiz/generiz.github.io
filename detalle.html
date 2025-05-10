@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Detalles del Producto</title>
-  <link rel="stylesheet" href="estilos.css" /> <script defer src="product.js"></script>
+  
+  <link rel="stylesheet" href="estilos.css" /> 
+  
+  <script defer src="product.js"></script>
+  
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,114 +16,172 @@
       margin: 0;
       padding: 20px; /* Añade padding al body */
       color: #333; /* Color de texto base */
+      line-height: 1.6; /* Para mejorar legibilidad general */
     }
+
     .product-language-selector {
       display: flex;
       justify-content: flex-end;
+      align-items: center; /* Alinea verticalmente el label y el select */
       margin-bottom: 1.5rem;
-      padding: 0.3rem 0.5rem;
+      padding: 0.3rem 0.5rem; /* Reducido un poco el padding si está fuera del container principal */
     }
+
     .product-language-selector label {
       margin-right: 0.5rem;
       color: #555;
+      font-size: 0.9em;
     }
+
     .product-language-selector select {
-      padding: 0.3rem 0.5rem;
+      padding: 0.4rem 0.6rem; /* Ajuste de padding para el select */
       border: 1px solid #ccc;
       border-radius: 5px;
       background-color: white;
+      font-size: 0.9em;
     }
+
     .product-container {
-      max-width: 800px; /* Un poco más estrecho para mejor lectura */
+      max-width: 800px; 
       margin: auto;
-      padding: 2.5rem; /* Más padding interno */
+      padding: 2rem 2.5rem; /* Ajustado padding */
       background-color: #ffffff;
-      border-radius: 10px; /* Bordes un poco más suaves */
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Sombra más sutil */
+      border-radius: 10px; 
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); 
     }
 
     .product-image-container {
-      text-align: center; /* Centra la imagen */
+      text-align: center; 
       margin-bottom: 2rem;
     }
+
     .product-image {
       max-width: 100%;
       height: auto;
-      max-height: 350px; /* Limita la altura máxima de la imagen */
-      border-radius: 8px; /* Bordes redondeados para la imagen */
-      object-fit: contain; /* Asegura que la imagen se vea completa sin distorsión */
+      max-height: 350px; 
+      border-radius: 8px; 
+      object-fit: contain; 
+      border: 1px solid #eee; /* Un borde sutil para la imagen */
     }
 
     .product-title {
-      font-size: 2.2rem; /* Un poco más grande */
-      font-weight: 700; /* Más bold */
-      color: #2c3e50; /* Un color oscuro pero no negro puro */
+      font-size: 2.2rem; 
+      font-weight: 700; 
+      color: #2c3e50; 
+      margin-top: 0; /* Si la imagen está arriba, quitar margen superior */
       margin-bottom: 1rem;
-      text-align: center; /* Título centrado */
+      text-align: center; 
     }
+
     .product-description {
       font-size: 1.1rem;
-      line-height: 1.7; /* Mayor interlineado para legibilidad */
+      line-height: 1.7; 
       color: #555;
       margin-bottom: 2rem;
-      text-align: justify; /* Justificar texto de descripción */
+      text-align: left; /* O 'justify' si prefieres */
     }
+
     .product-features {
       margin-top: 2rem;
-      background-color: #f9f9f9; /* Un fondo ligero para la sección de características */
+      margin-bottom: 2rem; /* Espacio después de las características */
+      background-color: #f9f9f9; 
       padding: 1.5rem;
       border-radius: 8px;
+      border: 1px solid #e9ecef; /* Borde ligero */
     }
+
     .product-features h3 {
-      margin-top: 0; /* Quitar margen superior si es el primer elemento */
+      margin-top: 0; 
       margin-bottom: 1rem;
       color: #34495e;
       font-size: 1.4rem;
     }
+
     .product-features ul {
-      list-style-type: none; /* Quitar viñetas por defecto */
+      list-style-type: none; 
       padding-left: 0;
     }
+
     .product-features ul li {
-      padding-left: 1.5rem;
+      padding-left: 1.75rem; /* Más espacio para el ícono */
       position: relative;
-      margin-bottom: 0.75rem; /* Espacio entre características */
+      margin-bottom: 0.75rem; 
       font-size: 1rem;
       color: #444;
     }
-    .product-features ul li::before { /* Usar un pseudo-elemento para viñetas personalizadas */
-      content: '✓'; /* Icono de check, puedes usar otro */
+
+    .product-features ul li::before { 
+      content: '✓'; 
       position: absolute;
       left: 0;
-      color: #27ae60; /* Color de la viñeta */
+      top: 1px; /* Ajuste vertical del checkmark */
+      color: #27ae60; 
       font-weight: bold;
+      font-size: 1.1em; /* Tamaño del checkmark */
     }
+
     .product-price {
       margin-top: 2.5rem;
-      font-size: 1.5rem; /* Tamaño de fuente para el precio */
+      font-size: 1.6rem; /* Precio un poco más grande */
       font-weight: bold;
-      color: #007bff; /* Un color destacado para el precio */
+      color: #007bff; 
       text-align: center;
-      padding: 1rem;
-      background-color: #e9ecef;
-      border-radius: 5px;
+      padding: 1rem 1.5rem; /* Más padding */
+      background-color: #e9f5ff; /* Un fondo azulado muy claro */
+      border-radius: 8px; /* Bordes más redondeados */
+      border: 1px solid #bce0fd; /* Borde en tono azul */
     }
+
     .product-price p {
         margin: 0;
+    }
+
+    .whatsapp-product-button {
+      display: inline-block; /* Para que el centrado del div padre funcione */
+      background-color: #25D366; 
+      color: white !important; /* Importante para asegurar color de texto si hay otros estilos de 'a' */
+      padding: 12px 25px; /* Un poco más de padding horizontal */
+      /* margin-top: 1.5rem; Se controla desde el div contenedor ahora */
+      border-radius: 30px; /* Más redondeado */
+      text-decoration: none;
+      font-weight: 600; /* Un poco menos bold que el precio */
+      font-size: 1.05em; /* Tamaño de fuente del botón */
+      text-align: center;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .whatsapp-product-button:hover {
+      background-color: #1EBE57; 
+      color: white !important;
+      transform: translateY(-2px); /* Efecto ligero al pasar el mouse */
+    }
+
+    .whatsapp-product-button svg { /* Estilo para el SVG del icono dentro del botón */
+        width: 20px; 
+        height: 20px; 
+        vertical-align: middle; 
+        margin-right: 10px; /* Más espacio para el icono */
+        fill: white; /* Asegurar que el SVG sea blanco */
     }
   </style>
 </head>
 <body>
+
   <div class="product-language-selector">
-    <label for="lang-select">Idioma: </label>
+    <label for="lang-select">Idioma:</label>
     <select id="lang-select">
       <option value="es">Español</option>
       <option value="en">English</option>
     </select>
   </div>
+
   <div class="product-container">
     <div id="product-content">
-      </div>
+      <p style="text-align:center; color:#777;">Cargando detalles del producto...</p>
+    </div>
   </div>
+
 </body>
 </html>

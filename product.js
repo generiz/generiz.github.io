@@ -1,184 +1,88 @@
 // Este es el archivo producto.js
 console.log("¡producto.js ha sido cargado y está listo para funcionar!");
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOMContentLoaded evento disparado.");
+document.addEventListener('DOMContentLoaded', async function() { // Convertida a async para poder usar await al cargar el JSON
+    console.log("DOMContentLoaded evento disparado. Iniciando la carga de detalles del producto.");
 
     const productContentDiv = document.getElementById('product-content');
     const langSelect = document.getElementById('lang-select');
+    
+    // ---- REEMPLAZA ESTE NÚMERO CON TU NÚMERO DE WHATSAPP ----
+    // Debe incluir el código de país, sin el signo '+', espacios, o ceros iniciales innecesarios.
+    // Ejemplo para Paraguay: 595991414172
+    const miNumeroWhatsapp = "595991414172"; 
+    // -------------------------------------------------------------
 
-    console.log("productContentDiv:", productContentDiv);
-    console.log("langSelect:", langSelect);
+    let catalogoCompleto = null; // Variable para almacenar los datos cargados del JSON
 
-    const datos = {
-        servicio: { 
-            es: [
-                { 
-                    nombre: "Helpdesk y Soporte Remoto Profesional", 
-                    descripcion: "Solucionamos tus incidencias informáticas con rapidez y eficacia. Nuestro equipo de expertos te ofrece asistencia remota para diagnósticos, reparación de software, configuración de sistemas y mucho más, minimizando el tiempo de inactividad.", 
-                    caracteristicas: ["Diagnóstico y resolución de problemas de software/hardware.", "Configuración de periféricos (impresoras, scanners, etc.).", "Asistencia en aplicaciones ofimáticas y de productividad.", "Soporte para sistemas operativos Windows y macOS.", "Conexión remota segura y confiable."],
-                    precio: "Planes flexibles o por hora. ¡Consultanos!",
-                    imagenUrl: "https://placehold.co/600x400/7F8C8D/FFFFFF?text=Soporte+Remoto&font=roboto"
-                },
-                { 
-                    nombre: "Reparación Avanzada de Placas Electrónicas", 
-                    descripcion: "Servicio técnico especializado en la reparación a nivel componente de placas madre de portátiles, tarjetas gráficas, consolas y otros dispositivos electrónicos. Contamos con laboratorio propio y técnicos con alta experiencia en microsoldadura.", 
-                    caracteristicas: ["Diagnóstico preciso de fallas en placa.", "Reparación de cortos, fallas de alimentación, problemas de video.", "Reballing y reemplazo de chips (CPU, GPU, PCH).", "Uso de componentes de alta calidad.", "Presupuestos sin compromiso."],
-                    precio: "Evaluación requerida. Desde $[PRECIO_BASE_REPARACION]",
-                    imagenUrl: "https://placehold.co/600x400/2ECC71/FFFFFF?text=Placas+Electrónicas&font=roboto"
-                },
-                { 
-                    nombre: "Diseño e Instalación de Redes y Cableado Estructurado", 
-                    descripcion: "Implementamos soluciones de conectividad robustas y escalables para tu hogar u oficina. Desde el diseño inicial hasta la certificación final, garantizamos una red eficiente y optimizada para tus necesidades.", 
-                    caracteristicas: ["Planificación y diseño de infraestructura de red.", "Instalación de cableado UTP/FTP Cat 6, 6A, 7.", "Montaje y configuración de racks, switches y routers.", "Instalación y optimización de redes Wi-Fi.", "Certificación de puntos de red."],
-                    precio: "Proyectos a medida. Solicita tu cotización.",
-                    imagenUrl: "https://placehold.co/600x400/3498DB/FFFFFF?text=Redes+y+Cableado&font=roboto"
-                },
-                {
-                    nombre: "Desarrollo Web Moderno y Aplicaciones a Medida",
-                    descripcion: "Transformamos tus ideas en soluciones digitales impactantes. Creamos sitios web corporativos, tiendas online, landing pages y aplicaciones web personalizadas, enfocados en la experiencia de usuario y resultados.",
-                    caracteristicas: ["Diseño web responsivo y atractivo (UI/UX).", "Desarrollo frontend y backend con tecnologías actuales.", "Integración con pasarelas de pago y APIs.", "Optimización para motores de búsqueda (SEO).", "Mantenimiento y soporte evolutivo."],
-                    precio: "Desde $[PRECIO_BASE_WEB]. ¡Contanos tu proyecto!",
-                    imagenUrl: "https://placehold.co/600x400/9B59B6/FFFFFF?text=Desarrollo+Web&font=roboto"
-                },
-                {
-                    nombre: "Gestión Integral de Correos Empresariales",
-                    descripcion: "Optimiza la comunicación de tu empresa con nuestros servicios de configuración, migración y administración de correo electrónico profesional (Google Workspace, Microsoft 365). Seguridad, fiabilidad y soporte continuo.",
-                    caracteristicas: ["Configuración de dominios y cuentas de correo.", "Migración de datos desde otros proveedores.", "Políticas de seguridad y filtros anti-spam/phishing.", "Soporte técnico para administradores y usuarios.", "Integración con calendario y herramientas colaborativas."],
-                    precio: "Planes mensuales por usuario. ¡Consultanos!",
-                    imagenUrl: "https://placehold.co/600x400/F1C40F/000000?text=Correo+Empresarial&font=roboto"
-                },
-                {
-                    nombre: "Automatización de Procesos y Desarrollo de APIs",
-                    descripcion: "Mejora la eficiencia de tu negocio automatizando tareas repetitivas e integrando tus sistemas. Desarrollamos scripts, bots y APIs personalizadas para optimizar tus flujos de trabajo y conectar tus aplicaciones.",
-                    caracteristicas: ["Análisis y consultoría de procesos automatizables.", "Desarrollo de scripts en Python, Node.js, etc.", "Creación y consumo de APIs REST/GraphQL.", "Integración de aplicaciones SaaS y plataformas de terceros.", "Ahorro de tiempo y reducción de errores."],
-                    precio: "Proyectos personalizados. ¡Exploramos tus necesidades!",
-                    imagenUrl: "https://placehold.co/600x400/E74C3C/FFFFFF?text=Automatización+APIs&font=roboto"
-                }
-            ],
-            en: [ /* Recuerda añadir traducciones aquí si las necesitas */
-                { nombre: "Professional Remote Helpdesk & Support", descripcion: "We solve your IT issues quickly and effectively...", caracteristicas: ["Diagnosis and resolution...", "Peripheral setup...", "Support for Windows and macOS systems."], precio: "Flexible plans or per hour. Contact us!", imagenUrl: "https://placehold.co/600x400/7F8C8D/FFFFFF?text=Remote+Support&font=roboto" },
-                { nombre: "Advanced Electronic Board Repair", descripcion: "Specialized technical service for component-level repair...", caracteristicas: ["Accurate fault diagnosis...", "Reballing and chip replacement..."], precio: "Evaluation required. From $[BASE_REPAIR_PRICE]", imagenUrl: "https://placehold.co/600x400/2ECC71/FFFFFF?text=Electronic+Boards&font=roboto" },
-                // ... Más servicios en inglés
-            ]
-        },
-        licencia: { 
-            es: [
-                { 
-                    nombre: "Microsoft Office Profesional Plus 2019", 
-                    descripcion: "La suite ofimática esencial para la productividad empresarial y personal. Incluye versiones completas de Word, Excel, PowerPoint, Outlook, Publisher y Access. Licencia perpetua para un único PC.", 
-                    caracteristicas: ["Word: creación y edición de documentos profesionales.", "Excel: análisis de datos y hojas de cálculo avanzadas.", "PowerPoint: presentaciones impactantes.", "Outlook: gestión de correo, calendario y contactos.", "Publisher y Access: para publicaciones y bases de datos.", "Activación única, sin suscripciones."],
-                    precio: "Precio especial: $[PRECIO_OFFICE_2019_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2019+Pro&font=oswald"
-                },
-                { 
-                    nombre: "Microsoft Office Profesional Plus 2024", 
-                    descripcion: "Descubre la potencia de la última generación de Office. Con herramientas mejoradas por IA, funciones de colaboración avanzadas y una interfaz moderna para impulsar tu eficiencia al máximo. Licencia perpetua.", 
-                    caracteristicas: ["Todas las aplicaciones de Office 2019 Pro Plus, actualizadas.", "Nuevas capacidades de Inteligencia Artificial.", "Colaboración en tiempo real mejorada.", "Seguridad y rendimiento optimizados.", "Compatible con las últimas versiones de Windows."],
-                    precio: "Oferta de lanzamiento: $[PRECIO_OFFICE_2024_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2024+Pro&font=oswald"
-                },
-                // ... (completar los demás productos con descripciones mejoradas e imagenUrl)
-                { 
-                    nombre: "Office Standard 2024", 
-                    descripcion: "Las herramientas fundamentales de Office para usuarios que necesitan lo esencial: Word, Excel, PowerPoint y Outlook. Productividad garantizada con esta licencia perpetua.", 
-                    caracteristicas: ["Word, Excel, PowerPoint, Outlook.", "Interfaz intuitiva y funciones clave.", "Ideal para estudiantes y pequeñas empresas.", "Un solo pago, uso ilimitado."],
-                    precio: "Precio: $[PRECIO_OFFICE_STD_2024_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+Std+2024&font=oswald"
-                },
-                {
-                    nombre: "McAfee Internet Security - 1 Año",
-                    descripcion: "Protección integral y confiable contra virus, malware, ransomware y amenazas online. Navega, compra y realiza transacciones bancarias de forma segura durante un año.",
-                    caracteristicas: ["Antivirus premiado.", "Protección web y anti-phishing.", "Firewall inteligente.", "Optimización de rendimiento del PC.", "Soporte para 1 dispositivo."],
-                    precio: "Precio: $[PRECIO_MCAFEE_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/C1272D/FFFFFF?text=McAfee+IS&font=oswald"
-                },
-                {
-                    nombre: "Kaspersky Internet Security (Última Versión) - 1 Dispositivo, 1 Año",
-                    descripcion: "Defensa multicapa contra todo tipo de ciberamenazas. Protege tu privacidad, identidad y datos con una de las soluciones de seguridad más robustas del mercado.",
-                    caracteristicas: ["Antivirus en tiempo real.", "Protección de pagos online.", "VPN Segura (limitada).", "Bloqueo de software espía y rastreadores.", "Fácil de usar e instalar."],
-                    precio: "Precio: $[PRECIO_KASPERSKY_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/00AEEF/FFFFFF?text=Kaspersky+IS&font=oswald"
-                },
-                {
-                    nombre: "Windows 11 Profesional OEM/Retail",
-                    descripcion: "Experimenta el futuro de Windows con un diseño elegante, funciones de productividad innovadoras y seguridad de nivel empresarial. Ideal para profesionales y empresas que buscan lo último en rendimiento.",
-                    caracteristicas: ["Interfaz de usuario rediseñada y widgets.", "Snap Layouts y Snap Groups para multitarea.", "Seguridad mejorada con TPM 2.0 y arranque seguro.", "Windows Autopilot y Azure AD Join (para empresas).", "Soporte para aplicaciones Android (próximamente)."],
-                    precio: "Precio: $[PRECIO_W11_PRO_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Pro&font=oswald"
-                },
-                {
-                    nombre: "Windows 11 Home OEM/Retail",
-                    descripcion: "La puerta de entrada al nuevo Windows, perfecto para el hogar, estudiantes y uso diario. Disfruta de una experiencia visual renovada, mayor velocidad y herramientas para conectar y crear.",
-                    caracteristicas: ["Diseño moderno y centrado.", "Integración nativa con Microsoft Teams.", "Microsoft Store rediseñada con más aplicaciones.", "Modo juego optimizado.", "Seguridad esencial de Windows."],
-                    precio: "Precio: $[PRECIO_W11_HOME_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Home&font=oswald"
-                },
-                // ... (Seguir con los demás Windows y Windows Server)
-                { 
-                    nombre: "Windows 10 Profesional OEM/Retail", 
-                    descripcion: "El sistema operativo probado y confiable para profesionales y empresas que necesitan potencia, seguridad y flexibilidad. Amplia compatibilidad de hardware y software.",
-                    caracteristicas: ["Estabilidad y rendimiento sólidos.", "Funciones de escritorio remoto.", "BitLocker para cifrado de disco.", "Unión a dominio y gestión de políticas de grupo."],
-                    precio: "Precio: $[PRECIO_W10_PRO_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Pro&font=oswald"
-                },
-                { 
-                    nombre: "Windows 10 Home OEM/Retail", 
-                    descripcion: "Ideal para el uso diario en el hogar, Windows 10 Home ofrece una experiencia familiar y productiva con todas las características esenciales que necesitas.",
-                    caracteristicas: ["Asistente Cortana.", "Navegador Microsoft Edge.", "Windows Hello para inicio de sesión seguro.", "Continuas actualizaciones de seguridad."],
-                    precio: "Precio: $[PRECIO_W10_HOME_DETALLE]",
-                    imagenUrl: "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Home&font=oswald"
-                },
-                { 
-                    nombre: "Windows Server 2025 (Licencia Perpetua)", 
-                    descripcion: "La vanguardia en sistemas operativos para servidores. Windows Server 2025 ofrece innovaciones en seguridad, infraestructura hiperconvergente y capacidades híbridas con Azure.",
-                    caracteristicas: ["Seguridad avanzada y protección contra amenazas.", "Plataforma para aplicaciones nativas de la nube y tradicionales.", "Mejoras en almacenamiento y redes.", "Gestión simplificada."],
-                    precio: "Consultar cotización personalizada",
-                    imagenUrl: "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2025&font=oswald"
-                },
-                { 
-                    nombre: "Windows Server 2022 (Licencia Perpetua)", 
-                    descripcion: "Una plataforma robusta y segura para construir y ejecutar tus aplicaciones y servicios críticos. Windows Server 2022 introduce seguridad multicapa avanzada y una mayor integración con Azure.",
-                    caracteristicas: ["Secured-core server.", "Conectividad híbrida con Azure Arc.", "Mejoras en contenedores de Windows.", "Administración moderna con Windows Admin Center."],
-                    precio: "Consultar cotización personalizada",
-                    imagenUrl: "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2022&font=oswald"
-                }
-            ],
-            en: [ /* Recuerda añadir traducciones aquí si las necesitas */
-                { nombre: "Microsoft Office Professional Plus 2019", descripcion: "The essential office suite for business and personal productivity...", caracteristicas: ["Word: professional document creation...", "Excel: advanced data analysis..."], precio: "Special Price: $[PRICE_OFFICE_2019_DETAIL]", imagenUrl: "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2019+Pro&font=oswald" },
-                // ... Más licencias en inglés
-            ]
+    // Función para cargar los datos del catálogo desde el archivo JSON
+    async function cargarCatalogo() {
+        if (catalogoCompleto) { // Si ya se cargó una vez, devuelve los datos almacenados
+            console.log("Catálogo ya estaba cargado, usando datos almacenados.");
+            return catalogoCompleto;
         }
-    };
+        try {
+            console.log("Intentando cargar catalogo_data.json...");
+            const response = await fetch('catalogo_data.json'); 
+            if (!response.ok) { // Verifica si la respuesta de la red fue exitosa
+                throw new Error(`Error HTTP! estado: ${response.status} - ${response.statusText}`);
+            }
+            catalogoCompleto = await response.json();
+            console.log("Datos del catálogo cargados exitosamente:", catalogoCompleto);
+            return catalogoCompleto;
+        } catch (error) {
+            console.error("No se pudo cargar el catálogo de productos:", error);
+            if (productContentDiv) {
+                productContentDiv.innerHTML = "<p class='product-description'>Error al cargar la información de productos. Por favor, intente más tarde o contacte al administrador.</p>";
+            }
+            return null; // Devuelve null si hay un error para que otras funciones lo manejen
+        }
+    }
 
-    function cargarContenidoProducto(tipo, id, idioma = 'es') {
-        console.log(`cargarContenidoProducto llamado con: tipo='${tipo}', id='${id}', idioma='${idioma}'`);
+    // Función para generar y mostrar el contenido del producto en la página
+    function generarContenidoProducto(tipo, idParam, idioma = 'es') {
+        console.log(`generarContenidoProducto llamado con: tipo='${tipo}', idParam='${idParam}', idioma='${idioma}'`);
 
+        if (!catalogoCompleto) {
+            console.error("El catálogo no está cargado todavía. No se puede generar contenido del producto.");
+            if (productContentDiv) {
+                // Podrías poner un mensaje de "cargando..." si el catálogo aún no está listo
+                productContentDiv.innerHTML = "<p class='product-description'>Cargando datos del producto...</p>";
+            }
+            return;
+        }
         if (!productContentDiv) {
-            console.error("Dentro de cargarContenidoProducto: No se encontró el div #product-content");
+            console.error("Elemento #product-content no encontrado en el DOM. No se puede mostrar el producto.");
             return;
         }
 
         let itemData;
-        if (datos[tipo] && datos[tipo][idioma] && datos[tipo][idioma][id] !== undefined) {
-            itemData = datos[tipo][idioma][id];
-        } else if (datos[tipo] && datos[tipo]['es'] && datos[tipo]['es'][id] !== undefined) {
-            itemData = datos[tipo]['es'][id];
-            console.warn(`Contenido para idioma '${idioma}' no encontrado para ${tipo} ID ${id}. Mostrando en español.`);
+        // El ID de la URL es un string, lo convertimos a número para usarlo como índice del array
+        const id = parseInt(idParam, 10); 
+
+        if (catalogoCompleto[tipo] && 
+            catalogoCompleto[tipo][idioma] && 
+            catalogoCompleto[tipo][idioma][id] !== undefined) {
+            itemData = catalogoCompleto[tipo][idioma][id];
+        } else if (catalogoCompleto[tipo] && 
+                   catalogoCompleto[tipo]['es'] && // Fallback al español si el idioma actual no tiene el item
+                   catalogoCompleto[tipo]['es'][id] !== undefined) {
+            itemData = catalogoCompleto[tipo]['es'][id]; 
+            console.warn(`Contenido para idioma '${idioma}' no encontrado para el producto tipo '${tipo}' con ID '${id}'. Mostrando en español.`);
         } else {
-            console.error(`No se encontraron datos para tipo: ${tipo}, id: ${id}, idioma: ${idioma}`);
+            console.error(`No se encontraron datos para el producto tipo '${tipo}' con ID '${id}' en idioma '${idioma}' (ni en español como fallback).`);
             productContentDiv.innerHTML = `<p class="product-description">Lo sentimos, la información para este producto no está disponible actualmente. (Debug: tipo=${tipo}, id=${id}, idioma=${idioma})</p>`;
             return;
         }
 
-        if (!itemData) {
-            console.error("itemData es undefined DESPUÉS de los chequeos. Algo está mal.");
-            productContentDiv.innerHTML = `<p class="product-description">Error interno al procesar los datos del producto. (itemData undefined)</p>`;
+        if (!itemData) { // Doble chequeo por si acaso
+            console.error("itemData es undefined después de los chequeos. Algo inesperado ocurrió.");
+            productContentDiv.innerHTML = `<p class="product-description">Error interno al procesar los datos del producto.</p>`;
             return;
         }
 
+        // Construir el HTML para el producto
         let html = '';
-        // Añadir imagen primero si existe
         if (itemData.imagenUrl) {
             html += `<div class="product-image-container">`;
             html += `<img src="${itemData.imagenUrl}" alt="Imagen de ${itemData.nombre}" class="product-image">`;
@@ -186,7 +90,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         html += `<h1 class="product-title">${itemData.nombre}</h1>`;
-        html += `<p class="product-description">${itemData.descripcion}</p>`;
+        if (itemData.descripcion) {
+            html += `<p class="product-description">${itemData.descripcion}</p>`;
+        }
         
         if (itemData.caracteristicas && itemData.caracteristicas.length > 0) {
             html += `<div class="product-features">`;
@@ -200,43 +106,74 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (itemData.precio) {
-            html += `<div class="product-price">`; // Clase para estilizar el precio
-            html += `<p><strong>${itemData.precio.includes('$[') ? itemData.precio.replace('$[', 'Precio: ').replace(']', '') : itemData.precio}</strong></p>`;
+            html += `<div class="product-price">`;
+            html += `<p><strong>${itemData.precio}</strong></p>`; // Muestra el precio tal cual del JSON
             html += `</div>`;
         }
+
+        // Generar el enlace de WhatsApp
+        const mensajeWhatsappBase = `Hola, quiero adquirir "${itemData.nombre}". Me gustaría agendar una cita para la instalación.`;
+        const mensajeWhatsappUrl = encodeURIComponent(mensajeWhatsappBase); // Codifica el mensaje para la URL
+        const enlaceWhatsapp = `https://wa.me/${miNumeroWhatsapp}?text=${mensajeWhatsappUrl}`;
+
+        html += `<div style="text-align: center; margin-top: 2rem;">`; // Contenedor para centrar el botón
+        html += `<a href="${enlaceWhatsapp}" class="whatsapp-product-button" target="_blank">`;
+        // Icono de WhatsApp (SVG incrustado para no depender de enlaces externos que pueden romperse)
+        html += `<svg viewBox="0 0 896 896" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; fill: white;" xmlns="http://www.w3.org/2000/svg"><path d="M779.9 136.5q-83.2-83.2-197.9-83.2-116.1 0-200.2 84.2-83.2 83.2-84.2 198.6v3.3q0 40.2 10.6 79.1l-10.6 10.6-32.6 126.2 129.5-33.9q19.8 8.3 40.2 12.6h4.7q37.6 8.3 74.4 8.3h1.6q114.8 0 198.6-84.2t83.2-197.9q0-116.1-83.2-200.2z m-199.3 547.9h-1.6q-32.6 0-63.9-8.3h-3.3q-16.6-5.3-33.9-11.9L351.5 731.9l-65.2 16.6L271 682.9q-26.5-40.2-26.5-86.5v-3.3q0-98.2 69.6-167.8t167.8-69.6q96.9 0 167.8 69.6t69.6 167.8q1.6 98.2-69.6 167.8z m132.8-216.1q-8.3-16.6-29.8-26.5l-16.6-8.3q-16.6-6.6-24.9-5.3-16.6 1.6-24.9 16.6-6.6 13.3-23.2 31.5-16.6 16.6-31.5 19.9-23.2 5.3-43.5-3.3-55.9-21.6-104.8-73.7t-73.7-103.5q-3.3-13.3 5.3-24.9t19.9-23.2q5.3-5.3 11.9-13.3 13.3-13.3 16.6-26.5 1.6-16.6-5.3-24.9l-8.3-16.6q-10.6-21.6-26.5-29.8-16.6-8.3-35.2-8.3h-24.9q-16.6 0-39.2 16.6-16.6 13.3-26.5 33.9-16.6 31.5-16.6 71.1 0 37.6 16.6 72.4 26.5 55.9 76.4 106.1t107.4 76.4q33.9 16.6 71.1 16.6 40.2 0 69.6-21.6 21.6-16.6 32.6-26.5t16.6-39.2v-23.2q0-19.9-8.3-36.5z"></path></svg>`;
+        html += `Contactar por WhatsApp para Adquirir`;
+        html += `</a>`;
+        html += `</div>`;
         
         productContentDiv.innerHTML = html;
-        console.log("Contenido renderizado en productContentDiv.");
+        console.log("Contenido del producto renderizado en productContentDiv.");
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const tipoProducto = urlParams.get('tipo'); 
-    const idProductoRaw = urlParams.get('id');
-    const idProducto = parseInt(idProductoRaw, 10);
+    // Función principal para inicializar la página de detalle
+    async function inicializarPaginaDetalle() {
+        console.log("Inicializando página de detalle...");
+        // Intenta cargar el catálogo primero
+        const datosCargados = await cargarCatalogo();
+        
+        if (!datosCargados) { // Si el catálogo no se pudo cargar, no hacer nada más.
+            console.error("No se continuará con la inicialización porque el catálogo no se cargó.");
+            return;
+        }
 
-    console.log(`Parámetros URL: tipo='${tipoProducto}', id (raw)='${idProductoRaw}', id (parsed)='${idProducto}'`);
+        const urlParams = new URLSearchParams(window.location.search);
+        const tipoProducto = urlParams.get('tipo'); 
+        const idProductoRaw = urlParams.get('id');
+        
+        console.log(`Parámetros de URL leídos: tipo='${tipoProducto}', id (raw)='${idProductoRaw}'`);
 
-    let idiomaActual = langSelect ? langSelect.value : 'es';
-    console.log("Idioma actual inicial:", idiomaActual);
+        let idiomaActual = langSelect ? langSelect.value : 'es';
+        console.log("Idioma actual inicial detectado:", idiomaActual);
 
-    if (tipoProducto && (tipoProducto === 'servicio' || tipoProducto === 'licencia') && !isNaN(idProducto)) {
-        console.log("Llamando a cargarContenidoProducto desde la carga inicial.");
-        cargarContenidoProducto(tipoProducto, idProducto, idiomaActual);
-    } else {
-        console.error("Condición para carga inicial NO cumplida. Faltan parámetros 'tipo' o 'id' en la URL, o no son válidos. Tipo recibido:", tipoProducto, "ID (raw):", idProductoRaw);
-        if (productContentDiv) {
-            productContentDiv.innerHTML = `<p class="product-description">No se ha especificado un producto para mostrar o los parámetros son incorrectos. Por favor, selecciona un producto o servicio desde la página principal.</p>`;
+        if (tipoProducto && (tipoProducto === 'servicio' || tipoProducto === 'licencia') && idProductoRaw !== null && !isNaN(parseInt(idProductoRaw, 10))) {
+            const idProducto = parseInt(idProductoRaw, 10);
+            console.log("Parámetros válidos. Llamando a generarContenidoProducto desde la carga inicial.");
+            generarContenidoProducto(tipoProducto, idProducto, idiomaActual);
+        } else {
+            console.error("Condición para carga inicial NO cumplida. Tipo o ID no válidos o faltantes. Tipo:", tipoProducto, "ID(raw):", idProductoRaw);
+            if (productContentDiv) {
+                productContentDiv.innerHTML = `<p class="product-description">No se ha especificado un producto para mostrar o los parámetros son incorrectos. Por favor, selecciona un producto o servicio desde la página principal.</p>`;
+            }
+        }
+
+        // Configurar el listener para el cambio de idioma
+        if (langSelect) {
+            langSelect.addEventListener('change', function() {
+                idiomaActual = this.value;
+                console.log('Selector de idioma cambiado. Nuevo idioma:', idiomaActual);
+                // Volver a cargar el contenido con el nuevo idioma si los parámetros son válidos
+                 if (tipoProducto && (tipoProducto === 'servicio' || tipoProducto === 'licencia') && idProductoRaw !== null && !isNaN(parseInt(idProductoRaw, 10))) {
+                    const idProducto = parseInt(idProductoRaw, 10);
+                    generarContenidoProducto(tipoProducto, idProducto, idiomaActual);
+                }
+            });
+        } else {
+            console.warn("Elemento langSelect no encontrado. El cambio de idioma no funcionará.");
         }
     }
 
-    if (langSelect) {
-        langSelect.addEventListener('change', function() {
-            idiomaActual = this.value;
-            console.log('Selector de idioma cambiado. Nuevo idioma:', idiomaActual);
-            if (tipoProducto && (tipoProducto === 'servicio' || tipoProducto === 'licencia') && !isNaN(idProducto)) {
-                console.log("Llamando a cargarContenidoProducto desde el cambio de idioma.");
-                cargarContenidoProducto(tipoProducto, idProducto, idiomaActual);
-            }
-        });
-    }
+    inicializarPaginaDetalle(); // Llama a la función principal para iniciar el proceso
 });

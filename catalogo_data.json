@@ -1,0 +1,252 @@
+{
+  "servicio": {
+    "es": [
+      {
+        "nombre": "Helpdesk y Soporte Remoto Profesional",
+        "descripcion": "Solucionamos tus incidencias informáticas con rapidez y eficacia. Nuestro equipo de expertos te ofrece asistencia remota para diagnósticos, reparación de software, configuración de sistemas y mucho más, minimizando el tiempo de inactividad.",
+        "caracteristicas": ["Diagnóstico y resolución de problemas de software/hardware.", "Configuración de periféricos (impresoras, scanners, etc.).", "Asistencia en aplicaciones ofimáticas y de productividad.", "Soporte para sistemas operativos Windows y macOS.", "Conexión remota segura y confiable."],
+        "precio": "Desde 150.000 GS./hora",
+        "imagenUrl": "https://placehold.co/600x400/7F8C8D/FFFFFF?text=Soporte+Remoto&font=roboto"
+      },
+      {
+        "nombre": "Reparación Avanzada de Placas Electrónicas",
+        "descripcion": "Servicio técnico especializado en la reparación a nivel componente de placas madre de portátiles, tarjetas gráficas, consolas y otros dispositivos electrónicos. Contamos con laboratorio propio y técnicos con alta experiencia en microsoldadura.",
+        "caracteristicas": ["Diagnóstico preciso de fallas en placa.", "Reparación de cortos, fallas de alimentación, problemas de video.", "Reballing y reemplazo de chips (CPU, GPU, PCH).", "Uso de componentes de alta calidad.", "Presupuestos sin compromiso."],
+        "precio": "Evaluación requerida",
+        "imagenUrl": "https://placehold.co/600x400/2ECC71/FFFFFF?text=Placas+Electrónicas&font=roboto"
+      },
+      {
+        "nombre": "Diseño e Instalación de Redes y Cableado Estructurado",
+        "descripcion": "Implementamos soluciones de conectividad robustas y escalables para tu hogar u oficina. Desde el diseño inicial hasta la certificación final, garantizamos una red eficiente y optimizada para tus necesidades.",
+        "caracteristicas": ["Planificación y diseño de infraestructura de red.", "Instalación de cableado UTP/FTP Cat 6, 6A, 7.", "Montaje y configuración de racks, switches y routers.", "Instalación y optimización de redes Wi-Fi.", "Certificación de puntos de red."],
+        "precio": "Según proyecto",
+        "imagenUrl": "https://placehold.co/600x400/3498DB/FFFFFF?text=Redes+y+Cableado&font=roboto"
+      },
+      {
+        "nombre": "Desarrollo Web Moderno y Aplicaciones a Medida",
+        "descripcion": "Transformamos tus ideas en soluciones digitales impactantes. Creamos sitios web corporativos, tiendas online, landing pages y aplicaciones web personalizadas, enfocados en la experiencia de usuario y resultados.",
+        "caracteristicas": ["Diseño web responsivo y atractivo (UI/UX).", "Desarrollo frontend y backend con tecnologías actuales.", "Integración con pasarelas de pago y APIs.", "Optimización para motores de búsqueda (SEO).", "Mantenimiento y soporte evolutivo."],
+        "precio": "Según proyecto",
+        "imagenUrl": "https://placehold.co/600x400/9B59B6/FFFFFF?text=Desarrollo+Web&font=roboto"
+      },
+      {
+        "nombre": "Gestión Integral de Correos Empresariales",
+        "descripcion": "Optimiza la comunicación de tu empresa con nuestros servicios de configuración, migración y administración de correo electrónico profesional (Google Workspace, Microsoft 365). Seguridad, fiabilidad y soporte continuo.",
+        "caracteristicas": ["Configuración de dominios y cuentas de correo.", "Migración de datos desde otros proveedores.", "Políticas de seguridad y filtros anti-spam/phishing.", "Soporte técnico para administradores y usuarios.", "Integración con calendario y herramientas colaborativas."],
+        "precio": "Desde 50.000 GS./usuario/mes",
+        "imagenUrl": "https://placehold.co/600x400/F1C40F/000000?text=Correo+Empresarial&font=roboto"
+      },
+      {
+        "nombre": "Automatización de Procesos y Desarrollo de APIs",
+        "descripcion": "Mejora la eficiencia de tu negocio automatizando tareas repetitivas e integrando tus sistemas. Desarrollamos scripts, bots y APIs personalizadas para optimizar tus flujos de trabajo y conectar tus aplicaciones.",
+        "caracteristicas": ["Análisis y consultoría de procesos automatizables.", "Desarrollo de scripts en Python, Node.js, etc.", "Creación y consumo de APIs REST/GraphQL.", "Integración de aplicaciones SaaS y plataformas de terceros.", "Ahorro de tiempo y reducción de errores."],
+        "precio": "Consultar proyecto",
+        "imagenUrl": "https://placehold.co/600x400/E74C3C/FFFFFF?text=Automatización+APIs&font=roboto"
+      }
+    ],
+    "en": [
+      {
+        "nombre": "Professional Remote Helpdesk & Support",
+        "descripcion": "We solve your IT issues quickly and effectively. Our team of experts offers remote assistance for diagnostics, software repair, system configuration, and much more, minimizing downtime.",
+        "caracteristicas": ["Diagnosis and resolution of software/hardware problems.", "Peripheral setup (printers, scanners, etc.).", "Assistance with office and productivity applications.", "Support for Windows and macOS operating systems.", "Secure and reliable remote connection."],
+        "precio": "From 150,000 GS./hour",
+        "imagenUrl": "https://placehold.co/600x400/7F8C8D/FFFFFF?text=Remote+Support&font=roboto"
+      },
+      {
+        "nombre": "Advanced Electronic Board Repair",
+        "descripcion": "Specialized technical service for component-level repair of laptop motherboards, graphics cards, consoles, and other electronic devices. We have our own laboratory and technicians with extensive experience in micro-soldering.",
+        "caracteristicas": ["Accurate diagnosis of board failures.", "Repair of shorts, power failures, video problems.", "Reballing and chip replacement (CPU, GPU, PCH).", "Use of high-quality components.", "No-obligation quotes."],
+        "precio": "Evaluation required",
+        "imagenUrl": "https://placehold.co/600x400/2ECC71/FFFFFF?text=Electronic+Boards&font=roboto"
+      },
+      {
+        "nombre": "Network Design & Structured Cabling Installation",
+        "descripcion": "We implement robust and scalable connectivity solutions for your home or office. From initial design to final certification, we guarantee an efficient network optimized for your needs.",
+        "caracteristicas": ["Network infrastructure planning and design.", "Installation of UTP/FTP Cat 6, 6A, 7 cabling.", "Assembly and configuration of racks, switches, and routers.", "Wi-Fi network installation and optimization.", "Network point certification."],
+        "precio": "Project-based",
+        "imagenUrl": "https://placehold.co/600x400/3498DB/FFFFFF?text=Networking+Cabling&font=roboto"
+      },
+      {
+        "nombre": "Modern Web Development & Custom Applications",
+        "descripcion": "We transform your ideas into impactful digital solutions. We create corporate websites, online stores, landing pages, and custom web applications, focusing on user experience and results.",
+        "caracteristicas": ["Responsive and attractive web design (UI/UX).", "Frontend and backend development with current technologies.", "Integration with payment gateways and APIs.", "Search engine optimization (SEO).", "Maintenance and evolutionary support."],
+        "precio": "Project-based",
+        "imagenUrl": "https://placehold.co/600x400/9B59B6/FFFFFF?text=Web+Development&font=roboto"
+      },
+      {
+        "nombre": "Comprehensive Business Email Management",
+        "descripcion": "Optimize your company's communication with our professional email setup, migration, and administration services (Google Workspace, Microsoft 365). Security, reliability, and continuous support.",
+        "caracteristicas": ["Domain and email account setup.", "Data migration from other providers.", "Security policies and anti-spam/phishing filters.", "Technical support for administrators and users.", "Integration with calendar and collaborative tools."],
+        "precio": "From 50,000 GS./user/month",
+        "imagenUrl": "https://placehold.co/600x400/F1C40F/000000?text=Business+Email&font=roboto"
+      },
+      {
+        "nombre": "Process Automation & API Development",
+        "descripcion": "Improve your business efficiency by automating repetitive tasks and integrating your systems. We develop custom scripts, bots, and APIs to optimize your workflows and connect your applications.",
+        "caracteristicas": ["Analysis and consulting for automatable processes.", "Script development in Python, Node.js, etc.", "Creation and consumption of REST/GraphQL APIs.", "Integration of SaaS applications and third-party platforms.", "Time savings and error reduction."],
+        "precio": "Inquire about project",
+        "imagenUrl": "https://placehold.co/600x400/E74C3C/FFFFFF?text=Automation+APIs&font=roboto"
+      }
+    ]
+  },
+  "licencia": {
+    "es": [
+      {
+        "nombre": "Microsoft Office Profesional Plus 2019",
+        "descripcion": "La suite ofimática esencial para la productividad empresarial y personal. Incluye versiones completas de Word, Excel, PowerPoint, Outlook, Publisher y Access. Licencia perpetua para un único PC.",
+        "caracteristicas": ["Word: creación y edición de documentos profesionales.", "Excel: análisis de datos y hojas de cálculo avanzadas.", "PowerPoint: presentaciones impactantes.", "Outlook: gestión de correo, calendario y contactos.", "Publisher y Access: para publicaciones y bases de datos.", "Activación única, sin suscripciones."],
+        "precio": "250.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2019+Pro&font=oswald"
+      },
+      {
+        "nombre": "Microsoft Office Profesional Plus 2024",
+        "descripcion": "Descubre la potencia de la última generación de Office. Con herramientas mejoradas por IA, funciones de colaboración avanzadas y una interfaz moderna para impulsar tu eficiencia al máximo. Licencia perpetua.",
+        "caracteristicas": ["Todas las aplicaciones de Office Pro Plus, actualizadas.", "Nuevas capacidades de Inteligencia Artificial.", "Colaboración en tiempo real mejorada.", "Seguridad y rendimiento optimizados.", "Compatible con las últimas versiones de Windows."],
+        "precio": "350.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2024+Pro&font=oswald"
+      },
+      {
+        "nombre": "Office Standard 2024",
+        "descripcion": "Las herramientas fundamentales de Office para usuarios que necesitan lo esencial: Word, Excel, PowerPoint y Outlook. Productividad garantizada con esta licencia perpetua.",
+        "caracteristicas": ["Word, Excel, PowerPoint, Outlook.", "Interfaz intuitiva y funciones clave.", "Ideal para estudiantes y pequeñas empresas.", "Un solo pago, uso ilimitado."],
+        "precio": "300.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+Std+2024&font=oswald"
+      },
+      {
+        "nombre": "McAfee Internet Security - 1 Año",
+        "descripcion": "Protección integral y confiable contra virus, malware, ransomware y amenazas online. Navega, compra y realiza transacciones bancarias de forma segura durante un año.",
+        "caracteristicas": ["Antivirus premiado.", "Protección web y anti-phishing.", "Firewall inteligente.", "Optimización de rendimiento del PC.", "Soporte para 1 dispositivo."],
+        "precio": "350.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/C1272D/FFFFFF?text=McAfee+IS&font=oswald"
+      },
+      {
+        "nombre": "Kaspersky Internet Security (Última Versión) - 1 Dispositivo, 1 Año",
+        "descripcion": "Defensa multicapa contra todo tipo de ciberamenazas. Protege tu privacidad, identidad y datos con una de las soluciones de seguridad más robustas del mercado.",
+        "caracteristicas": ["Antivirus en tiempo real.", "Protección de pagos online.", "VPN Segura (limitada).", "Bloqueo de software espía y rastreadores.", "Fácil de usar e instalar."],
+        "precio": "350.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00AEEF/FFFFFF?text=Kaspersky+IS&font=oswald"
+      },
+      {
+        "nombre": "Windows 11 Profesional OEM/Retail",
+        "descripcion": "Experimenta el futuro de Windows con un diseño elegante, funciones de productividad innovadoras y seguridad de nivel empresarial. Ideal para profesionales y empresas que buscan lo último en rendimiento.",
+        "caracteristicas": ["Interfaz de usuario rediseñada y widgets.", "Snap Layouts y Snap Groups para multitarea.", "Seguridad mejorada con TPM 2.0 y arranque seguro.", "Windows Autopilot y Azure AD Join (para empresas)."],
+        "precio": "250.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Pro&font=oswald"
+      },
+      {
+        "nombre": "Windows 11 Home OEM/Retail",
+        "descripcion": "La puerta de entrada al nuevo Windows, perfecto para el hogar, estudiantes y uso diario. Disfruta de una experiencia visual renovada, mayor velocidad y herramientas para conectar y crear.",
+        "caracteristicas": ["Diseño moderno y centrado.", "Integración nativa con Microsoft Teams.", "Microsoft Store rediseñada con más aplicaciones.", "Modo juego optimizado.", "Seguridad esencial de Windows."],
+        "precio": "200.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Home&font=oswald"
+      },
+      {
+        "nombre": "Windows 10 Profesional OEM/Retail",
+        "descripcion": "El sistema operativo probado y confiable para profesionales y empresas que necesitan potencia, seguridad y flexibilidad. Amplia compatibilidad de hardware y software.",
+        "caracteristicas": ["Estabilidad y rendimiento sólidos.", "Funciones de escritorio remoto.", "BitLocker para cifrado de disco.", "Unión a dominio y gestión de políticas de grupo."],
+        "precio": "200.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Pro&font=oswald"
+      },
+      {
+        "nombre": "Windows 10 Home OEM/Retail",
+        "descripcion": "Ideal para el uso diario en el hogar, Windows 10 Home ofrece una experiencia familiar y productiva con todas las características esenciales que necesitas.",
+        "caracteristicas": ["Asistente Cortana.", "Navegador Microsoft Edge.", "Windows Hello para inicio de sesión seguro.", "Continuas actualizaciones de seguridad."],
+        "precio": "200.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Home&font=oswald"
+      },
+      {
+        "nombre": "Windows Server 2025 (Licencia Perpetua) 1 usuario",
+        "descripcion": "La vanguardia en sistemas operativos para servidores. Windows Server 2025 ofrece innovaciones en seguridad, infraestructura hiperconvergente y capacidades híbridas con Azure.",
+        "caracteristicas": ["Seguridad avanzada y protección contra amenazas.", "Plataforma para aplicaciones nativas de la nube y tradicionales.", "Mejoras en almacenamiento y redes.", "Gestión simplificada."],
+        "precio": "500.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2025&font=oswald"
+      },
+      {
+        "nombre": "Windows Server 2022 (Licencia Perpetua) 1 usuario",
+        "descripcion": "Una plataforma robusta y segura para construir y ejecutar tus aplicaciones y servicios críticos. Windows Server 2022 introduce seguridad multicapa avanzada y una mayor integración con Azure.",
+        "caracteristicas": ["Secured-core server.", "Conectividad híbrida con Azure Arc.", "Mejoras en contenedores de Windows.", "Administración moderna con Windows Admin Center."],
+        "precio": "400.000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2022&font=oswald"
+      }
+    ],
+    "en": [
+      {
+        "nombre": "Microsoft Office Professional Plus 2019",
+        "descripcion": "The essential office suite for business and personal productivity. Includes full versions of Word, Excel, PowerPoint, Outlook, Publisher, and Access. Perpetual license for a single PC.",
+        "caracteristicas": ["Word: professional document creation and editing.", "Excel: advanced data analysis and spreadsheets.", "PowerPoint: impactful presentations.", "Outlook: email, calendar, and contact management.", "Publisher and Access: for publications and databases.", "One-time activation, no subscriptions."],
+        "precio": "250,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2019+Pro&font=oswald"
+      },
+      {
+        "nombre": "Microsoft Office Professional Plus 2024",
+        "descripcion": "Discover the power of the latest generation of Office. With AI-enhanced tools, advanced collaboration features, and a modern interface to boost your efficiency to the max. Perpetual license.",
+        "caracteristicas": ["All Office Pro Plus applications, updated.", "New Artificial Intelligence capabilities.", "Enhanced real-time collaboration.", "Optimized security and performance.", "Compatible with the latest versions of Windows."],
+        "precio": "350,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+2024+Pro&font=oswald"
+      },
+      {
+        "nombre": "Office Standard 2024",
+        "descripcion": "The fundamental Office tools for users who need the essentials: Word, Excel, PowerPoint, and Outlook. Productivity guaranteed with this perpetual license.",
+        "caracteristicas": ["Word, Excel, PowerPoint, Outlook.", "Intuitive interface and key features.", "Ideal for students and small businesses.", "One-time payment, unlimited use."],
+        "precio": "300,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0078D4/FFFFFF?text=Office+Std+2024&font=oswald"
+      },
+      {
+        "nombre": "McAfee Internet Security - 1 Year",
+        "descripcion": "Comprehensive and reliable protection against viruses, malware, ransomware, and online threats. Browse, shop, and bank securely for one year.",
+        "caracteristicas": ["Award-winning antivirus.", "Web and anti-phishing protection.", "Intelligent firewall.", "PC performance optimization.", "Support for 1 device."],
+        "precio": "350,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/C1272D/FFFFFF?text=McAfee+IS&font=oswald"
+      },
+      {
+        "nombre": "Kaspersky Internet Security (Latest Version) - 1 Device, 1 Year",
+        "descripcion": "Multi-layered defense against all types of cyber threats. Protect your privacy, identity, and data with one of the most robust security solutions on the market.",
+        "caracteristicas": ["Real-time antivirus.", "Online payment protection.", "Secure VPN (limited).", "Spyware and tracker blocking.", "Easy to use and install."],
+        "precio": "350,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00AEEF/FFFFFF?text=Kaspersky+IS&font=oswald"
+      },
+      {
+        "nombre": "Windows 11 Professional OEM/Retail",
+        "descripcion": "Experience the future of Windows with an elegant design, innovative productivity features, and enterprise-grade security. Ideal for professionals and businesses seeking the ultimate in performance.",
+        "caracteristicas": ["Redesigned user interface and widgets.", "Snap Layouts and Snap Groups for multitasking.", "Enhanced security with TPM 2.0 and Secure Boot.", "Windows Autopilot and Azure AD Join (for businesses)."],
+        "precio": "250,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Pro&font=oswald"
+      },
+      {
+        "nombre": "Windows 11 Home OEM/Retail",
+        "descripcion": "The gateway to the new Windows, perfect for home, students, and everyday use. Enjoy a refreshed visual experience, increased speed, and tools to connect and create.",
+        "caracteristicas": ["Modern and centered design.", "Native integration with Microsoft Teams.", "Redesigned Microsoft Store with more apps.", "Optimized game mode.", "Essential Windows security."],
+        "precio": "200,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+11+Home&font=oswald"
+      },
+      {
+        "nombre": "Windows 10 Professional OEM/Retail",
+        "descripcion": "The proven and reliable operating system for professionals and businesses needing power, security, and flexibility. Broad hardware and software compatibility.",
+        "caracteristicas": ["Solid stability and performance.", "Remote Desktop features.", "BitLocker for disk encryption.", "Domain Join and Group Policy management."],
+        "precio": "200,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Pro&font=oswald"
+      },
+      {
+        "nombre": "Windows 10 Home OEM/Retail",
+        "descripcion": "Ideal for everyday home use, Windows 10 Home offers a familiar and productive experience with all the essential features you need.",
+        "caracteristicas": ["Cortana assistant.", "Microsoft Edge browser.", "Windows Hello for secure login.", "Continuous security updates."],
+        "precio": "200,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/0067C6/FFFFFF?text=Windows+10+Home&font=oswald"
+      },
+      {
+        "nombre": "Windows Server 2025 (Perpetual License) 1 user",
+        "descripcion": "The cutting edge in server operating systems. Windows Server 2025 offers innovations in security, hyperconverged infrastructure, and hybrid capabilities with Azure.",
+        "caracteristicas": ["Advanced security and threat protection.", "Platform for cloud-native and traditional applications.", "Storage and networking improvements.", "Simplified management."],
+        "precio": "500,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2025&font=oswald"
+      },
+      {
+        "nombre": "Windows Server 2022 (Perpetual License) 1 user",
+        "descripcion": "A robust and secure platform to build and run your critical applications and services. Windows Server 2022 introduces advanced multi-layered security and greater integration with Azure.",
+        "caracteristicas": ["Secured-core server.", "Hybrid connectivity with Azure Arc.", "Improvements in Windows Containers.", "Modern administration with Windows Admin Center."],
+        "precio": "400,000 GS.",
+        "imagenUrl": "https://placehold.co/600x400/00188F/FFFFFF?text=Windows+Server+2022&font=oswald"
+      }
+    ]
+  }
+}
