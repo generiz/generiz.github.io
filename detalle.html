@@ -165,6 +165,82 @@
         margin-right: 10px; /* Más espacio para el icono */
         fill: white; /* Asegurar que el SVG sea blanco */
     }
+    .back-button {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 8px 15px;
+  background-color: #6c757d; /* Un color gris neutro */
+  color: white !important; /* Asegurar texto blanco */
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #5a6268; /* Un gris más oscuro */
+}
+
+.faq-section {
+  margin-top: 3rem;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.faq-section h3 {
+  font-size: 1.6rem;
+  color: #34495e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.faq-item details {
+  background-color: #f9f9f9;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s ease;
+}
+.faq-item details[open] { /* Estilo cuando el acordeón está abierto */
+    background-color: #f1f3f5;
+}
+
+
+.faq-item summary.faq-question {
+  padding: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  cursor: pointer;
+  list-style: none; /* Quita el marcador por defecto en algunos navegadores */
+  position: relative;
+}
+
+.faq-item summary.faq-question::-webkit-details-marker { /* Oculta marcador en Chrome/Safari */
+  display: none;
+}
+
+.faq-item summary.faq-question::after { /* Indicador de acordeón (flecha) */
+  content: '▼'; /* Flecha hacia abajo */
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  transition: transform 0.2s ease-in-out;
+}
+
+.faq-item details[open] summary.faq-question::after {
+  transform: translateY(-50%) rotate(180deg); /* Flecha hacia arriba cuando está abierto */
+}
+
+
+.faq-answer {
+  padding: 0 1rem 1rem 1rem; /* Padding solo abajo e izquierda/derecha */
+  color: #555;
+  line-height: 1.6;
+  border-top: 1px dashed #ddd; /* Separador sutil */
+  margin-top: 0.5rem; /* Espacio después del summary */
+}
   </style>
 </head>
 <body>
