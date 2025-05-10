@@ -2,49 +2,124 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Detalle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalles del Producto</title>
+  <link rel="stylesheet" href="estilos.css" /> <script defer src="product.js"></script>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
-    .card { background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    h1 { margin-top: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f9; /* Un color de fondo suave */
+      margin: 0;
+      padding: 20px; /* Añade padding al body */
+      color: #333; /* Color de texto base */
+    }
+    .product-language-selector {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+      padding: 0.3rem 0.5rem;
+    }
+    .product-language-selector label {
+      margin-right: 0.5rem;
+      color: #555;
+    }
+    .product-language-selector select {
+      padding: 0.3rem 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: white;
+    }
+    .product-container {
+      max-width: 800px; /* Un poco más estrecho para mejor lectura */
+      margin: auto;
+      padding: 2.5rem; /* Más padding interno */
+      background-color: #ffffff;
+      border-radius: 10px; /* Bordes un poco más suaves */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Sombra más sutil */
+    }
+
+    .product-image-container {
+      text-align: center; /* Centra la imagen */
+      margin-bottom: 2rem;
+    }
+    .product-image {
+      max-width: 100%;
+      height: auto;
+      max-height: 350px; /* Limita la altura máxima de la imagen */
+      border-radius: 8px; /* Bordes redondeados para la imagen */
+      object-fit: contain; /* Asegura que la imagen se vea completa sin distorsión */
+    }
+
+    .product-title {
+      font-size: 2.2rem; /* Un poco más grande */
+      font-weight: 700; /* Más bold */
+      color: #2c3e50; /* Un color oscuro pero no negro puro */
+      margin-bottom: 1rem;
+      text-align: center; /* Título centrado */
+    }
+    .product-description {
+      font-size: 1.1rem;
+      line-height: 1.7; /* Mayor interlineado para legibilidad */
+      color: #555;
+      margin-bottom: 2rem;
+      text-align: justify; /* Justificar texto de descripción */
+    }
+    .product-features {
+      margin-top: 2rem;
+      background-color: #f9f9f9; /* Un fondo ligero para la sección de características */
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    .product-features h3 {
+      margin-top: 0; /* Quitar margen superior si es el primer elemento */
+      margin-bottom: 1rem;
+      color: #34495e;
+      font-size: 1.4rem;
+    }
+    .product-features ul {
+      list-style-type: none; /* Quitar viñetas por defecto */
+      padding-left: 0;
+    }
+    .product-features ul li {
+      padding-left: 1.5rem;
+      position: relative;
+      margin-bottom: 0.75rem; /* Espacio entre características */
+      font-size: 1rem;
+      color: #444;
+    }
+    .product-features ul li::before { /* Usar un pseudo-elemento para viñetas personalizadas */
+      content: '✓'; /* Icono de check, puedes usar otro */
+      position: absolute;
+      left: 0;
+      color: #27ae60; /* Color de la viñeta */
+      font-weight: bold;
+    }
+    .product-price {
+      margin-top: 2.5rem;
+      font-size: 1.5rem; /* Tamaño de fuente para el precio */
+      font-weight: bold;
+      color: #007bff; /* Un color destacado para el precio */
+      text-align: center;
+      padding: 1rem;
+      background-color: #e9ecef;
+      border-radius: 5px;
+    }
+    .product-price p {
+        margin: 0;
+    }
   </style>
 </head>
 <body>
-  <div class="card" id="detalle-container">
-    Cargando...
+  <div class="product-language-selector">
+    <label for="lang-select">Idioma: </label>
+    <select id="lang-select">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
   </div>
-
-  <script>
-    const servicios = [
-      { id: 1, nombre: "Helpdesk y soporte remoto", descripcion: "Asistencia remota para resolver problemas técnicos." },
-      { id: 2, nombre: "Reparación de placas electrónicas", descripcion: "Servicio técnico especializado en reparación." },
-      // ...otros servicios
-    ];
-
-    const licencias = [
-      { id: 1, nombre: "Office Profesional Plus 2019", descripcion: "Suite de productividad de Microsoft." },
-      { id: 2, nombre: "Windows 11 Profesional", descripcion: "Sistema operativo actualizado y seguro." },
-      // ...otras licencias
-    ];
-
-    const params = new URLSearchParams(location.search);
-    const tipo = params.get('tipo');
-    const id = parseInt(params.get('id'));
-    const contenedor = document.getElementById('detalle-container');
-
-    const lista = tipo === 'servicio' ? servicios : licencias;
-    const item = lista.find(i => i.id === id);
-
-    if (item) {
-      contenedor.innerHTML = `
-        <h1>${item.nombre}</h1>
-        <p>${item.descripcion}</p>
-        <a href="index.html">⬅ Volver</a>
-      `;
-    } else {
-      contenedor.innerHTML = `<p>No se encontró el ítem solicitado.</p>`;
-    }
-  </script>
+  <div class="product-container">
+    <div id="product-content">
+      </div>
+  </div>
 </body>
 </html>
