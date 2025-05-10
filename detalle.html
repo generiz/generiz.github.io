@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalle</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    .card { background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="card" id="detalle-container">
+    Cargando...
+  </div>
+
+  <script>
+    const servicios = [
+      { id: 1, nombre: "Helpdesk y soporte remoto", descripcion: "Asistencia remota para resolver problemas técnicos." },
+      { id: 2, nombre: "Reparación de placas electrónicas", descripcion: "Servicio técnico especializado en reparación." },
+      // ...otros servicios
+    ];
+
+    const licencias = [
+      { id: 1, nombre: "Office Profesional Plus 2019", descripcion: "Suite de productividad de Microsoft." },
+      { id: 2, nombre: "Windows 11 Profesional", descripcion: "Sistema operativo actualizado y seguro." },
+      // ...otras licencias
+    ];
+
+    const params = new URLSearchParams(location.search);
+    const tipo = params.get('tipo');
+    const id = parseInt(params.get('id'));
+    const contenedor = document.getElementById('detalle-container');
+
+    const lista = tipo === 'servicio' ? servicios : licencias;
+    const item = lista.find(i => i.id === id);
+
+    if (item) {
+      contenedor.innerHTML = `
+        <h1>${item.nombre}</h1>
+        <p>${item.descripcion}</p>
+        <a href="index.html">⬅ Volver</a>
+      `;
+    } else {
+      contenedor.innerHTML = `<p>No se encontró el ítem solicitado.</p>`;
+    }
+  </script>
+</body>
+</html>

@@ -65,6 +65,9 @@
       background: #f1f5f9;
       border-radius: 0.75rem;
       transition: 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
     .card:hover {
       background: #e2e8f0;
@@ -146,31 +149,12 @@
   <main class="container">
     <section id="servicios">
       <h2>Servicios Profesionales</h2>
-      <div class="grid">
-        <div class="card">Helpdesk y soporte remoto</div>
-        <div class="card">Reparación de placas electrónicas</div>
-        <div class="card">Redes y cableado estructurado</div>
-        <div class="card">Desarrollo web y aplicaciones</div>
-        <div class="card">Gestión de correos empresariales</div>
-        <div class="card">Automatización y APIs</div>
-      </div>
+      <div class="grid" id="lista-servicios"></div>
     </section>
 
     <section id="licencias">
       <h2>Venta de Licencias</h2>
-      <div class="grid">
-        <div class="card">Office Profesional Plus 2019</div>
-        <div class="card">Office Profesional Plus 2024</div>
-        <div class="card">Office Standard 2024</div>
-        <div class="card">McAfee Internet Security - 1 Año</div>
-        <div class="card">Kaspersky Internet Security 2022 - 1 Dispositivo</div>
-        <div class="card">Windows 11 Profesional</div>
-        <div class="card">Windows 11 Home</div>
-        <div class="card">Windows 10 Profesional</div>
-        <div class="card">Windows 10 Home</div>
-        <div class="card">Windows Server 2025 - Licencia de por vida</div>
-        <div class="card">Windows Server 2022 - Licencia de por vida</div>
-      </div>
+      <div class="grid" id="lista-licencias"></div>
       <p class="nota">*Precios disponibles próximamente.</p>
     </section>
 
@@ -195,6 +179,48 @@
   </footer>
 
   <script>
+    const servicios = [
+      "Helpdesk y soporte remoto",
+      "Reparación de placas electrónicas",
+      "Redes y cableado estructurado",
+      "Desarrollo web y aplicaciones",
+      "Gestión de correos empresariales",
+      "Automatización y APIs"
+    ];
+
+    const licencias = [
+      "Office Profesional Plus 2019",
+      "Office Profesional Plus 2024",
+      "Office Standard 2024",
+      "McAfee Internet Security - 1 Año",
+      "Kaspersky Internet Security 2022 - 1 Dispositivo",
+      "Windows 11 Profesional",
+      "Windows 11 Home",
+      "Windows 10 Profesional",
+      "Windows 10 Home",
+      "Windows Server 2025 - Licencia de por vida",
+      "Windows Server 2022 - Licencia de por vida"
+    ];
+
+    const serviciosDiv = document.getElementById('lista-servicios');
+    const licenciasDiv = document.getElementById('lista-licencias');
+
+    servicios.forEach((item, index) => {
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = `detalle.html?tipo=servicio&id=${index}`;
+      card.textContent = item;
+      serviciosDiv.appendChild(card);
+    });
+
+    licencias.forEach((item, index) => {
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = `detalle.html?tipo=licencia&id=${index}`;
+      card.textContent = item;
+      licenciasDiv.appendChild(card);
+    });
+
     const form = document.getElementById('formulario-contacto');
     const mensajeExito = document.getElementById('mensajeExito');
     const emailInput = document.getElementById('campoEmail');
