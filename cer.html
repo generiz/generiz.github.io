@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentos Académicos - Western Oregon University</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+        }
+        .document {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            page-break-after: always;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #006747;
+            padding-bottom: 15px;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+        .university-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #006747;
+            margin: 5px 0;
+        }
+        .document-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin: 25px 0 15px;
+            color: #006747;
+        }
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .info-row {
+            margin: 8px 0;
+        }
+        .label {
+            font-weight: bold;
+            display: inline-block;
+            width: 180px;
+        }
+        .photo-container {
+            width: 120px;
+            height: 150px;
+            border: 1px solid #006747;
+            margin: 10px auto;
+            overflow: hidden;
+        }
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #006747;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #006747;
+            color: white;
+        }
+        .barcode {
+            text-align: center;
+            margin: 25px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        .signature-area {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+        }
+        .signature-box {
+            width: 250px;
+            border-top: 1px solid #006747;
+            padding-top: 5px;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 30px;
+            color: #666;
+        }
+        .notes {
+            font-size: 14px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-left: 4px solid #006747;
+        }
+        .balance {
+            font-weight: bold;
+            font-size: 18px;
+            color: #006747;
+            text-align: right;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CREDENCIAL ACADÉMICA -->
+    <div class="document">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/Seal_of_Western_Oregon_University.png" alt="Western Oregon University" class="logo">
+            <div class="university-name">WESTERN OREGON UNIVERSITY</div>
+            <div>Monmouth, Oregon</div>
+        </div>
+
+        <div class="document-title">CREDENCIAL ACADÉMICA</div>
+
+        <div class="student-info">
+            <div class="info-row"><span class="label">Nombre del Estudiante:</span> Nicolás Daniel Pintos</div>
+            <div class="info-row"><span class="label">ID Estudiantil:</span> 987654382</div>
+            <div class="info-row"><span class="label">Programa Académico:</span> Marketing</div>
+            <div class="info-row"><span class="label">Nivel:</span> Undergraduate – Junior</div>
+            <div class="info-row"><span class="label">Campus:</span> Monmouth, OR</div>
+            <div class="info-row"><span class="label">Fecha de Emisión:</span> 09/09/2023</div>
+            <div class="info-row"><span class="label">Fecha de Vencimiento:</span> 09/31/2025</div>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <div class="photo-container">
+                <img src="https://i.postimg.cc/9FQs0x36/Screenshot-20250909-231810-Fotos.png" alt="Foto del Estudiante" class="photo">
+            </div>
+        </div>
+
+        <div class="barcode">WOU*987654382*NICOLAS*D*PINTOS</div>
+
+        <div class="signature-area">
+            <div class="signature-box">
+                [Espacio para firma del Registrador]
+            </div>
+        </div>
+
+        <div class="footer">Western Oregon University • 345 Monmouth Ave N, Monmouth, OR 97361</div>
+    </div>
+
+    <!-- CRONOGRAMA DE CLASES -->
+    <div class="document">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/Seal_of_Western_Oregon_University.png" alt="Western Oregon University" class="logo">
+            <div class="university-name">WESTERN OREGON UNIVERSITY</div>
+            <div>Office of the Registrar</div>
+        </div>
+
+        <div class="document-title">CRONOGRAMA DE CLASES - PRIMAVERA 2025</div>
+
+        <div class="student-info">
+            <div class="info-row"><span class="label">Nombre del Estudiante:</span> Nicolás Daniel Pintos</div>
+            <div class="info-row"><span class="label">ID Estudiantil:</span> 987654382</div>
+            <div class="info-row"><span class="label">Programa Académico:</span> Marketing</div>
+            <div class="info-row"><span class="label">Período Académico:</span> Primavera 2025</div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>8:00 - 9:50 AM</td>
+                    <td>BI 301<br>Marketing Research</td>
+                    <td></td>
+                    <td>BI 301<br>Marketing Research</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 11:50 AM</td>
+                    <td>CH 222<br>Consumer Behavior</td>
+                    <td></td>
+                    <td>CH 222<br>Consumer Behavior</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>1:00 - 2:50 PM</td>
+                    <td>MA 211<br>Statistics for Business</td>
+                    <td></td>
+                    <td>MA 211<br>Statistics for Business</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3:00 - 4:50 PM</td>
+                    <td></td>
+                    <td>MK 350<br>Digital Marketing Lab</td>
+                    <td></td>
+                    <td>MK 350<br>Digital Marketing Lab</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="notes">
+            <strong>Notas:</strong> Todos los laboratorios requieren asistencia obligatoria. El término académico inicia el 6 de enero de 2025 y finaliza el 16 de mayo de 2025. Los exámenes finales se llevarán a cabo del 19 al 23 de mayo de 2025.
+        </div>
+
+        <div class="barcode">SCHEDULE*SP2025*987654382*PINTOS</div>
+
+        <div class="signature-area">
+            <div class="signature-box">
+                [Espacio para firma del Asesor Académico]
+            </div>
+        </div>
+
+        <div class="footer">Documento emitido por la Oficina del Registrador • Western Oregon University</div>
+    </div>
+
+    <!-- RECIBO DE MATRÍCULA -->
+    <div class="document">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/Seal_of_Western_Oregon_University.png" alt="Western Oregon University" class="logo">
+            <div class="university-name">WESTERN OREGON UNIVERSITY</div>
+            <div>Office of Student Accounts</div>
+        </div>
+
+        <div class="document-title">RECIBO DE MATRÍCULA - PRIMAVERA 2025</div>
+
+        <div class="student-info">
+            <div class="info-row"><span class="label">Nombre del Estudiante:</span> Nicolás Daniel Pintos</div>
+            <div class="info-row"><span class="label">ID Estudiantil:</span> 987654382</div>
+            <div class="info-row"><span class="label">Fecha del Recibo:</span> 15 de agosto de 2025</div>
+            <div class="info-row"><span class="label">Período Académico:</span> Primavera 2025</div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Descripción</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TUITION</td>
+                    <td>Matrícula - 12 créditos</td>
+                    <td>$6,240.00</td>
+                </tr>
+                <tr>
+                    <td>FEE</td>
+                    <td>Tasa de campus y tecnología</td>
+                    <td>$485.00</td>
+                </tr>
+                <tr>
+                    <td>FEE</td>
+                    <td>Tasa de actividades estudiantiles</td>
+                    <td>$125.00</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #e8f4e8;">PAYMENT</td>
+                    <td style="background-color: #e8f4e8;">Pell Grant - Federal Aid</td>
+                    <td style="background-color: #e8f4e8;">-$3,850.00</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #e8f4e8;">PAYMENT</td>
+                    <td style="background-color: #e8f4e8;">Beca WOU - Excelencia Académica</td>
+                    <td style="background-color: #e8f4e8;">-$3,000.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="balance">SALDO ACTUAL: $0.00</div>
+
+        <div class="notes">
+            <strong>Estado:</strong> Cuenta pagada en su totalidad. Este recibo confirma que todos los cargos por matrícula y tasas han sido cubiertos para el período académico indicado.
+        </div>
+
+        <div class="barcode">RECEIPT*SP2025*987654382*PAID*0.00</div>
+
+        <div class="signature-area">
+            <div class="signature-box">
+                [Espacio para firma del Registrador]
+            </div>
+        </div>
+
+        <div class="footer">Western Oregon University • Departamento de Cuentas Estudiantiles • Tel: (503) 838-8000</div>
+    </div>
+
+</body>
+</html>
