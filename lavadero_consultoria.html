@@ -3,366 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LavaderoListo • Plan de Negocios para Lavadero de Autos</title>
+    <title>PlanLavadero • Evaluación Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Poppins:wght@500;600&amp;display=swap');
-        
-        :root {
-            --primary: #0f766e;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
         
         body {
             font-family: 'Inter', system_ui, sans-serif;
         }
         
         .font-display {
-            font-family: 'Poppins', 'Inter', sans-serif;
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
             font-weight: 600;
         }
 
-        .step {
-            display: none;
-        }
-        
-        .step.active {
-            display: block;
-            animation: fadeIn 0.3s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .step { display: none; }
+        .step.active { display: block; }
 
         .question-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        .nav-step {
-            transition: all 0.2s ease;
-        }
-
-        .nav-step.active {
-            background-color: #0f766e;
-            color: white;
-            border-color: #0f766e;
-        }
-
-        .metric-card {
-            transition: transform 0.2s ease;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            letter-spacing: -.025em;
-        }
-
-        .score-circle {
-            width: 140px;
-            height: 140px;
-            background: conic-gradient(#0f766e 0deg 252deg, #e2e8f0 252deg 360deg);
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .score-circle::before {
-            content: '';
-            width: 110px;
-            height: 110px;
-            background: white;
-            border-radius: 9999px;
-            position: absolute;
-        }
-
-        .print-only {
-            display: none;
-        }
-
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            body {
-                background: white !important;
-            }
-            .metric-card, .bg-white {
-                box-shadow: none !important;
-                border: 1px solid #e2e8f0;
-            }
-        }
-
-        .chart-container {
-            position: relative;
-        }
-
-        .lavadero-gradient {
-            background: linear-gradient(135deg, #0f766e, #134e4b);
-        }
-
-        .input-focus {
-            transition: all 0.2s ease;
-        }
-        
-        .input-focus:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
-            border-color: #0f766e;
+        .section-header {
+            font-size: 1.05rem;
+            letter-spacing: -0.02em;
         }
 
         .modern-shadow {
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+            box-shadow: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.08);
+        }
+
+        .clean-input {
+            transition: all 0.2s ease;
+        }
+        
+        .clean-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+            border-color: #0f172a;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .metric-card, .bg-white { box-shadow: none !important; border: 1px solid #e2e8f0; }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-900">
+
     <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-5xl mx-auto px-8 py-5 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="w-11 h-11 lavadero-gradient rounded-2xl flex items-center justify-center shadow-inner">
-                    <i class="fa-solid fa-car text-white text-3xl"></i>
+                <div class="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-car-side text-white text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-display text-3xl tracking-tighter font-semibold text-slate-900">LavaderoListo</h1>
-                    <p class="text-xs text-slate-500 -mt-1">De idea → negocio rentable</p>
+                    <span class="font-display text-2xl tracking-tighter font-semibold">PlanLavadero</span>
                 </div>
             </div>
             
-            <div class="flex items-center gap-x-4">
-                <div class="hidden md:flex items-center gap-x-2 text-sm bg-slate-100 px-3 py-1.5 rounded-3xl">
-                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <span class="text-slate-600 font-medium">100% local • Sin backend</span>
-                </div>
-                
-                <button onclick="resetAll()" 
-                        class="flex items-center gap-x-2 text-sm px-4 py-2 rounded-3xl border border-slate-300 hover:bg-slate-100 transition-colors text-slate-600">
-                    <i class="fa-solid fa-redo text-xs"></i>
-                    <span class="hidden sm:inline">Reiniciar</span>
-                </button>
+            <div class="text-sm text-slate-500 font-medium">
+                Evaluación de Negocio
             </div>
         </div>
         
-        <!-- Progress Bar -->
-        <div class="max-w-6xl mx-auto px-6 pb-4">
-            <div class="flex items-center justify-between text-xs mb-1.5 px-1">
-                <div class="flex items-center gap-x-2">
-                    <span id="progress-text" class="font-semibold text-teal-700">Paso 1 de 7</span>
-                </div>
-                <span id="progress-percent" class="font-mono text-teal-700 font-semibold">14%</span>
+        <!-- Progress -->
+        <div class="max-w-5xl mx-auto px-8 pb-4">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+                <span id="progress-text" class="font-semibold text-slate-600">Paso 1 de 7</span>
+                <span id="progress-percent" class="font-mono text-slate-500">14%</span>
             </div>
-            <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
-                <div id="progress-bar" 
-                     class="h-2 bg-gradient-to-r from-teal-600 to-teal-700 transition-all duration-500 rounded-full" 
-                     style="width: 14%"></div>
+            <div class="h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-1.5 bg-slate-900 transition-all duration-500 rounded-full" style="width: 14%"></div>
             </div>
         </div>
     </header>
 
-    <div class="max-w-6xl mx-auto px-6 pt-8 pb-16">
-        
-        <!-- WELCOME / INTRO -->
-        <div id="step-0" class="step active max-w-3xl mx-auto text-center">
-            <div class="mb-8">
-                <div class="inline-flex items-center gap-x-2 bg-teal-100 text-teal-700 px-4 py-1 rounded-3xl text-sm font-semibold mb-4">
-                    <i class="fa-solid fa-rocket"></i>
-                    <span>Para Paraguay • 2026</span>
-                </div>
-                
-                <h2 class="font-display text-5xl tracking-tighter leading-none mb-4">
-                    ¿Estás listo para ser<br> 
-                    <span class="text-teal-700">empresario de lavadero</span><br>
-                    o solo quieres lavar autos?
-                </h2>
-                <p class="text-xl text-slate-600 max-w-md mx-auto">
-                    Un cuestionario realista + simulador financiero. 
-                    Al final tendrás tu informe completo con gráficos y plan de acción.
+    <div class="max-w-5xl mx-auto px-8 pt-8 pb-20">
+
+        <!-- WELCOME -->
+        <div id="step-0" class="step active max-w-2xl mx-auto text-center pt-8">
+            <div class="mb-10">
+                <h1 class="font-display text-5xl tracking-tighter leading-none mb-4">
+                    Evaluación de Negocio<br>
+                    <span class="text-slate-700">Lavadero de Autos</span>
+                </h1>
+                <p class="text-xl text-slate-600">
+                    Responda con honestidad para obtener un diagnóstico claro 
+                    y un plan de acción realista.
                 </p>
             </div>
 
-            <div class="bg-white rounded-3xl p-8 modern-shadow border border-slate-100 text-left max-w-lg mx-auto mb-8">
-                <div class="flex items-start gap-4">
-                    <div class="text-4xl mt-1">🚗</div>
-                    <div class="flex-1 text-sm">
-                        <p class="font-semibold text-slate-900 mb-1">Esto NO es un formulario genérico.</p>
-                        <ul class="space-y-1.5 text-slate-600">
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Enfocado en <strong>replicabilidad y sistemas</strong></li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Proyecciones financieras realistas para Paraguay</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Considera Licencia Ambiental MADES + habilitación municipal</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Te dice claramente qué tan lejos estás de tener un negocio que funcione sin ti</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <button onclick="startApp()" 
-                    class="px-10 py-4 bg-teal-700 hover:bg-teal-800 active:bg-teal-900 transition-all text-white font-semibold text-lg rounded-3xl shadow-lg shadow-teal-700/30 flex items-center gap-x-3 mx-auto">
-                <span>Comenzar evaluación (10-12 minutos)</span>
+                    class="px-10 py-4 bg-slate-900 hover:bg-black text-white font-semibold text-lg rounded-2xl transition-all flex items-center gap-x-3 mx-auto">
+                <span>Comenzar evaluación</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
             
-            <p class="mt-6 text-xs text-slate-500">Tus respuestas se guardan automáticamente en este navegador. Nada se envía hasta que decidas.</p>
+            <p class="mt-8 text-xs text-slate-400">Duración aproximada: 10-12 minutos</p>
         </div>
 
-        <!-- STEPS -->
-        <!-- Paso 1: Perfil del Emprendedor -->
+        <!-- PASO 1: Perfil -->
         <div id="step-1" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 1/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Tu perfil como emprendedor</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 1/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Perfil del Emprendedor</h2>
                 </div>
-                <p class="text-slate-600">Sé honesto. Esto define todo lo demás.</p>
+                <p class="text-slate-600">Esta información define la viabilidad real del proyecto.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <!-- Q1 -->
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Nombre del proyecto / lavadero propuesto</label>
-                    <input type="text" data-key="nombre_proyecto" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm" 
-                           placeholder="Ej: LavaRápido Asunción" value="LavaRápido Centro">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Nombre del proyecto / lavadero</label>
+                    <input type="text" data-key="nombre_proyecto" value="Lavadero Centro" 
+                           class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Tu nombre completo</label>
-                    <input type="text" data-key="nombre_emprendedor" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm" 
-                           placeholder="Juan Pérez" value="">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Su nombre completo</label>
+                    <input type="text" data-key="nombre_emprendedor" placeholder="Nombre y apellido" 
+                           class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <!-- Experiencia -->
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-3">¿Cuál es tu experiencia real en el rubro de lavado de autos?</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">Experiencia real en lavado de autos</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="ninguna" class="accent-teal-700">
-                            <span class="text-sm">Ninguna</span>
+                        <label class="flex items-center gap-2.5 p-3.5 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="ninguna" class="accent-slate-900">
+                            <span class="text-sm">Ninguna experiencia</span>
                         </label>
-                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="trabaje_empleado" class="accent-teal-700" checked>
+                        <label class="flex items-center gap-2.5 p-3.5 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="trabaje_empleado" class="accent-slate-900" checked>
                             <span class="text-sm">Trabajé como empleado</span>
                         </label>
-                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="tuve_pequeno" class="accent-teal-700">
-                            <span class="text-sm">Tuve lavadero pequeño / informal</span>
+                        <label class="flex items-center gap-2.5 p-3.5 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="tuve_pequeno" class="accent-slate-900">
+                            <span class="text-sm">Tuve lavadero informal</span>
                         </label>
-                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="gestion_profesional" class="accent-teal-700">
-                            <span class="text-sm">Gestión profesional / varios empleados</span>
+                        <label class="flex items-center gap-2.5 p-3.5 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="gestion_profesional" class="accent-slate-900">
+                            <span class="text-sm">Gestión profesional</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Experiencia gestionando equipos o negocios (1-5)</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Experiencia gestionando equipos (1-5)</label>
                     <div class="flex items-center gap-3">
-                        <input type="range" data-key="exp_gestion" min="1" max="5" step="1" value="3" 
-                               class="flex-1 accent-teal-700" oninput="updateRangeValue(this)">
-                        <span id="exp_gestion_val" class="font-mono w-8 text-center font-semibold text-teal-700">3</span>
+                        <input type="range" data-key="exp_gestion" min="1" max="5" step="1" value="3" class="flex-1 accent-slate-900" oninput="updateRangeValue(this)">
+                        <span id="exp_gestion_val" class="font-mono w-7 text-center font-semibold text-slate-700">3</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-1">1 = Nunca gestioné nadie &nbsp;&nbsp; 5 = Llevé equipos de 5+ personas</p>
+                    <p class="text-xs text-slate-500 mt-1.5">1 = Nunca gestioné personas &nbsp;&nbsp; 5 = Equipos de 5+ personas</p>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Horas por semana que puedes dedicarle al negocio</label>
-                    <input type="number" data-key="horas_semana" value="45" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
-                    <p class="text-xs text-slate-500 mt-1">Sé realista. 60+ horas es insostenible a largo plazo.</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Horas semanales disponibles</label>
+                    <input type="number" data-key="horas_semana" value="40" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                    <p class="text-xs text-slate-500 mt-1.5">Sea realista con su disponibilidad real.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Paso 2: Mercado y Ubicación -->
+        <!-- PASO 2: Mercado -->
         <div id="step-2" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 2/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Mercado y Ubicación</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 2/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Mercado y Ubicación</h2>
                 </div>
-                <p class="text-slate-600">Sin clientes no hay negocio. Sé conservador.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Ciudad / Zona donde planeas abrir</label>
-                    <input type="text" data-key="zona" value="Asunción - Barrio Centro / Sajonia" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Ciudad / Zona donde planea abrir</label>
+                    <input type="text" data-key="zona" value="Asunción" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">¿Ya tienes ubicación identificada o alquilada?</label>
-                    <select data-key="tiene_ubicacion" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
-                        <option value="no">No, todavía estoy buscando</option>
-                        <option value="en_proceso">En proceso de negociación</option>
-                        <option value="si_alquilada">Sí, ya tengo lugar alquilado</option>
-                        <option value="si_propio">Sí, es local propio</option>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Estado de la ubicación</label>
+                    <select data-key="tiene_ubicacion" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="no">Todavía no tengo ubicación</option>
+                        <option value="en_proceso">En negociación</option>
+                        <option value="si_alquilada">Ya tengo lugar alquilado</option>
+                        <option value="si_propio">Es local propio</option>
                     </select>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Tipo de zona / tráfico</label>
-                    <select data-key="tipo_zona" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Tipo de zona</label>
+                    <select data-key="tipo_zona" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                         <option value="avenida_principal">Avenida principal de alto tráfico</option>
-                        <option value="barrio_residencial">Barrio residencial tranquilo</option>
-                        <option value="cerca_estacion">Cerca de estación de servicio / shopping</option>
+                        <option value="barrio_residencial">Barrio residencial</option>
+                        <option value="cerca_estacion">Cerca de estación de servicio o shopping</option>
                         <option value="zona_comercial">Zona comercial / oficinas</option>
-                        <option value="industrial">Zona industrial / talleres</option>
                     </select>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">¿Cuántos competidores directos conoces en un radio de 1-1.5km?</label>
-                    <input type="number" data-key="competidores" value="4" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Competidores cercanos (radio 1-1.5 km)</label>
+                    <input type="number" data-key="competidores" value="4" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-3">Público objetivo principal (elige el más importante)</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">Público objetivo principal</label>
                     <div class="flex flex-wrap gap-2">
-                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
-                            <input type="radio" name="publico" data-key="publico_objetivo" value="particulares" checked class="accent-white"> Particulares (autos familiares)
+                        <label class="px-5 py-2.5 text-sm border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:bg-slate-900 has-[:checked]:text-white has-[:checked]:border-slate-900 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="particulares" checked class="accent-white"> Particulares
                         </label>
-                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
-                            <input type="radio" name="publico" data-key="publico_objetivo" value="flotas" class="accent-white"> Flotas de empresas / taxis / Uber
+                        <label class="px-5 py-2.5 text-sm border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:bg-slate-900 has-[:checked]:text-white has-[:checked]:border-slate-900 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="flotas" class="accent-white"> Flotas / Empresas
                         </label>
-                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
-                            <input type="radio" name="publico" data-key="publico_objetivo" value="premium" class="accent-white"> Autos premium + detailing
+                        <label class="px-5 py-2.5 text-sm border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:bg-slate-900 has-[:checked]:text-white has-[:checked]:border-slate-900 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="premium" class="accent-white"> Premium + Detailing
                         </label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Lavados por día REALISTAS que esperas en los primeros 3 meses</label>
-                    <input type="number" data-key="lavados_dia_inicial" value="10" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm text-lg font-semibold">
-                    <p class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-exclamation-triangle mr-1"></i> Sé conservador. La mayoría sobreestima.</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Lavados por día esperados (meses 1-3)</label>
+                    <input type="number" data-key="lavados_dia_inicial" value="10" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-amber-600 mt-1.5">Sea conservador. La mayoría sobreestima los primeros meses.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Paso 3: Legal y Permisos (Paraguay) -->
+        <!-- PASO 3: Legal -->
         <div id="step-3" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 3/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Legal, Permisos y Cumplimiento (Paraguay)</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 3/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Aspectos Legales y Regulatorios</h2>
                 </div>
-                <p class="text-red-600 text-sm font-medium">Este es uno de los puntos donde más gente falla y termina cerrando.</p>
+                <p class="text-red-600 text-sm font-medium">Este es uno de los puntos de mayor riesgo en Paraguay.</p>
             </div>
 
             <div class="space-y-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Estado actual de tu RUC / empresa</label>
-                    <select data-key="ruc_estado" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Estado actual del RUC / empresa</label>
+                    <select data-key="ruc_estado" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                         <option value="sin_nada">No tengo nada todavía</option>
                         <option value="ruc_personal">Tengo RUC como persona física</option>
                         <option value="empresa_abierta">Ya abrí una empresa (SA o SRL)</option>
@@ -370,41 +253,35 @@
                     </select>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-red-100 bg-red-50/30">
-                    <div class="flex items-start gap-3">
-                        <i class="fa-solid fa-exclamation-triangle text-red-500 mt-1"></i>
-                        <div class="flex-1">
-                            <label class="block text-sm font-semibold mb-2 text-red-700">Nivel de conocimiento sobre Licencia Ambiental MADES + habilitación municipal para lavaderos</label>
-                            <div class="flex items-center gap-3 mb-1">
-                                <input type="range" data-key="conocimiento_legal" min="1" max="5" step="1" value="2" 
-                                       class="flex-1 accent-red-600" oninput="updateRangeValue(this)">
-                                <span id="conocimiento_legal_val" class="font-mono w-8 text-center font-semibold text-red-600">2</span>
-                            </div>
-                            <p class="text-xs text-red-600">En Paraguay los lavaderos <strong>necesitan Licencia Ambiental de MADES</strong> (por efluentes). Sin ella te pueden intervenir y cerrar. Es requisito previo para la habilitación municipal.</p>
-                        </div>
+                <div class="question-card bg-white p-6 rounded-3xl border border-red-100 bg-red-50">
+                    <label class="block text-sm font-semibold mb-2 text-red-700">Nivel de conocimiento sobre Licencia Ambiental (MADES) + habilitación municipal</label>
+                    <div class="flex items-center gap-3">
+                        <input type="range" data-key="conocimiento_legal" min="1" max="5" step="1" value="2" class="flex-1 accent-red-600" oninput="updateRangeValue(this)">
+                        <span id="conocimiento_legal_val" class="font-mono w-7 text-center font-semibold text-red-600">2</span>
                     </div>
+                    <p class="text-xs text-red-600 mt-2">En Paraguay los lavaderos requieren Licencia Ambiental de MADES por manejo de efluentes. Es requisito previo para la habilitación municipal.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                        <label class="block text-sm font-semibold mb-3">¿Sabes cómo vas a manejar las aguas residuales / efluentes?</label>
+                    <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-3 text-slate-700">¿Cómo planea manejar las aguas residuales?</label>
                         <div class="space-y-2 text-sm">
-                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="no_idea" class="accent-teal-700"> No tengo idea todavía</label>
-                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="pozo_septico" class="accent-teal-700" checked> Pozo séptico + tratamiento básico</label>
-                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="sistema_reciclaje" class="accent-teal-700"> Sistema de reciclaje de agua + tratamiento</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="no_idea" class="accent-slate-900"> No tengo idea todavía</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="pozo_septico" class="accent-slate-900" checked> Pozo séptico + tratamiento básico</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="sistema_reciclaje" class="accent-slate-900"> Sistema de reciclaje de agua</label>
                         </div>
                     </div>
 
-                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                        <label class="block text-sm font-semibold mb-2">¿Tienes contador o estudio contable de confianza?</label>
-                        <select data-key="tiene_contador" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                    <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-2 text-slate-700">¿Tiene contador de confianza?</label>
+                        <select data-key="tiene_contador" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm mb-4">
                             <option value="no">No</option>
                             <option value="si_bueno">Sí, tengo uno bueno</option>
-                            <option value="si_regular">Sí, pero no me da mucha confianza</option>
+                            <option value="si_regular">Sí, pero no me genera confianza</option>
                         </select>
                         
-                        <label class="block text-sm font-semibold mt-4 mb-2">¿Tienes abogado para temas contractuales y municipales?</label>
-                        <select data-key="tiene_abogado" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <label class="block text-sm font-semibold mb-2 text-slate-700">¿Tiene abogado para temas municipales y contractuales?</label>
+                        <select data-key="tiene_abogado" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                             <option value="no">No</option>
                             <option value="si">Sí</option>
                         </select>
@@ -413,175 +290,156 @@
             </div>
         </div>
 
-        <!-- Paso 4: Operaciones y Replicabilidad (EL MÉTODO) -->
+        <!-- PASO 4: Operaciones -->
         <div id="step-4" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 4/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Operaciones y el Método (lo más importante)</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 4/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Operaciones y Replicabilidad</h2>
                 </div>
-                <p class="text-slate-600">Aquí se separa el que "lava autos" del que tiene un <strong>negocio replicable</strong>.</p>
+                <p class="text-slate-600">Aquí se define si tendrá un negocio que pueda funcionar sin usted presente todos los días.</p>
             </div>
 
             <div class="space-y-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">¿Tienes (o planeas tener) un proceso de lavado estandarizado por escrito con pasos claros y tiempos?</label>
-                    <div class="flex gap-3 mt-3">
-                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="si_detallado" class="accent-teal-700"> Sí, lo tengo detallado
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">¿Tiene o planea tener un proceso de lavado estandarizado por escrito?</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="si_detallado" class="accent-slate-900"> Sí, lo tengo detallado
                         </label>
-                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="en_proceso" class="accent-teal-700" checked> Lo estoy armando
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="en_proceso" class="accent-slate-900" checked> Lo estoy armando
                         </label>
-                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
-                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="no" class="accent-teal-700"> No, todavía no
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="no" class="accent-slate-900"> No, todavía no
                         </label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-3">¿Qué tan importante es para ti que el lavadero pueda funcionar bien aunque tú no estés presente físicamente todos los días?</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">¿Qué tan importante es que el lavadero funcione bien aunque usted no esté presente?</label>
                     <div class="flex items-center gap-3">
-                        <input type="range" data-key="replicable" min="1" max="5" step="1" value="4" 
-                               class="flex-1 accent-teal-700" oninput="updateRangeValue(this)">
-                        <span id="replicable_val" class="font-mono w-8 text-center font-semibold text-teal-700">4</span>
+                        <input type="range" data-key="replicable" min="1" max="5" step="1" value="4" class="flex-1 accent-slate-900" oninput="updateRangeValue(this)">
+                        <span id="replicable_val" class="font-mono w-7 text-center font-semibold text-slate-700">4</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-1">5 = Quiero que sea un sistema que pueda delegar o replicar en otra sucursal. 1 = Quiero controlarlo todo yo.</p>
+                    <p class="text-xs text-slate-500 mt-1.5">5 = Quiero un sistema delegable y replicable &nbsp;&nbsp; 1 = Quiero controlarlo todo personalmente</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                        <label class="block text-sm font-semibold mb-2">Equipos principales que planeas tener (marca las que sí)</label>
-                        <div class="grid grid-cols-2 gap-y-1.5 text-sm mt-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_hidrolavadora" checked class="accent-teal-700"> Hidrolavadora profesional</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_aspiradora" checked class="accent-teal-700"> Aspiradora / aspirado seco</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_compresor" class="accent-teal-700"> Compresor de aire</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_pulidora" class="accent-teal-700"> Pulidora / detailing</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_reciclaje" class="accent-teal-700"> Sistema reciclaje de agua</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_ozono" class="accent-teal-700"> Generador de ozono</label>
+                    <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-3 text-slate-700">Equipos principales que incluirá</label>
+                        <div class="grid grid-cols-2 gap-y-2 text-sm">
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_hidrolavadora" checked class="accent-slate-900"> Hidrolavadora profesional</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_aspiradora" checked class="accent-slate-900"> Aspiradora / aspirado seco</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_reciclaje" class="accent-slate-900"> Sistema de reciclaje de agua</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_pulidora" class="accent-slate-900"> Equipo de detailing</label>
                         </div>
                     </div>
 
-                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                        <label class="block text-sm font-semibold mb-2">Tiempo promedio estimado por lavado estándar (minutos)</label>
-                        <input type="number" data-key="tiempo_lavado" value="35" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                    <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-2 text-slate-700">Tiempo promedio por lavado estándar (minutos)</label>
+                        <input type="number" data-key="tiempo_lavado" value="35" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm mb-4">
                         
-                        <label class="block text-sm font-semibold mt-4 mb-2">¿Cómo asegurarás calidad consistente?</label>
-                        <div class="space-y-1 text-sm">
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_checklist" checked class="accent-teal-700"> Checklist por vehículo</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_supervisor" class="accent-teal-700"> Supervisor / revisor final</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_fotos" class="accent-teal-700"> Fotos antes/después</label>
+                        <label class="block text-sm font-semibold mb-2 text-slate-700">¿Cómo controlará la calidad?</label>
+                        <div class="space-y-1.5 text-sm">
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_checklist" checked class="accent-slate-900"> Checklist por vehículo</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_supervisor" class="accent-slate-900"> Supervisor de calidad final</label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Paso 5: Finanzas -->
+        <!-- PASO 5: Finanzas -->
         <div id="step-5" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 5/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Finanzas y Proyecciones</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 5/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Finanzas y Proyecciones</h2>
                 </div>
-                <p class="text-slate-600">Aquí se define si el negocio tiene sentido económico o es solo un hobby caro.</p>
             </div>
 
-            <div class="bg-amber-50 border border-amber-200 rounded-3xl p-4 mb-5 text-sm">
-                <strong class="text-amber-700">Consejo:</strong> Usa números conservadores. En Paraguay un lavadero manual bien gestionado puede ser rentable, pero el primer año casi siempre es más lento de lo que uno espera.
+            <div class="bg-amber-50 border border-amber-200 rounded-3xl p-5 mb-6 text-sm">
+                <strong class="text-amber-700">Recomendación:</strong> Utilice números conservadores. El primer año suele ser más lento de lo proyectado.
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Inversión inicial total estimada (₲)</label>
-                    <input type="number" data-key="inversion_inicial" value="35000000" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
-                    <p class="text-xs text-slate-500 mt-1">Incluye: adecuación local + equipos + primeros insumos + marketing + capital de trabajo</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Inversión inicial total estimada (₲)</label>
+                    <input type="number" data-key="inversion_inicial" value="35000000" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Gastos fijos mensuales estimados (₲)</label>
-                    <input type="number" data-key="gastos_fijos" value="8500000" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
-                    <p class="text-xs text-slate-500 mt-1">Alquiler + sueldos base + luz/agua + internet + mantenimiento + imprevistos</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Gastos fijos mensuales estimados (₲)</label>
+                    <input type="number" data-key="gastos_fijos" value="8500000" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Costo variable promedio por lavado (₲)</label>
-                    <input type="number" data-key="costo_variable" value="8500" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
-                    <p class="text-xs text-slate-500 mt-1">Químicos, agua, electricidad por uso, esponjas, etc.</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Costo variable promedio por lavado (₲)</label>
+                    <input type="number" data-key="costo_variable" value="8500" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Precio promedio por servicio (₲)</label>
-                    <input type="number" data-key="precio_promedio" value="55000" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
-                    <p class="text-xs text-slate-500 mt-1">Mezcla de lavados básicos + algunos premium. Ej: 45.000 básico / 120.000 full</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Precio promedio por servicio (₲)</label>
+                    <input type="number" data-key="precio_promedio" value="55000" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Lavados por día promedio que esperas (meses 4-6)</label>
-                    <input type="number" data-key="lavados_dia_objetivo" value="18" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Lavados por día objetivo (meses 4-6)</label>
+                    <input type="number" data-key="lavados_dia_objetivo" value="18" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Crecimiento mensual esperado en volumen de lavados (%)</label>
-                    <input type="number" data-key="crecimiento_mensual" value="7" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
-                    <p class="text-xs text-slate-500 mt-1">Realista: 5-10% mensual los primeros meses</p>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Crecimiento mensual esperado en volumen (%)</label>
+                    <input type="number" data-key="crecimiento_mensual" value="7" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
                 </div>
             </div>
         </div>
 
-        <!-- Paso 6: Marketing -->
+        <!-- PASO 6: Marketing -->
         <div id="step-6" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 6/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Marketing y Adquisición de Clientes</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 6/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Marketing y Clientes</h2>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Presupuesto inicial de marketing (₲)</label>
-                    <input type="number" data-key="presupuesto_marketing" value="2500000" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Presupuesto inicial de marketing (₲)</label>
+                    <input type="number" data-key="presupuesto_marketing" value="2000000" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-3">¿Ya tienes nombre de marca + logo / identidad visual?</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">¿Ya tiene nombre de marca y logo?</label>
                     <div class="flex gap-3">
-                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
-                            <input type="radio" name="branding" data-key="tiene_branding" value="si_completo" class="accent-teal-700"> Sí, todo listo
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="si_completo" class="accent-slate-900"> Sí, todo listo
                         </label>
-                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
-                            <input type="radio" name="branding" data-key="tiene_branding" value="basico" class="accent-teal-700" checked> Tengo nombre pero no logo profesional
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="basico" class="accent-slate-900" checked> Tengo nombre pero no logo profesional
                         </label>
-                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
-                            <input type="radio" name="branding" data-key="tiene_branding" value="no"> No tengo nada
+                        <label class="flex-1 text-center p-3.5 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="no" class="accent-slate-900"> No tengo nada
                         </label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-3">Canales principales que vas a usar para conseguir clientes (marca todos los que planeas usar fuerte)</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3 text-slate-700">Canales principales para conseguir clientes</label>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_whatsapp" checked class="accent-teal-700"> WhatsApp Business + catálogo</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_instagram" checked class="accent-teal-700"> Instagram + Reels</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_google" class="accent-teal-700"> Google My Business + Maps</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_alianzas" checked class="accent-teal-700"> Alianzas (estaciones, talleres, empresas)</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_referidos" checked class="accent-teal-700"> Programa de referidos / fidelidad</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_pago" class="accent-teal-700"> Publicidad pagada (Meta Ads)</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_whatsapp" checked class="accent-slate-900"> WhatsApp Business</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_instagram" checked class="accent-slate-900"> Instagram + Reels</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_alianzas" checked class="accent-slate-900"> Alianzas con empresas</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_referidos" checked class="accent-slate-900"> Programa de referidos</label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-2">¿Ofrecerás planes de suscripción o paquetes mensuales?</label>
-                    <select data-key="suscripciones" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
-                        <option value="si">Sí, es parte central de mi modelo</option>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">¿Ofrecerá planes de suscripción mensual?</label>
+                    <select data-key="suscripciones" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="si">Sí, será parte central del modelo</option>
                         <option value="parcial">Sí, pero como opción secundaria</option>
                         <option value="no">No, por ahora solo servicio por demanda</option>
                     </select>
@@ -589,219 +447,178 @@
             </div>
         </div>
 
-        <!-- Paso 7: Equipo y Visión -->
+        <!-- PASO 7: Equipo y Visión -->
         <div id="step-7" class="step">
-            <div class="mb-6">
-                <div class="flex items-center gap-x-3 mb-2">
-                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 7/7</span>
-                    <h3 class="font-display text-2xl tracking-tight">Equipo, Gestión y Visión a Futuro</h3>
+            <div class="mb-8">
+                <div class="flex items-center gap-x-3 mb-3">
+                    <span class="px-3.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold tracking-wider rounded-2xl">PASO 7/7</span>
+                    <h2 class="font-display text-3xl tracking-tight section-header">Equipo y Visión a Futuro</h2>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Cantidad de empleados iniciales (sin contarte a ti)</label>
-                    <input type="number" data-key="empleados_iniciales" value="2" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Cantidad de empleados iniciales (sin usted)</label>
+                    <input type="number" data-key="empleados_iniciales" value="2" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
-                    <label class="block text-sm font-semibold mb-2">Sueldo promedio por lavador / operario (₲ / mes)</label>
-                    <input type="number" data-key="sueldo_lavador" value="2800000" 
-                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Sueldo promedio por operario (₲ / mes)</label>
+                    <input type="number" data-key="sueldo_lavador" value="2800000" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-2">¿Cómo vas a capacitar y estandarizar el trabajo del equipo?</label>
-                    <textarea data-key="capacitacion" rows="2" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm"
-                              placeholder="Ej: 1 semana de entrenamiento con checklist + shadowing + pruebas de calidad semanales"></textarea>
-                </div>
-
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-3">Visión a 24 meses</label>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">Visión a 24 meses</label>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
-                            <input type="radio" name="vision" data-key="vision_24m" value="un_local_bien" checked class="accent-teal-700"> Mantener 1 solo local bien gestionado y rentable
+                        <label class="p-4 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="un_local_bien" checked class="accent-slate-900"> Mantener 1 solo local bien gestionado
                         </label>
-                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
-                            <input type="radio" name="vision" data-key="vision_24m" value="dos_locales" class="accent-teal-700"> Abrir una segunda sucursal
+                        <label class="p-4 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="dos_locales" class="accent-slate-900"> Abrir una segunda sucursal
                         </label>
-                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
-                            <input type="radio" name="vision" data-key="vision_24m" value="sistema_replicable" class="accent-teal-700"> Crear un sistema replicable (posible franquicia o más sucursales)
+                        <label class="p-4 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-slate-900 has-[:checked]:bg-slate-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="sistema_replicable" class="accent-slate-900"> Crear sistema replicable
                         </label>
                     </div>
                 </div>
 
-                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
-                    <label class="block text-sm font-semibold mb-2">¿Qué te va a diferenciar de los otros lavaderos de la zona? (tu propuesta de valor)</label>
-                    <textarea data-key="propuesta_valor" rows="2" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm"
-                              placeholder="Ej: Atención premium + sistema de suscripción + garantía de calidad + pickup &amp; delivery"></textarea>
+                <div class="question-card bg-white p-6 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2 text-slate-700">¿Qué lo diferenciará de la competencia?</label>
+                    <textarea data-key="propuesta_valor" rows="2" class="clean-input w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm" placeholder="Ej: Atención premium, suscripciones, garantía de calidad, servicio a domicilio"></textarea>
                 </div>
             </div>
         </div>
 
-        <!-- RESULTS DASHBOARD -->
+        <!-- RESULTS -->
         <div id="step-8" class="step">
-            <div class="mb-8 text-center">
-                <h2 class="font-display text-4xl tracking-tighter">Tu Informe de Preparación</h2>
+            <div class="mb-10 text-center">
+                <h2 class="font-display text-4xl tracking-tighter">Informe de Evaluación</h2>
                 <p class="text-slate-600 mt-1">Generado el <span id="fecha-informe"></span></p>
             </div>
 
-            <!-- Overall Score -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
-                <div>
-                    <div class="text-center">
-                        <div class="text-sm uppercase tracking-[2px] text-slate-500 mb-1">PUNTAJE GENERAL DE PREPARACIÓN</div>
-                        <div id="score-general" 
-                             class="font-display text-[92px] leading-none font-bold text-teal-700 tabular-nums">68</div>
-                        <div class="text-sm -mt-2 text-slate-500">de 100</div>
-                    </div>
+            <!-- Score General -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
+                <div class="text-center">
+                    <div class="text-xs tracking-[2px] text-slate-500 mb-1">PUNTAJE GENERAL</div>
+                    <div id="score-general" class="font-display text-[88px] leading-none font-bold text-slate-900 tabular-nums">68</div>
+                    <div class="text-sm text-slate-500 -mt-1">de 100</div>
                 </div>
-                
-                <div class="max-w-xs text-sm bg-white p-5 rounded-3xl border">
-                    <div id="score-interpretacion" class="font-medium"></div>
-                    <div id="score-comentario" class="text-slate-600 text-sm mt-1"></div>
+                <div class="max-w-sm text-sm bg-white p-6 rounded-3xl border border-slate-200">
+                    <div id="score-interpretacion" class="font-semibold text-lg"></div>
+                    <div id="score-comentario" class="text-slate-600 mt-1 text-[15px]"></div>
                 </div>
             </div>
 
             <!-- Category Scores -->
-            <div class="mb-10">
+            <div class="mb-12">
                 <h4 class="font-semibold text-lg mb-4 px-1">Puntajes por área</h4>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="category-scores">
-                    <!-- JS populated -->
-                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3" id="category-scores"></div>
             </div>
 
-            <!-- Radar + Financial Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-10">
-                <!-- Radar Chart -->
-                <div class="lg:col-span-2 bg-white rounded-3xl p-6 border modern-shadow">
-                    <div class="font-semibold mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-teal-600"></i>
-                        <span>Balance de preparación</span>
-                    </div>
-                    <div class="chart-container" style="height: 260px">
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-12">
+                <div class="lg:col-span-2 bg-white rounded-3xl p-7 border border-slate-200">
+                    <div class="font-semibold mb-5 flex items-center gap-2 text-sm tracking-wider text-slate-500">BALANCE DE PREPARACIÓN</div>
+                    <div class="chart-container" style="height: 240px">
                         <canvas id="radar-chart"></canvas>
                     </div>
                 </div>
 
-                <!-- Financial Summary -->
-                <div class="lg:col-span-3 bg-white rounded-3xl p-6 border modern-shadow">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-teal-600"></i>
-                            <span>Proyección financiera (12 meses)</span>
-                        </div>
-                        <button onclick="recalculateFinancials()" 
-                                class="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center gap-1 text-slate-600">
-                            <i class="fa-solid fa-sync text-xs"></i> <span>Recalcular</span>
+                <div class="lg:col-span-3 bg-white rounded-3xl p-7 border border-slate-200">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="font-semibold text-sm tracking-wider text-slate-500">PROYECCIÓN FINANCIERA 12 MESES</div>
+                        <button onclick="recalculateFinancials()" class="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center gap-1 text-slate-600">
+                            <i class="fa-solid fa-sync text-xs"></i> <span>Actualizar</span>
                         </button>
                     </div>
                     
-                    <div class="grid grid-cols-3 gap-4 mb-4 text-center">
+                    <div class="grid grid-cols-3 gap-4 mb-5 text-center">
                         <div>
                             <div class="text-xs text-slate-500">Inversión inicial</div>
-                            <div id="fin-inversion" class="font-semibold text-lg tabular-nums"></div>
+                            <div id="fin-inversion" class="font-semibold text-xl tabular-nums"></div>
                         </div>
                         <div>
                             <div class="text-xs text-slate-500">Utilidad proyectada año 1</div>
-                            <div id="fin-utilidad-anual" class="font-semibold text-lg text-emerald-600 tabular-nums"></div>
+                            <div id="fin-utilidad-anual" class="font-semibold text-xl text-emerald-600 tabular-nums"></div>
                         </div>
                         <div>
                             <div class="text-xs text-slate-500">Meses para recuperar inversión</div>
-                            <div id="fin-breakeven" class="font-semibold text-lg text-amber-600 tabular-nums"></div>
+                            <div id="fin-breakeven" class="font-semibold text-xl text-amber-600 tabular-nums"></div>
                         </div>
                     </div>
                     
-                    <div class="chart-container" style="height: 180px">
+                    <div class="chart-container" style="height: 170px">
                         <canvas id="financial-chart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Strengths & Weaknesses + Action Plan -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                <div class="bg-white rounded-3xl p-6 border modern-shadow">
-                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-emerald-600">
-                        <i class="fa-solid fa-check-circle"></i> Fortalezas
-                    </h4>
-                    <ul id="fortalezas-list" class="space-y-2 text-sm"></ul>
+            <!-- Fortalezas y Debilidades -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                <div class="bg-white rounded-3xl p-7 border border-slate-200">
+                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-emerald-600 text-sm tracking-wider">FORTALEZAS</h4>
+                    <ul id="fortalezas-list" class="space-y-2 text-[15px]"></ul>
                 </div>
                 
-                <div class="bg-white rounded-3xl p-6 border modern-shadow">
-                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-red-600">
-                        <i class="fa-solid fa-exclamation-triangle"></i> Áreas críticas a mejorar
-                    </h4>
-                    <ul id="debilidades-list" class="space-y-2 text-sm"></ul>
+                <div class="bg-white rounded-3xl p-7 border border-slate-200">
+                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-red-600 text-sm tracking-wider">ÁREAS CRÍTICAS A MEJORAR</h4>
+                    <ul id="debilidades-list" class="space-y-2 text-[15px]"></ul>
                 </div>
             </div>
 
-            <!-- Action Plan -->
-            <div class="bg-white rounded-3xl p-6 border modern-shadow mb-10">
-                <h4 class="font-semibold mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-tasks text-teal-600"></i> 
-                    Plan de Acción Prioritario (próximos 30-60 días)
-                </h4>
+            <!-- Plan de Acción -->
+            <div class="bg-white rounded-3xl p-7 border border-slate-200 mb-12">
+                <h4 class="font-semibold mb-5 flex items-center gap-2 text-sm tracking-wider">PLAN DE ACCIÓN PRIORITARIO (30-60 DÍAS)</h4>
                 <div id="plan-accion" class="space-y-3"></div>
             </div>
 
-            <!-- Final message -->
-            <div class="text-center bg-slate-900 text-white rounded-3xl p-8">
-                <p class="text-lg">Este informe es tu hoja de ruta. No es perfecto, pero es mucho mejor que empezar a ciegas.</p>
-                <p class="text-sm opacity-75 mt-2">La diferencia entre los que fracasan y los que logran es que los segundos <strong>documentan procesos</strong> y miden todo.</p>
+            <div class="text-center text-sm text-slate-500">
+                Este informe es una herramienta de autoevaluación. No sustituye asesoramiento profesional contable, legal ni de negocio.
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div id="results-actions" class="hidden mt-8 flex justify-center">
+        <div id="results-actions" class="hidden mt-10 flex justify-center">
             <button onclick="downloadPDF()" 
-                    class="px-8 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors">
+                    class="px-9 py-3.5 bg-slate-900 hover:bg-black text-white rounded-2xl font-semibold flex items-center justify-center gap-x-3 transition-colors text-sm tracking-wider">
                 <i class="fa-solid fa-download"></i>
-                <span>Descargar / Imprimir Informe (PDF)</span>
+                <span>DESCARGAR INFORME EN PDF</span>
             </button>
         </div>
-        
-        <div class="text-center mt-8 text-xs text-slate-400">
-              Paraguay 2026
-        </div>
+
     </div>
 
     <script>
-        // Tailwind script
-        function initializeTailwind() {
-            document.documentElement.style.setProperty('--accent', '#0f766e');
-        }
-
         let currentStep = 0;
         let respuestas = {};
         let radarChartInstance = null;
         let financialChartInstance = null;
 
-        // Load from localStorage
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvfa462w5jzMSc_-D_fQhk9GnfvvlH2QOalayAqXv7u_TJSn6kdB5We7sZz2GscN-KVw/exec';
+
+        function initializeTailwind() {
+            // Clean professional look
+        }
+
         function loadProgress() {
-            const saved = localStorage.getItem('lavaderoListoRespuestas');
+            const saved = localStorage.getItem('planLavaderoRespuestas');
             if (saved) {
                 respuestas = JSON.parse(saved);
-                // Pre-fill inputs if they exist
                 setTimeout(() => {
                     document.querySelectorAll('input, select, textarea').forEach(el => {
                         const key = el.dataset.key;
                         if (key && respuestas[key] !== undefined) {
-                            if (el.type === 'checkbox') {
-                                el.checked = respuestas[key];
-                            } else if (el.type === 'radio') {
-                                if (el.value === respuestas[key]) el.checked = true;
-                            } else {
-                                el.value = respuestas[key];
-                            }
+                            if (el.type === 'checkbox') el.checked = respuestas[key];
+                            else if (el.type === 'radio') { if (el.value === respuestas[key]) el.checked = true; }
+                            else el.value = respuestas[key];
                         }
                     });
-                }, 300);
+                }, 200);
             }
         }
 
         function saveProgress() {
-            localStorage.setItem('lavaderoListoRespuestas', JSON.stringify(respuestas));
+            localStorage.setItem('planLavaderoRespuestas', JSON.stringify(respuestas));
         }
 
         function updateRangeValue(input) {
@@ -817,43 +634,30 @@
             currentStepEl.querySelectorAll('input, select, textarea').forEach(el => {
                 const key = el.dataset.key;
                 if (!key) return;
-
-                if (el.type === 'checkbox') {
-                    respuestas[key] = el.checked;
-                } else if (el.type === 'radio') {
-                    if (el.checked) respuestas[key] = el.value;
-                } else {
-                    respuestas[key] = el.value;
-                }
+                if (el.type === 'checkbox') respuestas[key] = el.checked;
+                else if (el.type === 'radio') { if (el.checked) respuestas[key] = el.value; }
+                else respuestas[key] = el.value;
             });
             saveProgress();
         }
 
         function updateProgress() {
-            const totalSteps = 7;
-            const percent = Math.round((currentStep / totalSteps) * 100);
-            
+            const total = 7;
+            const percent = Math.round((currentStep / total) * 100);
             document.getElementById('progress-bar').style.width = `${percent}%`;
-            document.getElementById('progress-text').innerHTML = `Paso ${currentStep} de ${totalSteps}`;
+            document.getElementById('progress-text').innerHTML = `Paso ${currentStep} de ${total}`;
             document.getElementById('progress-percent').innerHTML = `${percent}%`;
         }
 
         function goToStep(step) {
-            // Save current answers
-            if (currentStep > 0 && currentStep < 8) {
-                collectCurrentStepAnswers();
-            }
-
-            // Hide all steps
+            if (currentStep > 0 && currentStep < 8) collectCurrentStepAnswers();
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            
             currentStep = step;
 
             if (step === 0) {
                 document.getElementById('step-0').classList.add('active');
             } else if (step >= 1 && step <= 7) {
-                const stepEl = document.getElementById(`step-${step}`);
-                if (stepEl) stepEl.classList.add('active');
+                document.getElementById(`step-${step}`).classList.add('active');
                 updateProgress();
             } else if (step === 8) {
                 document.getElementById('step-8').classList.add('active');
@@ -862,123 +666,70 @@
         }
 
         function startApp() {
-            // Preload some defaults if empty
-            if (!respuestas.nombre_emprendedor) {
-                respuestas.nombre_emprendedor = "Tu Nombre";
-            }
             goToStep(1);
         }
 
         function nextStep() {
-            if (currentStep < 7) {
-                goToStep(currentStep + 1);
-            } else {
-                goToStep(8);
-            }
+            if (currentStep < 7) goToStep(currentStep + 1);
+            else goToStep(8);
         }
 
         function prevStep() {
-            if (currentStep > 1) {
-                goToStep(currentStep - 1);
-            }
+            if (currentStep > 1) goToStep(currentStep - 1);
         }
 
-        // Scoring logic
         function calculateScores(data) {
-            const scores = {
-                perfil: 70,
-                mercado: 65,
-                legal: 40,
-                operaciones: 55,
-                finanzas: 60,
-                marketing: 50,
-                equipo: 55
-            };
+            let scores = { perfil: 68, mercado: 62, legal: 38, operaciones: 52, finanzas: 58, marketing: 48, equipo: 53 };
 
-            // Perfil
             if (data.exp_rubro === 'gestion_profesional') scores.perfil += 18;
             else if (data.exp_rubro === 'tuve_pequeno') scores.perfil += 10;
-            else if (data.exp_rubro === 'trabaje_empleado') scores.perfil += 5;
-            
             scores.perfil += (parseInt(data.exp_gestion) || 3) * 4;
-            if (parseInt(data.horas_semana) > 35) scores.perfil += 8;
+            if (parseInt(data.horas_semana) > 35) scores.perfil += 6;
 
-            // Mercado
-            if (data.tipo_zona === 'avenida_principal' || data.tipo_zona === 'cerca_estacion') scores.mercado += 15;
-            scores.mercado -= Math.min(15, (parseInt(data.competidores) || 3) * 3);
-            if (parseInt(data.lavados_dia_inicial) >= 12) scores.mercado += 12;
-            else if (parseInt(data.lavados_dia_inicial) < 8) scores.mercado -= 10;
+            if (data.tipo_zona === 'avenida_principal' || data.tipo_zona === 'cerca_estacion') scores.mercado += 14;
+            scores.mercado -= Math.min(12, (parseInt(data.competidores) || 4) * 2.5);
+            if (parseInt(data.lavados_dia_inicial) >= 12) scores.mercado += 10;
 
-            // Legal (very important in PY)
-            if (data.ruc_estado === 'empresa_abierta') scores.legal += 15;
-            else if (data.ruc_estado === 'ruc_personal') scores.legal += 5;
-            
-            scores.legal += (parseInt(data.conocimiento_legal) || 2) * 8;
-            if (data.manejo_efluentes === 'sistema_reciclaje') scores.legal += 18;
-            else if (data.manejo_efluentes === 'pozo_septico') scores.legal += 8;
-            if (data.tiene_contador === 'si_bueno') scores.legal += 10;
-            if (data.tiene_abogado === 'si') scores.legal += 8;
+            if (data.ruc_estado === 'empresa_abierta') scores.legal += 14;
+            scores.legal += (parseInt(data.conocimiento_legal) || 2) * 7;
+            if (data.manejo_efluentes === 'sistema_reciclaje') scores.legal += 16;
+            if (data.tiene_contador === 'si_bueno') scores.legal += 9;
+            if (data.tiene_abogado === 'si') scores.legal += 7;
 
-            // Operaciones & Replicabilidad (KEY)
-            if (data.proceso_estandar === 'si_detallado') scores.operaciones += 22;
-            else if (data.proceso_estandar === 'en_proceso') scores.operaciones += 10;
-            
-            scores.operaciones += (parseInt(data.replicable) || 3) * 7;
-            if (data.calidad_checklist) scores.operaciones += 8;
-            if (data.calidad_supervisor) scores.operaciones += 6;
-            if (data.eq_reciclaje) scores.operaciones += 10;
+            if (data.proceso_estandar === 'si_detallado') scores.operaciones += 20;
+            scores.operaciones += (parseInt(data.replicable) || 3) * 6;
+            if (data.calidad_checklist) scores.operaciones += 7;
+            if (data.eq_reciclaje) scores.operaciones += 8;
 
-            // Finanzas
-            const inv = parseInt(data.inversion_inicial) || 35000000;
-            const fijos = parseInt(data.gastos_fijos) || 8500000;
-            const variable = parseInt(data.costo_variable) || 8500;
-            const precio = parseInt(data.precio_promedio) || 55000;
-            const margen = precio - variable;
-            
-            if (margen > 40000) scores.finanzas += 15;
-            if (fijos < 10000000) scores.finanzas += 10;
-            if (inv < 40000000) scores.finanzas += 8;
+            const margen = (parseInt(data.precio_promedio) || 55000) - (parseInt(data.costo_variable) || 8500);
+            if (margen > 38000) scores.finanzas += 12;
+            if (parseInt(data.gastos_fijos) < 9500000) scores.finanzas += 8;
 
-            // Marketing
-            if (data.tiene_branding === 'si_completo') scores.marketing += 12;
-            if (data.canal_instagram && data.canal_whatsapp) scores.marketing += 10;
-            if (data.suscripciones === 'si') scores.marketing += 15;
-            if (parseInt(data.presupuesto_marketing) > 2000000) scores.marketing += 8;
+            if (data.tiene_branding === 'si_completo') scores.marketing += 10;
+            if (data.suscripciones === 'si') scores.marketing += 12;
+            if (data.canal_instagram && data.canal_whatsapp) scores.marketing += 8;
 
-            // Equipo
-            if (parseInt(data.empleados_iniciales) >= 2) scores.equipo += 10;
-            if (data.capacitacion && data.capacitacion.length > 20) scores.equipo += 12;
-            if (data.vision_24m === 'sistema_replicable') scores.equipo += 18;
-            else if (data.vision_24m === 'dos_locales') scores.equipo += 10;
+            if (parseInt(data.empleados_iniciales) >= 2) scores.equipo += 8;
+            if (data.vision_24m === 'sistema_replicable') scores.equipo += 16;
 
-            // Clamp 0-100
-            Object.keys(scores).forEach(k => {
-                scores[k] = Math.max(25, Math.min(98, Math.round(scores[k])));
-            });
+            Object.keys(scores).forEach(k => scores[k] = Math.max(22, Math.min(96, Math.round(scores[k]))));
 
-            // Overall (weighted)
             const overall = Math.round(
-                scores.perfil * 0.12 +
-                scores.mercado * 0.15 +
-                scores.legal * 0.18 +
-                scores.operaciones * 0.20 +   // highest weight - replicability
-                scores.finanzas * 0.15 +
-                scores.marketing * 0.10 +
-                scores.equipo * 0.10
+                scores.perfil * 0.12 + scores.mercado * 0.14 + scores.legal * 0.18 +
+                scores.operaciones * 0.22 + scores.finanzas * 0.14 + scores.marketing * 0.10 + scores.equipo * 0.10
             );
 
             return { overall, ...scores };
         }
 
         function getInterpretation(score) {
-            if (score >= 80) return { color: 'emerald', text: '¡Excelente preparación!', desc: 'Tienes una base sólida. Enfócate en ejecutar rápido y documentar todo.' };
-            if (score >= 65) return { color: 'teal', text: 'Buena base, con trabajo realista', desc: 'Puedes avanzar, pero hay varias áreas importantes que debes fortalecer antes de invertir fuerte.' };
-            if (score >= 50) return { color: 'amber', text: 'Preparación media-baja', desc: 'Riesgo alto de problemas. Te recomiendo resolver las brechas críticas antes de abrir.' };
-            return { color: 'red', text: 'Necesitas más preparación', desc: 'Abrir ahora sería muy riesgoso. Enfócate primero en legal, procesos y modelo financiero.' };
+            if (score >= 78) return { color: 'emerald', text: 'Preparación sólida', desc: 'Buena base. Enfóquese en ejecución y documentación de procesos.' };
+            if (score >= 62) return { color: 'slate', text: 'Preparación aceptable', desc: 'Puede avanzar, pero debe resolver varias brechas importantes antes de invertir.' };
+            if (score >= 48) return { color: 'amber', text: 'Preparación media-baja', desc: 'Riesgo significativo. Se recomienda fortalecer áreas críticas antes de abrir.' };
+            return { color: 'red', text: 'Preparación insuficiente', desc: 'Abrir en este momento representa un riesgo alto. Priorice legal, procesos y modelo financiero.' };
         }
 
         function generateReport() {
-            // Collect all answers one last time
             document.querySelectorAll('input, select, textarea').forEach(el => {
                 const key = el.dataset.key;
                 if (!key) return;
@@ -989,73 +740,49 @@
             saveProgress();
 
             const scores = calculateScores(respuestas);
-            const interpretation = getInterpretation(scores.overall);
+            const interp = getInterpretation(scores.overall);
 
             // Overall score
             document.getElementById('score-general').textContent = scores.overall;
-            document.getElementById('score-general').className = `font-display text-[92px] leading-none font-bold text-${interpretation.color}-700 tabular-nums`;
-            
-            document.getElementById('score-interpretacion').innerHTML = `<span class="font-semibold text-${interpretation.color}-600">${interpretation.text}</span>`;
-            document.getElementById('score-comentario').textContent = interpretation.desc;
+            document.getElementById('score-interpretacion').innerHTML = `<span class="text-${interp.color}-600">${interp.text}</span>`;
+            document.getElementById('score-comentario').textContent = interp.desc;
 
-            // Category scores cards
-            const catContainer = document.getElementById('category-scores');
-            catContainer.innerHTML = '';
-            
-            const categories = [
-                { key: 'perfil', label: 'Perfil Emprendedor', icon: 'user' },
-                { key: 'mercado', label: 'Mercado', icon: 'chart-line' },
-                { key: 'legal', label: 'Legal & Permisos', icon: 'balance-scale' },
-                { key: 'operaciones', label: 'Operaciones & Método', icon: 'cogs' },
-                { key: 'finanzas', label: 'Finanzas', icon: 'coins' },
-                { key: 'marketing', label: 'Marketing', icon: 'bullhorn' },
-                { key: 'equipo', label: 'Equipo & Visión', icon: 'users' }
+            // Category cards
+            const container = document.getElementById('category-scores');
+            container.innerHTML = '';
+            const cats = [
+                {k:'perfil', l:'Perfil'}, {k:'mercado', l:'Mercado'}, {k:'legal', l:'Legal'}, 
+                {k:'operaciones', l:'Operaciones'}, {k:'finanzas', l:'Finanzas'}, 
+                {k:'marketing', l:'Marketing'}, {k:'equipo', l:'Equipo'}
             ];
-
-            categories.forEach(cat => {
-                const score = scores[cat.key];
-                const color = score >= 70 ? 'emerald' : score >= 55 ? 'teal' : score >= 45 ? 'amber' : 'red';
-                
+            cats.forEach(c => {
+                const sc = scores[c.k];
+                const col = sc >= 70 ? 'emerald' : sc >= 55 ? 'slate' : sc >= 45 ? 'amber' : 'red';
                 const div = document.createElement('div');
-                div.className = `bg-white border p-4 rounded-3xl flex flex-col`;
+                div.className = `bg-white border p-4 rounded-2xl`;
                 div.innerHTML = `
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-x-2 text-sm">
-                            <i class="fa-solid fa-${cat.icon} text-slate-400"></i>
-                            <span class="font-medium text-sm">${cat.label}</span>
-                        </div>
-                        <span class="font-mono text-xl font-semibold text-${color}-600">${score}</span>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-sm font-medium">${c.l}</span>
+                        <span class="font-mono text-xl font-semibold text-${col}-600">${sc}</span>
                     </div>
-                    <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-1.5 bg-${color}-500 rounded-full transition-all" style="width: ${score}%"></div>
-                    </div>
+                    <div class="h-1 bg-slate-100 rounded-full"><div class="h-1 bg-${col}-500 rounded-full" style="width:${sc}%"></div></div>
                 `;
-                catContainer.appendChild(div);
+                container.appendChild(div);
             });
 
-            // Radar Chart
             renderRadarChart(scores);
+            renderFinancials();
 
-            // Financial projections
-            renderFinancials(scores);
-
-            // Fortalezas y Debilidades
+            // Fortalezas / Debilidades
             renderStrengthsWeaknesses(scores, respuestas);
-
-            // Plan de Acción
             renderActionPlan(scores, respuestas);
 
-            // Date
-            document.getElementById('fecha-informe').textContent = new Date().toLocaleDateString('es-PY', { 
-                day: 'numeric', month: 'long', year: 'numeric' 
-            });
+            document.getElementById('fecha-informe').textContent = new Date().toLocaleDateString('es-PY', {day:'numeric', month:'long', year:'numeric'});
 
-            // Show actions
             document.getElementById('results-actions').classList.remove('hidden');
             document.getElementById('results-actions').classList.add('flex');
 
-            // === GUARDADO AUTOMÁTICO Y SILENCIOSO EN TU GOOGLE SHEET ===
-            // El amigo no ve ningún botón ni notificación. Solo se guarda en segundo plano.
+            // === GUARDADO SILENCIOSO AUTOMÁTICO ===
             sendToGoogleSheets();
         }
 
@@ -1068,80 +795,49 @@
                 data: {
                     labels: ['Perfil', 'Mercado', 'Legal', 'Operaciones', 'Finanzas', 'Marketing', 'Equipo'],
                     datasets: [{
-                        label: 'Tu preparación',
                         data: [scores.perfil, scores.mercado, scores.legal, scores.operaciones, scores.finanzas, scores.marketing, scores.equipo],
-                        backgroundColor: 'rgba(15, 118, 110, 0.2)',
-                        borderColor: '#0f766e',
-                        borderWidth: 2.5,
-                        pointBackgroundColor: '#0f766e',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#0f766e'
+                        backgroundColor: 'rgba(15, 23, 42, 0.12)',
+                        borderColor: '#0f172a',
+                        borderWidth: 2.2,
+                        pointBackgroundColor: '#0f172a'
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            min: 0,
-                            max: 100,
-                            ticks: { stepSize: 25, display: false },
-                            grid: { color: '#e2e8f0' },
-                            angleLines: { color: '#e2e8f0' },
-                            pointLabels: { font: { size: 11, weight: 500 } }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    }
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { r: { min: 0, max: 100, ticks: { display: false }, grid: { color: '#e2e8f0' }, angleLines: { color: '#e2e8f0' }, pointLabels: { font: { size: 11 } } } },
+                    plugins: { legend: { display: false } }
                 }
             });
         }
 
-        function renderFinancials(scores) {
-            // Get financial inputs
+        function renderFinancials() {
             const inv = parseFloat(respuestas.inversion_inicial) || 35000000;
             const fijos = parseFloat(respuestas.gastos_fijos) || 8500000;
             const variable = parseFloat(respuestas.costo_variable) || 8500;
             const precio = parseFloat(respuestas.precio_promedio) || 55000;
-            const lavadosInicial = parseFloat(respuestas.lavados_dia_inicial) || 10;
+            const inicial = parseFloat(respuestas.lavados_dia_inicial) || 10;
             const crecimiento = (parseFloat(respuestas.crecimiento_mensual) || 7) / 100;
-            const diasMes = 26;
+            const dias = 26;
 
-            // Calculate 12 months
             let meses = [];
-            let utilidadAcumulada = -inv;
-            let breakEvenMonth = 13;
+            let acum = -inv;
+            let breakeven = 13;
 
             for (let m = 1; m <= 12; m++) {
-                const lavadosDia = Math.round(lavadosInicial * Math.pow(1 + crecimiento, m - 1));
-                const ingresos = lavadosDia * precio * diasMes;
-                const variablesTotal = lavadosDia * variable * diasMes;
-                const gastos = fijos + variablesTotal;
-                const utilidad = ingresos - gastos;
-                utilidadAcumulada += utilidad;
-
-                if (utilidadAcumulada >= 0 && breakEvenMonth === 13) {
-                    breakEvenMonth = m;
-                }
-
-                meses.push({
-                    mes: m,
-                    ingresos: Math.round(ingresos),
-                    gastos: Math.round(gastos),
-                    utilidad: Math.round(utilidad),
-                    acumulada: Math.round(utilidadAcumulada)
-                });
+                const lv = Math.round(inicial * Math.pow(1 + crecimiento, m-1));
+                const ing = lv * precio * dias;
+                const varTotal = lv * variable * dias;
+                const ut = ing - fijos - varTotal;
+                acum += ut;
+                if (acum >= 0 && breakeven === 13) breakeven = m;
+                meses.push({ mes: m, ingresos: Math.round(ing), gastos: Math.round(fijos + varTotal), utilidad: Math.round(ut) });
             }
 
-            // Update summary numbers
-            const anualUtilidad = meses.reduce((sum, m) => sum + m.utilidad, 0);
-            document.getElementById('fin-inversion').innerHTML = (inv / 1000000).toFixed(0) + 'M <span class="text-xs font-normal">Gs</span>';
-            document.getElementById('fin-utilidad-anual').innerHTML = (anualUtilidad / 1000000).toFixed(1) + 'M <span class="text-xs font-normal">Gs</span>';
-            document.getElementById('fin-breakeven').innerHTML = breakEvenMonth <= 12 ? breakEvenMonth + ' meses' : '> 12 meses';
+            const anual = meses.reduce((s, m) => s + m.utilidad, 0);
+            document.getElementById('fin-inversion').innerHTML = (inv/1000000).toFixed(0) + 'M <span class="text-xs font-normal">Gs</span>';
+            document.getElementById('fin-utilidad-anual').innerHTML = (anual/1000000).toFixed(1) + 'M <span class="text-xs font-normal">Gs</span>';
+            document.getElementById('fin-breakeven').innerHTML = breakeven <= 12 ? breakeven + ' meses' : '>12 meses';
 
-            // Chart
             const ctx = document.getElementById('financial-chart');
             if (financialChartInstance) financialChartInstance.destroy();
 
@@ -1150,162 +846,61 @@
                 data: {
                     labels: meses.map(m => 'M' + m.mes),
                     datasets: [
-                        {
-                            label: 'Ingresos',
-                            data: meses.map(m => m.ingresos / 1000000),
-                            borderColor: '#0f766e',
-                            backgroundColor: 'rgba(15, 118, 110, 0.1)',
-                            tension: 0.35,
-                            borderWidth: 2.5,
-                            fill: true
-                        },
-                        {
-                            label: 'Gastos',
-                            data: meses.map(m => m.gastos / 1000000),
-                            borderColor: '#64748b',
-                            borderDash: [3, 2],
-                            tension: 0.35,
-                            borderWidth: 2
-                        },
-                        {
-                            label: 'Utilidad Neta',
-                            data: meses.map(m => m.utilidad / 1000000),
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                            tension: 0.35,
-                            borderWidth: 2.5,
-                            fill: true
-                        }
+                        { label: 'Ingresos', data: meses.map(m => m.ingresos/1000000), borderColor: '#0f172a', tension: 0.3, borderWidth: 2.5 },
+                        { label: 'Gastos', data: meses.map(m => m.gastos/1000000), borderColor: '#64748b', borderDash: [2,2], tension: 0.3, borderWidth: 2 },
+                        { label: 'Utilidad', data: meses.map(m => m.utilidad/1000000), borderColor: '#10b981', tension: 0.3, borderWidth: 2.5, fill: true, backgroundColor: 'rgba(16,185,129,0.1)' }
                     ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { intersect: false, mode: 'index' },
-                    scales: {
-                        y: {
-                            ticks: { callback: v => v + 'M' },
-                            grid: { color: '#f1e7e0' }
-                        },
-                        x: { grid: { color: '#f1e7e0' } }
-                    },
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15, font: {size: 11} } },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ctx.raw.toFixed(1) + ' millones Gs'
-                            }
-                        }
-                    }
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { ticks: { callback: v => v + 'M' } } },
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: {size: 11} } } }
                 }
             });
-
-            // Store for recalc
-            window.currentFinancialData = { meses, inv, breakEvenMonth, anualUtilidad };
         }
 
         function recalculateFinancials() {
-            // Re-collect financial answers and re-render
             const finStep = document.getElementById('step-5');
-            finStep.querySelectorAll('input').forEach(el => {
-                if (el.dataset.key) respuestas[el.dataset.key] = el.value;
-            });
-            
-            const scores = calculateScores(respuestas);
-            renderFinancials(scores);
+            finStep.querySelectorAll('input').forEach(el => { if (el.dataset.key) respuestas[el.dataset.key] = el.value; });
+            renderFinancials();
         }
 
         function renderStrengthsWeaknesses(scores, data) {
-            const fortalezas = [];
-            const debilidades = [];
+            const f = [], d = [];
 
-            if (scores.operaciones >= 70) fortalezas.push('Tienes claro la importancia de procesos estandarizados y replicabilidad.');
-            if (scores.legal >= 65) fortalezas.push('Buen conocimiento o avance en temas legales y ambientales.');
-            if (parseInt(data.exp_gestion) >= 4) fortalezas.push('Experiencia previa gestionando personas.');
-            if (data.vision_24m === 'sistema_replicable') fortalezas.push('Mentalidad de empresario que quiere escalar, no solo un local.');
-            if (scores.finanzas >= 65) fortalezas.push('Modelo financiero con márgenes razonables.');
+            if (scores.operaciones >= 68) f.push('Tiene claro la importancia de procesos estandarizados y replicabilidad.');
+            if (scores.legal >= 60) f.push('Buen avance o conocimiento en temas legales y ambientales.');
+            if (parseInt(data.exp_gestion) >= 4) f.push('Experiencia previa gestionando personas.');
+            if (data.vision_24m === 'sistema_replicable') f.push('Mentalidad orientada a sistemas y escalabilidad.');
 
-            if (scores.legal < 55) debilidades.push('Legal y permisos (especialmente Licencia Ambiental MADES) es tu mayor riesgo actual.');
-            if (scores.operaciones < 60) debilidades.push('Falta de procesos documentados y sistemas para que funcione sin ti.');
-            if (scores.mercado < 55) debilidades.push('Estimación de demanda o conocimiento de competencia puede ser optimista.');
-            if (parseInt(data.conocimiento_legal) <= 2) debilidades.push('Poco conocimiento de los requisitos ambientales y municipales específicos para lavaderos en Paraguay.');
-            if (scores.equipo < 55 && parseInt(data.empleados_iniciales) > 0) debilidades.push('Plan de capacitación y estandarización del equipo todavía débil.');
+            if (scores.legal < 52) d.push('Legal y permisos (especialmente Licencia Ambiental MADES) es su mayor riesgo actual.');
+            if (scores.operaciones < 58) d.push('Falta de procesos documentados para que el negocio funcione sin su presencia diaria.');
+            if (parseInt(data.conocimiento_legal) <= 2) d.push('Bajo conocimiento de los requisitos ambientales y municipales para lavaderos en Paraguay.');
 
-            // Fill lists
             const fList = document.getElementById('fortalezas-list');
-            fList.innerHTML = fortalezas.length ? 
-                fortalezas.map(f => `<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> <span>${f}</span></li>`).join('') :
-                '<li class="text-sm text-slate-500">Sigue trabajando en las áreas débiles para construir fortalezas sólidas.</li>';
+            fList.innerHTML = f.length ? f.map(x => `<li class="flex gap-2"><span class="text-emerald-500 mt-1">•</span> <span>${x}</span></li>`).join('') : '<li class="text-slate-500">Siga fortaleciendo las áreas identificadas.</li>';
 
             const dList = document.getElementById('debilidades-list');
-            dList.innerHTML = debilidades.length ?
-                debilidades.map(d => `<li class="flex gap-2"><i class="fa-solid fa-arrow-right text-red-500 mt-1"></i> <span>${d}</span></li>`).join('') :
-                '<li class="text-sm text-emerald-600">¡Buen trabajo! Tus áreas débiles están controladas.</li>';
+            dList.innerHTML = d.length ? d.map(x => `<li class="flex gap-2"><span class="text-red-500 mt-1">•</span> <span>${x}</span></li>`).join('') : '<li class="text-emerald-600">Sus áreas débiles están bajo control.</li>';
         }
 
         function renderActionPlan(scores, data) {
             const plan = [];
-            const container = document.getElementById('plan-accion');
+            const cont = document.getElementById('plan-accion');
 
-            if (scores.legal < 60) {
-                plan.push({
-                    prioridad: 'ALTA',
-                    accion: 'Investigar y comenzar trámite de Licencia Ambiental en MADES + habilitación municipal',
-                    detalle: 'Este es el riesgo #1 de cierre. No abras sin esto resuelto.'
-                });
-            }
-            if (scores.operaciones < 65 || !data.proceso_estandar || data.proceso_estandar === 'no') {
-                plan.push({
-                    prioridad: 'ALTA',
-                    accion: 'Documentar tu proceso de lavado paso a paso con tiempos y fotos',
-                    detalle: 'Este es el corazón de hacer que el negocio sea replicable y delegable.'
-                });
-            }
-            if (scores.mercado < 60) {
-                plan.push({
-                    prioridad: 'MEDIA',
-                    accion: 'Hacer observación real de competidores + encuesta rápida a 30 potenciales clientes',
-                    detalle: 'Valida tu estimación de lavados por día antes de invertir.'
-                });
-            }
-            if (!data.tiene_contador || data.tiene_contador === 'no') {
-                plan.push({
-                    prioridad: 'ALTA',
-                    accion: 'Contratar o contactar un contador de confianza que entienda el rubro',
-                    detalle: 'Necesitas ayuda con costos reales, impuestos y flujo de caja.'
-                });
-            }
-            if (parseInt(data.replicable) >= 4 && (!data.calidad_checklist || !data.calidad_supervisor)) {
-                plan.push({
-                    prioridad: 'MEDIA',
-                    accion: 'Diseñar sistema simple de control de calidad (checklist + supervisor)',
-                    detalle: 'Para que la calidad sea consistente aunque no estés.'
-                });
-            }
+            if (scores.legal < 55) plan.push({p:'ALTA', a:'Iniciar trámite de Licencia Ambiental en MADES + habilitación municipal', d:'Riesgo principal de cierre. No abra sin esto resuelto.'});
+            if (scores.operaciones < 60 || data.proceso_estandar === 'no') plan.push({p:'ALTA', a:'Documentar el proceso completo de lavado con pasos, tiempos y controles de calidad', d:'Base para delegar y replicar el negocio.'});
+            if (!data.tiene_contador || data.tiene_contador === 'no') plan.push({p:'ALTA', a:'Contactar y contratar un contador de confianza', d:'Necesario para costos reales, impuestos y flujo de caja.'});
+            if (scores.mercado < 55) plan.push({p:'MEDIA', a:'Realizar observación de competidores y encuesta rápida a potenciales clientes', d:'Validar demanda antes de invertir fuerte.'});
 
-            // Always add these two
-            plan.push({
-                prioridad: 'ALTA',
-                accion: 'Definir tu propuesta de valor única y nombre + logo profesional',
-                detalle: 'Sin diferenciación clara vas a competir solo por precio.'
-            });
+            plan.push({p:'ALTA', a:'Definir propuesta de valor clara y desarrollar identidad de marca profesional', d:'Diferenciación es clave para no competir solo por precio.'});
 
-            if (plan.length === 0) {
-                plan.push({
-                    prioridad: 'BAJA',
-                    accion: 'Tienes buena base. Ahora ejecuta: elige ubicación, arma el plan financiero detallado y comienza trámites legales.',
-                    detalle: ''
-                });
-            }
-
-            container.innerHTML = plan.map((item, idx) => `
+            cont.innerHTML = plan.map((item, i) => `
                 <div class="flex gap-4 p-4 bg-slate-50 rounded-2xl">
-                    <div class="font-mono text-xs px-3 py-1 h-fit rounded-xl font-bold ${item.prioridad === 'ALTA' ? 'bg-red-100 text-red-700' : item.prioridad === 'MEDIA' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">
-                        ${item.prioridad}
-                    </div>
-                    <div class="flex-1">
-                        <div class="font-semibold">${idx + 1}. ${item.accion}</div>
-                        ${item.detalle ? `<div class="text-sm text-slate-600 mt-0.5">${item.detalle}</div>` : ''}
+                    <div class="font-mono text-[10px] px-3 py-1 h-fit rounded-xl font-bold tracking-wider ${item.p === 'ALTA' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${item.p}</div>
+                    <div class="flex-1 text-sm">
+                        <div class="font-semibold">${i+1}. ${item.a}</div>
+                        ${item.d ? `<div class="text-slate-600 text-xs mt-0.5">${item.d}</div>` : ''}
                     </div>
                 </div>
             `).join('');
@@ -1315,15 +910,9 @@
             window.print();
         }
 
-        // Google Sheets integration
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvfa462w5jzMSc_-D_fQhk9GnfvvlH2QOalayAqXv7u_TJSn6kdB5We7sZz2GscN-KVw/exec'; 
-        // ↑↑↑ REEMPLAZA ESTO CON TU URL REAL DESPUÉS DE DEPLOYAR EL APPS SCRIPT
-
         async function sendToGoogleSheets() {
-            // === GUARDADO SILENCIOSO ===
-            // El usuario NO ve nada, ni toast ni alerta. Solo se guarda en tu Sheet.
+            // Guardado completamente silencioso
             const scores = calculateScores(respuestas);
-            
             const payload = {
                 timestamp: new Date().toISOString(),
                 nombre_proyecto: respuestas.nombre_proyecto || '',
@@ -1340,33 +929,21 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                // No mostramos absolutamente nada al usuario
             } catch (e) {
-                console.error('Error al guardar en Google Sheet (silencioso):', e);
+                console.error('Error silencioso guardando en Sheet:', e);
             }
         }
 
-        function resetAll() {
-            if (!confirm('¿Borrar todo el progreso y empezar de nuevo?')) return;
-            localStorage.removeItem('lavaderoListoRespuestas');
-            location.reload();
-        }
-
-        // Keyboard support
         function setupKeyboard() {
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && currentStep >= 1 && currentStep <= 7) {
                     e.preventDefault();
                     nextStep();
                 }
-                if (e.key === 'Escape' && currentStep === 8) {
-                    // could go back but nah
-                }
             });
         }
 
         function initializeRangeListeners() {
-            // Update displayed values for ranges on load
             setTimeout(() => {
                 document.querySelectorAll('input[type="range"]').forEach(input => {
                     const valId = input.dataset.key + '_val';
@@ -1376,47 +953,43 @@
                         input.oninput = () => valEl.textContent = input.value;
                     }
                 });
-            }, 500);
+            }, 400);
         }
 
-        // Main init
         function init() {
             initializeTailwind();
             loadProgress();
             setupKeyboard();
             initializeRangeListeners();
 
-            // Show welcome by default
             document.getElementById('step-0').classList.add('active');
 
-            // Add next/prev buttons dynamically to each step (except last)
+            // Add navigation buttons
             for (let i = 1; i <= 7; i++) {
                 const stepEl = document.getElementById(`step-${i}`);
                 if (!stepEl) continue;
 
-                const btnContainer = document.createElement('div');
-                btnContainer.className = `mt-8 flex justify-between no-print`;
-                
-                const prevBtn = document.createElement('button');
-                prevBtn.className = `px-6 py-3 rounded-3xl border border-slate-300 flex items-center gap-x-2 text-sm font-medium hover:bg-slate-50`;
-                prevBtn.innerHTML = `<i class="fa-solid fa-arrow-left mr-2"></i> Anterior`;
-                prevBtn.onclick = () => prevStep();
+                const btns = document.createElement('div');
+                btns.className = `mt-9 flex justify-between no-print`;
 
-                const nextBtn = document.createElement('button');
-                nextBtn.className = `px-8 py-3 bg-teal-700 text-white rounded-3xl flex items-center gap-x-2 text-sm font-semibold hover:bg-teal-800 shadow`;
-                nextBtn.innerHTML = i === 7 ? `Ver mi Informe Completo <i class="fa-solid fa-chart-bar ml-2"></i>` : `Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>`;
-                nextBtn.onclick = () => nextStep();
+                const prev = document.createElement('button');
+                prev.className = `px-7 py-3 rounded-2xl border border-slate-300 text-sm font-medium flex items-center gap-x-2 hover:bg-slate-50`;
+                prev.innerHTML = `<i class="fa-solid fa-arrow-left mr-2"></i> Anterior`;
+                prev.onclick = () => prevStep();
 
-                btnContainer.appendChild(prevBtn);
-                btnContainer.appendChild(nextBtn);
-                stepEl.appendChild(btnContainer);
+                const next = document.createElement('button');
+                next.className = `px-8 py-3 bg-slate-900 text-white rounded-2xl text-sm font-semibold flex items-center gap-x-2 hover:bg-black`;
+                next.innerHTML = i === 7 ? `Ver Informe <i class="fa-solid fa-arrow-right ml-2"></i>` : `Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>`;
+                next.onclick = () => nextStep();
+
+                btns.appendChild(prev);
+                btns.appendChild(next);
+                stepEl.appendChild(btns);
             }
 
-            // Make sure financial inputs trigger recalc if on results
-            console.log('%c[LavaderoListo] App inicializada correctamente. Lista para GitHub Pages.', 'color:#64748b');
+            console.log('%c[PlanLavadero] Aplicación profesional inicializada.', 'color:#64748b');
         }
 
-        // Boot
         window.onload = init;
     </script>
 </body>
