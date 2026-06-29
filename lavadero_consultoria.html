@@ -752,12 +752,36 @@ function payload(){
 function silentSubmit(){
   if(submitted) return;
   submitted = true;
-  const body = JSON.stringify(payload());
-  try{
-    const blob = new Blob([body], {type:'text/plain;charset=utf-8'});
-    if(navigator.sendBeacon && navigator.sendBeacon(SHEETS_URL, blob)) return;
-  }catch(e){}
-  fetch(SHEETS_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body}).catch(()=>{});
+
+  // Método compatible con Google Apps Script incluso abriendo el HTML como archivo local.
+  // Envía a un iframe oculto para evitar problemas de CORS y sin mostrar nada al usuario.
+  const data = JSON.stringify(payload());
+
+  let iframe = document.getElementById('sheetsFrame');
+  if(!iframe){
+    iframe = document.createElement('iframe');
+    iframe.name = 'sheetsFrame';
+    iframe.id = 'sheetsFrame';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+  }
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SHEETS_URL;
+  form.target = 'sheetsFrame';
+  form.style.display = 'none';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = data;
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => form.remove(), 3000);
 }
 function drawAreaChart(scores){
   const c = qs('#areaChart'), ctx = c.getContext('2d'), W=c.width, H=c.height;
