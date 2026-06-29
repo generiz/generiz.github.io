@@ -753,22 +753,16 @@
         </div>
 
         <!-- Action Buttons -->
-        <div id="results-actions" class="hidden mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <div id="results-actions" class="hidden mt-8 flex justify-center">
             <button onclick="downloadPDF()" 
-                    class="flex-1 sm:flex-none px-8 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors">
+                    class="px-8 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors">
                 <i class="fa-solid fa-download"></i>
                 <span>Descargar / Imprimir Informe (PDF)</span>
-            </button>
-            
-            <button onclick="sendToGoogleSheets()" 
-                    class="flex-1 sm:flex-none px-8 py-3.5 bg-teal-700 hover:bg-teal-800 text-white rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors shadow-lg shadow-teal-700/30">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Enviar respuestas a Google Sheets de Nicolás</span>
             </button>
         </div>
         
         <div class="text-center mt-8 text-xs text-slate-400">
-            Hecho con ❤️ para emprendedores que quieren hacer las cosas bien • Paraguay 2026
+              Paraguay 2026
         </div>
     </div>
 
@@ -1059,6 +1053,10 @@
             // Show actions
             document.getElementById('results-actions').classList.remove('hidden');
             document.getElementById('results-actions').classList.add('flex');
+
+            // === GUARDADO AUTOMÁTICO Y SILENCIOSO EN TU GOOGLE SHEET ===
+            // El amigo no ve ningún botón ni notificación. Solo se guarda en segundo plano.
+            sendToGoogleSheets();
         }
 
         function renderRadarChart(scores) {
@@ -1318,12 +1316,12 @@
         }
 
         // Google Sheets integration
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYOUR_SCRIPT_ID_HERE/exec'; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvfa462w5jzMSc_-D_fQhk9GnfvvlH2QOalayAqXv7u_TJSn6kdB5We7sZz2GscN-KVw/exec'; 
         // ↑↑↑ REEMPLAZA ESTO CON TU URL REAL DESPUÉS DE DEPLOYAR EL APPS SCRIPT
 
         async function sendToGoogleSheets() {
-            if (!confirm('¿Enviar todas tus respuestas + puntajes al Google Sheet de Nicolás?')) return;
-
+            // === GUARDADO SILENCIOSO ===
+            // El usuario NO ve nada, ni toast ni alerta. Solo se guarda en tu Sheet.
             const scores = calculateScores(respuestas);
             
             const payload = {
@@ -1336,17 +1334,15 @@
             };
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
+                await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Important for GitHub Pages + Apps Script
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
-                alert('¡Respuestas enviadas correctamente! Gracias. Nicolás las verá en su Google Sheet.');
+                // No mostramos absolutamente nada al usuario
             } catch (e) {
-                console.error(e);
-                alert('Hubo un problema al enviar. Por favor copia el informe y envíalo manualmente por WhatsApp.');
+                console.error('Error al guardar en Google Sheet (silencioso):', e);
             }
         }
 
