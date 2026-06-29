@@ -1,827 +1,1427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Diagnóstico de Modelo Replicable | Lavadero</title>
-<style>
-:root{
-  --bg0:#050608;
-  --bg1:#090d16;
-  --card:#111827;
-  --card2:#151f34;
-  --ink:#f8fafc;
-  --muted:#9ca8ba;
-  --soft:#cbd5e1;
-  --line:rgba(255,255,255,.11);
-  --gold:#d8b45d;
-  --gold2:#fff1b8;
-  --green:#4ade80;
-  --cyan:#67e8f9;
-  --red:#fb7185;
-  --orange:#f59e0b;
-  --shadow:0 30px 100px rgba(0,0,0,.48);
-  --radius:30px;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color:var(--ink);
-  background:
-    radial-gradient(circle at 14% 10%, rgba(216,180,93,.28), transparent 30%),
-    radial-gradient(circle at 86% 12%, rgba(103,232,249,.13), transparent 30%),
-    radial-gradient(circle at 50% 100%, rgba(74,222,128,.11), transparent 34%),
-    linear-gradient(145deg,var(--bg0),var(--bg1) 58%,#101827);
-  overflow-x:hidden;
-}
-body:before{
-  content:"";
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size:42px 42px;
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,.8), transparent 82%);
-  pointer-events:none;
-}
-.app{max-width:1160px;margin:0 auto;padding:28px 18px 52px;position:relative}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  margin-bottom:24px;
-}
-.brand{
-  display:flex;align-items:center;gap:12px;
-}
-.logo{
-  width:42px;height:42px;border-radius:14px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  box-shadow:0 10px 26px rgba(216,180,93,.22);
-  display:grid;place-items:center;color:#101827;font-weight:950;
-}
-.brandText strong{display:block;font-size:15px;letter-spacing:.02em}
-.brandText span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.stepText{color:var(--muted);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
-.progress{height:8px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(255,255,255,.07)}
-.progress > div{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--green));transition:.35s ease}
-.shell{
-  min-height:calc(100vh - 170px);
-  display:grid;
-  place-items:center;
-}
-.screen{
-  width:100%;
-  display:none;
-}
-.screen.active{display:block;animation:enter .35s ease both}
-@keyframes enter{from{opacity:0;transform:translateY(12px) scale(.992)}to{opacity:1;transform:none}}
-.card{
-  width:100%;
-  background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.035));
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(18px);
-  overflow:hidden;
-}
-.heroCard{display:grid;grid-template-columns:1.07fr .93fr;min-height:590px}
-.heroCopy{padding:52px;display:flex;flex-direction:column;justify-content:center}
-.kicker{
-  display:inline-flex;width:max-content;align-items:center;gap:10px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#111827;border-radius:999px;padding:9px 13px;
-  font-weight:950;font-size:12px;text-transform:uppercase;letter-spacing:.13em;
-  margin-bottom:20px;
-}
-h1{font-size:58px;line-height:.96;margin:0 0 18px;letter-spacing:-.06em}
-.lead{font-size:19px;line-height:1.55;color:var(--soft);margin:0 0 30px;max-width:650px}
-.heroVisual{
-  border-left:1px solid var(--line);
-  background:
-    radial-gradient(circle at 50% 25%, rgba(216,180,93,.20), transparent 35%),
-    linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
-  display:flex;align-items:center;justify-content:center;padding:34px;
-}
-.visualPanel{
-  width:100%;max-width:430px;border-radius:28px;padding:24px;
-  background:rgba(3,7,18,.48);border:1px solid rgba(255,255,255,.12);
-}
-.previewLine{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.previewLine span{color:var(--muted)} .previewLine strong{color:var(--ink)}
-.ctaRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:28px}
-.primary,.ghost{
-  appearance:none;border:0;border-radius:18px;padding:15px 21px;font-weight:950;cursor:pointer;
-  font-size:15px;letter-spacing:-.01em;
-}
-.primary{color:#111827;background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 14px 36px rgba(216,180,93,.20)}
-.primary:hover{transform:translateY(-1px)}
-.ghost{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink)}
-.formCard{max-width:860px;margin:0 auto;padding:40px}
-.screenHeader{margin-bottom:24px}
-.eyebrow{color:var(--gold2);font-weight:950;font-size:12px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px}
-h2{font-size:40px;line-height:1.05;margin:0 0 10px;letter-spacing:-.045em}
-.help{color:var(--muted);font-size:17px;line-height:1.5;margin:0}
-.fieldGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:14px;font-weight:950;margin-bottom:9px;color:#eef2ff}
-.field small{display:block;color:var(--muted);line-height:1.45;margin:-2px 0 10px;font-size:13px}
-input,textarea,select{
-  width:100%;border:1px solid rgba(255,255,255,.13);
-  background:rgba(2,6,23,.62);
-  color:var(--ink);border-radius:18px;padding:15px 16px;font:inherit;outline:none;
-  transition:.18s ease;
-}
-textarea{min-height:128px;resize:vertical}
-input:focus,textarea:focus,select:focus{border-color:rgba(216,180,93,.75);box-shadow:0 0 0 4px rgba(216,180,93,.13)}
-select{cursor:pointer}
-.inlineNav{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:18px}
-.backLink{
-  border:0;background:transparent;color:var(--muted);font-weight:900;cursor:pointer;padding:12px 0;
-}
-.backLink:hover{color:var(--ink)}
-.resultCard{padding:34px}
-.resultHero{
-  display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:stretch;margin-bottom:22px;
-}
-.scorePanel,.summaryPanel,.chartPanel,.reportPanel{
-  background:rgba(2,6,23,.48);
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:24px;
-}
-.ring{
-  width:220px;height:220px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;
-  background:conic-gradient(var(--gold) calc(var(--score)*1%), rgba(255,255,255,.10) 0);
-  position:relative;
-}
-.ring:after{content:"";position:absolute;inset:15px;border-radius:50%;background:#0a1020;border:1px solid var(--line)}
-.ring div{position:relative;z-index:2;text-align:center}
-.ring strong{display:block;font-size:62px;letter-spacing:-.07em}
-.ring span{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-weight:900}
-.statePill{
-  display:block;text-align:center;border-radius:999px;padding:11px 14px;
-  background:rgba(216,180,93,.14);border:1px solid rgba(216,180,93,.28);color:#fde9a7;font-weight:950;
-}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
-.kpi{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:20px;padding:16px}
-.kpi span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:900;margin-bottom:8px}
-.kpi strong{display:block;font-size:20px;line-height:1.15}
-.good strong{color:var(--green)} .warn strong{color:var(--orange)} .bad strong{color:var(--red)}
-.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-canvas{width:100%;height:310px;background:rgba(2,6,23,.36);border:1px solid rgba(255,255,255,.08);border-radius:20px}
-.adviceGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.advice{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:20px;padding:18px}
-.advice h4{margin:0 0 8px;font-size:16px} .advice p{margin:0;color:var(--muted);line-height:1.45}
-.reportText{white-space:pre-wrap;line-height:1.58;color:#e5edf9;margin:0}
-.hidden{display:none!important}
-.printOnly{display:none}
-@media(max-width:980px){
-  .heroCard,.resultHero,.resultGrid{grid-template-columns:1fr}
-  .heroVisual{border-left:0;border-top:1px solid var(--line)}
-  h1{font-size:42px} h2{font-size:32px}
-  .fieldGrid,.kpis,.adviceGrid{grid-template-columns:1fr}
-  .formCard,.heroCopy,.resultCard{padding:26px}
-}
-@media print{
-  body{background:#fff;color:#111}
-  body:before,.topbar,.progress,.inlineNav,.ctaRow,.noPrint{display:none!important}
-  .app{max-width:none;padding:0}
-  .screen{display:none!important}
-  #resultScreen{display:block!important}
-  .card,.scorePanel,.summaryPanel,.chartPanel,.reportPanel,.kpi,.advice{box-shadow:none;background:#fff;border:1px solid #ddd;color:#111}
-  .resultCard{padding:0}
-  .resultHero,.resultGrid,.kpis,.adviceGrid{display:block}
-  .kpi,.advice,.chartPanel,.scorePanel,.summaryPanel,.reportPanel{margin:10px 0;break-inside:avoid}
-  .ring{display:none}
-  .statePill{border:1px solid #999;color:#111;background:#f7f7f7}
-  canvas{display:none}
-  .reportText{color:#111}
-  .printOnly{display:block}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaderoListo • Plan de Negocios para Lavadero de Autos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Poppins:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #0f766e;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-step {
+            transition: all 0.2s ease;
+        }
+
+        .nav-step.active {
+            background-color: #0f766e;
+            color: white;
+            border-color: #0f766e;
+        }
+
+        .metric-card {
+            transition: transform 0.2s ease;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            letter-spacing: -.025em;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            background: conic-gradient(#0f766e 0deg 252deg, #e2e8f0 252deg 360deg);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            width: 110px;
+            height: 110px;
+            background: white;
+            border-radius: 9999px;
+            position: absolute;
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+            }
+            .metric-card, .bg-white {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0;
+            }
+        }
+
+        .chart-container {
+            position: relative;
+        }
+
+        .lavadero-gradient {
+            background: linear-gradient(135deg, #0f766e, #134e4b);
+        }
+
+        .input-focus {
+            transition: all 0.2s ease;
+        }
+        
+        .input-focus:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+            border-color: #0f766e;
+        }
+
+        .modern-shadow {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+    </style>
 </head>
-<body>
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">R</div>
-      <div class="brandText">
-        <strong>Modelo Replicable</strong>
-        <span>Diagnóstico de lavadero</span>
-      </div>
-    </div>
-    <div class="stepText" id="stepText">Inicio</div>
-  </header>
-
-  <div class="progress"><div id="progressBar"></div></div>
-
-  <main class="shell">
-    <section class="screen active" id="introScreen">
-      <div class="card heroCard">
-        <div class="heroCopy">
-          <div class="kicker">Diagnóstico empresarial</div>
-          <h1>No abras un lavadero. Diseñá un modelo.</h1>
-          <p class="lead">Esta herramienta evalúa si la idea puede convertirse en una operación rentable, medible y replicable en más locales.</p>
-          <div class="ctaRow">
-            <button class="primary" onclick="nextScreen()">Iniciar diagnóstico</button>
-          </div>
-        </div>
-        <div class="heroVisual">
-          <div class="visualPanel">
-            <div class="previewLine"><span>Evaluación</span><strong>8 áreas</strong></div>
-            <div class="previewLine"><span>Resultado</span><strong>Score + gráficos</strong></div>
-            <div class="previewLine"><span>Finanzas</span><strong>Punto de equilibrio</strong></div>
-            <div class="previewLine"><span>Salida</span><strong>Informe final</strong></div>
-            <div class="previewLine"><span>Registro</span><strong>Google Sheets</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Proyecto">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 1</div>
-          <h2>Identidad del proyecto</h2>
-          <p class="help">Primero definimos si esto nace como trabajo operativo o como una empresa que pueda repetirse.</p>
-        </div>
-        <div class="fieldGrid">
-          <div class="field"><label>Nombre del proyecto</label><input name="projectName" data-area="estrategia" data-text placeholder="Ej: Óscar AutoCare"></div>
-          <div class="field"><label>Responsable</label><input name="owner" data-area="estrategia" data-text placeholder="Ej: Óscar"></div>
-        </div>
-        <div class="field"><label>Visión a 3 años</label><small>Qué debería existir si el negocio sale bien.</small><textarea name="vision" data-area="estrategia" data-text></textarea></div>
-        <div class="field"><label>Ambición empresarial</label><select name="ambition" data-area="estrategia" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="1">Trabajar yo mismo en el lavadero</option>
-          <option data-points="2">Tener un local rentable y ordenado</option>
-          <option data-points="4">Crear una receta para abrir más locales</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Cliente">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 2</div>
-          <h2>Cliente y razón de compra</h2>
-          <p class="help">Un negocio débil busca “cualquiera con auto”. Un modelo fuerte sabe quién vuelve y por qué.</p>
-        </div>
-        <div class="field"><label>Cliente principal</label><select name="targetCustomer" data-area="mercado" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="1">Cualquier persona con auto</option>
-          <option data-points="2">Particulares de la zona</option>
-          <option data-points="4">Clientes recurrentes: oficinas, flotas, empresas, conductores o clientes premium</option>
-        </select></div>
-        <div class="field"><label>Problema concreto que resuelve</label><textarea name="customerProblem" data-area="mercado" data-text placeholder="Falta de tiempo, mala calidad, desconfianza, autos de trabajo siempre sucios..."></textarea></div>
-        <div class="field"><label>Diferencial frente a otros lavaderos</label><textarea name="differentiator" data-area="mercado" data-text></textarea></div>
-        <div class="field"><label>Cómo vas a lograr que vuelva</label><select name="recurrence" data-area="mercado" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No está definido</option>
-          <option data-points="1">Promociones ocasionales</option>
-          <option data-points="3">WhatsApp, reseñas y seguimiento</option>
-          <option data-points="4">Membresías, paquetes mensuales, flotas y base de datos</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Oferta">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 3</div>
-          <h2>Oferta y servicios</h2>
-          <p class="help">Si cada servicio no tiene precio, duración, costo y margen, la operación arranca desordenada.</p>
-        </div>
-        <div class="field"><label>Servicios iniciales</label><textarea name="services" data-area="oferta" data-text placeholder="Básico, completo, premium, motor, tapizado, encerado, flotas..."></textarea></div>
-        <div class="field"><label>Nivel de definición de servicios</label><select name="serviceDefinition" data-area="oferta" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No definido</option>
-          <option data-points="1">Idea general</option>
-          <option data-points="3">Precio e incluye definidos</option>
-          <option data-points="4">Precio, incluye, no incluye, duración, costo y margen definidos</option>
-        </select></div>
-        <div class="field"><label>Paquetes y venta recurrente</label><select name="packages" data-area="oferta" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No hay paquetes</option>
-          <option data-points="1">Descuentos simples</option>
-          <option data-points="3">Paquetes por cantidad de lavados</option>
-          <option data-points="4">Membresías, planes para flotas y servicios premium</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Finanzas">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 4</div>
-          <h2>Números del modelo</h2>
-          <p class="help">La app calculará ingresos, utilidad, punto de equilibrio y recuperación de inversión.</p>
-        </div>
-        <div class="fieldGrid">
-          <div class="field"><label>Inversión inicial estimada</label><input name="initialInvestment" data-area="finanzas" data-text inputmode="numeric" placeholder="Ej: 25000000"></div>
-          <div class="field"><label>Costos fijos mensuales</label><input name="fixedCosts" data-area="finanzas" data-text inputmode="numeric" placeholder="Alquiler + sueldos + servicios"></div>
-          <div class="field"><label>Días abiertos por mes</label><input name="daysOpen" data-area="finanzas" data-text type="number" min="1" max="31" placeholder="Ej: 26"></div>
-          <div class="field"><label>Autos esperados por día</label><input name="carsPerDay" data-area="finanzas" data-text type="number" min="0" placeholder="Ej: 15"></div>
-          <div class="field"><label>Ticket promedio por auto</label><input name="avgTicket" data-area="finanzas" data-text inputmode="numeric" placeholder="Ej: 70000"></div>
-          <div class="field"><label>Costo variable por auto</label><input name="variableCost" data-area="finanzas" data-text inputmode="numeric" placeholder="Productos + agua + insumos"></div>
-        </div>
-        <div class="field"><label>Madurez de los números</label><select name="numberMaturity" data-area="finanzas" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No sé los costos reales</option>
-          <option data-points="1">Tengo aproximaciones</option>
-          <option data-points="3">Calculé costos principales</option>
-          <option data-points="4">Tengo costos, margen, equilibrio y reserva</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Receta">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 5</div>
-          <h2>Receta operativa</h2>
-          <p class="help">La receta es lo que permite abrir otro local sin que todo dependa del dueño.</p>
-        </div>
-        <div class="field"><label>Proceso paso a paso</label><textarea name="process" data-area="operacion" data-text placeholder="Recepción, revisión, fotos, prelavado, exterior, interior, control de calidad, cobro, entrega..."></textarea></div>
-        <div class="field"><label>Checklist de calidad</label><select name="checklist" data-area="operacion" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No existe</option>
-          <option data-points="1">Está en la cabeza</option>
-          <option data-points="3">Lista básica</option>
-          <option data-points="4">Checklist formal por servicio y responsable</option>
-        </select></div>
-        <div class="field"><label>Productos, cantidades y proveedores</label><select name="products" data-area="operacion" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No definido</option>
-          <option data-points="1">Se usa a ojo</option>
-          <option data-points="3">Productos definidos</option>
-          <option data-points="4">Productos, cantidades, proveedores y stock mínimo definidos</option>
-        </select></div>
-        <div class="field"><label>Dependencia del dueño</label><select name="ownerDependency" data-area="operacion" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">Sin el dueño se desordena</option>
-          <option data-points="1">Depende de empleados buenos</option>
-          <option data-points="3">Hay encargado, pero falta manual</option>
-          <option data-points="4">Funciona por método, roles y control</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Equipo">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 6</div>
-          <h2>Equipo y capacitación</h2>
-          <p class="help">Un modelo replicable no depende de “gente buena”; depende de roles, capacitación y control.</p>
-        </div>
-        <div class="field"><label>Roles necesarios para operar</label><textarea name="roles" data-area="equipo" data-text placeholder="Recepción, lavado exterior, interior, caja, encargado, control de calidad..."></textarea></div>
-        <div class="field"><label>Capacitación de personal nuevo</label><select name="training" data-area="equipo" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">Aprende mirando</option>
-          <option data-points="1">Explicación informal</option>
-          <option data-points="3">Entrenamiento básico</option>
-          <option data-points="4">Manual, práctica, evaluación y checklist</option>
-        </select></div>
-        <div class="field"><label>Sistema de pago</label><select name="paySystem" data-area="equipo" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No definido</option>
-          <option data-points="1">Informal o por día</option>
-          <option data-points="3">Sueldo o comisión definida</option>
-          <option data-points="4">Pago definido + incentivo por calidad/productividad</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Riesgos">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 7</div>
-          <h2>Riesgos y protección</h2>
-          <p class="help">El lavadero toca propiedad ajena. Un protocolo débil puede arruinar confianza y margen.</p>
-        </div>
-        <div class="field"><label>Recepción del auto</label><select name="carReception" data-area="riesgos" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No se registra</option>
-          <option data-points="1">Se mira rápido</option>
-          <option data-points="3">Se anotan daños visibles</option>
-          <option data-points="4">Se revisa, fotografía y confirma con cliente</option>
-        </select></div>
-        <div class="field"><label>Objetos de valor</label><select name="valuablesPolicy" data-area="riesgos" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No hay política</option>
-          <option data-points="1">Aviso verbal</option>
-          <option data-points="3">Cartel o aviso escrito</option>
-          <option data-points="4">Aviso escrito, confirmación y protocolo de recepción</option>
-        </select></div>
-        <div class="field"><label>Cómo se resolverán reclamos</label><textarea name="claims" data-area="riesgos" data-text></textarea></div>
-        <div class="field"><label>Responsabilidad por daños</label><select name="damagePolicy" data-area="riesgos" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No definido</option>
-          <option data-points="1">Caso por caso</option>
-          <option data-points="3">Criterio general</option>
-          <option data-points="4">Protocolo, fotos, límites y responsable definidos</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="nextScreen()" type="button">Continuar</button></div>
-      </div>
-    </section>
-
-    <section class="screen" data-title="Escala">
-      <div class="card formCard">
-        <div class="screenHeader">
-          <div class="eyebrow">Bloque 8</div>
-          <h2>Replicabilidad</h2>
-          <p class="help">No se escala un lavadero. Se escala una receta que ya demostró funcionar.</p>
-        </div>
-        <div class="field"><label>Qué no debería cambiar entre locales</label><textarea name="nonNegotiableBrand" data-area="escala" data-text placeholder="Atención, olor, uniforme, proceso, checklist, calidad, precios base, garantía..."></textarea></div>
-        <div class="field"><label>Condición para abrir segundo local</label><select name="secondLocationCondition" data-area="escala" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">Cuando haya plata</option>
-          <option data-points="1">Cuando el primero venda bien</option>
-          <option data-points="3">Cuando sea rentable varios meses</option>
-          <option data-points="4">Cuando tenga rentabilidad, encargado, manual, métricas y reclamos bajos</option>
-        </select></div>
-        <div class="field"><label>Documentación del modelo</label><select name="documentation" data-area="escala" data-score>
-          <option value="" data-points="0">Seleccionar</option>
-          <option data-points="0">No existe</option>
-          <option data-points="1">Notas sueltas</option>
-          <option data-points="3">Manual parcial</option>
-          <option data-points="4">Manual operativo, números, proveedores, capacitación, marca y tablero</option>
-        </select></div>
-        <div class="inlineNav"><button class="backLink" onclick="prevScreen()" type="button">Atrás</button><button class="primary" onclick="finish()" type="button">Ver resultados</button></div>
-      </div>
-    </section>
-
-    <section class="screen" id="resultScreen" data-title="Resultado">
-      <div class="card resultCard">
-        <div class="printOnly"><h1>Informe de diagnóstico de modelo replicable</h1></div>
-        <div class="resultHero">
-          <div class="scorePanel">
-            <div class="ring" id="resultRing" style="--score:0"><div><strong id="finalScore">0</strong><span>Score</span></div></div>
-            <span class="statePill" id="finalState">Calculando</span>
-          </div>
-          <div class="summaryPanel">
-            <div class="eyebrow">Resultado ejecutivo</div>
-            <h2 id="resultTitle">Diagnóstico</h2>
-            <p class="help" id="resultDescription"></p>
-            <div class="kpis">
-              <div class="kpi"><span>Ingresos mensuales</span><strong id="revenueKpi">—</strong></div>
-              <div class="kpi"><span>Utilidad estimada</span><strong id="profitKpi">—</strong></div>
-              <div class="kpi"><span>Equilibrio</span><strong id="breakEvenKpi">—</strong></div>
-              <div class="kpi"><span>Recuperación</span><strong id="paybackKpi">—</strong></div>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-11 h-11 lavadero-gradient rounded-2xl flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-car text-white text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-3xl tracking-tighter font-semibold text-slate-900">LavaderoListo</h1>
+                    <p class="text-xs text-slate-500 -mt-1">De idea → negocio rentable</p>
+                </div>
             </div>
-            <div class="ctaRow noPrint"><button class="primary" onclick="window.print()">Bajar PDF</button></div>
-          </div>
+            
+            <div class="flex items-center gap-x-4">
+                <div class="hidden md:flex items-center gap-x-2 text-sm bg-slate-100 px-3 py-1.5 rounded-3xl">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span class="text-slate-600 font-medium">100% local • Sin backend</span>
+                </div>
+                
+                <button onclick="resetAll()" 
+                        class="flex items-center gap-x-2 text-sm px-4 py-2 rounded-3xl border border-slate-300 hover:bg-slate-100 transition-colors text-slate-600">
+                    <i class="fa-solid fa-redo text-xs"></i>
+                    <span class="hidden sm:inline">Reiniciar</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="max-w-6xl mx-auto px-6 pb-4">
+            <div class="flex items-center justify-between text-xs mb-1.5 px-1">
+                <div class="flex items-center gap-x-2">
+                    <span id="progress-text" class="font-semibold text-teal-700">Paso 1 de 7</span>
+                </div>
+                <span id="progress-percent" class="font-mono text-teal-700 font-semibold">14%</span>
+            </div>
+            <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div id="progress-bar" 
+                     class="h-2 bg-gradient-to-r from-teal-600 to-teal-700 transition-all duration-500 rounded-full" 
+                     style="width: 14%"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-6 pt-8 pb-16">
+        
+        <!-- WELCOME / INTRO -->
+        <div id="step-0" class="step active max-w-3xl mx-auto text-center">
+            <div class="mb-8">
+                <div class="inline-flex items-center gap-x-2 bg-teal-100 text-teal-700 px-4 py-1 rounded-3xl text-sm font-semibold mb-4">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Para Paraguay • 2026</span>
+                </div>
+                
+                <h2 class="font-display text-5xl tracking-tighter leading-none mb-4">
+                    ¿Estás listo para ser<br> 
+                    <span class="text-teal-700">empresario de lavadero</span><br>
+                    o solo quieres lavar autos?
+                </h2>
+                <p class="text-xl text-slate-600 max-w-md mx-auto">
+                    Un cuestionario realista + simulador financiero. 
+                    Al final tendrás tu informe completo con gráficos y plan de acción.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 modern-shadow border border-slate-100 text-left max-w-lg mx-auto mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="text-4xl mt-1">🚗</div>
+                    <div class="flex-1 text-sm">
+                        <p class="font-semibold text-slate-900 mb-1">Esto NO es un formulario genérico.</p>
+                        <ul class="space-y-1.5 text-slate-600">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Enfocado en <strong>replicabilidad y sistemas</strong></li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Proyecciones financieras realistas para Paraguay</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Considera Licencia Ambiental MADES + habilitación municipal</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 w-4"></i> Te dice claramente qué tan lejos estás de tener un negocio que funcione sin ti</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="startApp()" 
+                    class="px-10 py-4 bg-teal-700 hover:bg-teal-800 active:bg-teal-900 transition-all text-white font-semibold text-lg rounded-3xl shadow-lg shadow-teal-700/30 flex items-center gap-x-3 mx-auto">
+                <span>Comenzar evaluación (10-12 minutos)</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            
+            <p class="mt-6 text-xs text-slate-500">Tus respuestas se guardan automáticamente en este navegador. Nada se envía hasta que decidas.</p>
         </div>
 
-        <div class="resultGrid">
-          <div class="chartPanel"><div class="eyebrow">Madurez por área</div><canvas id="areaChart" width="760" height="360"></canvas></div>
-          <div class="chartPanel"><div class="eyebrow">Ingresos vs costos</div><canvas id="financeChart" width="760" height="360"></canvas></div>
+        <!-- STEPS -->
+        <!-- Paso 1: Perfil del Emprendedor -->
+        <div id="step-1" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 1/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Tu perfil como emprendedor</h3>
+                </div>
+                <p class="text-slate-600">Sé honesto. Esto define todo lo demás.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Q1 -->
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Nombre del proyecto / lavadero propuesto</label>
+                    <input type="text" data-key="nombre_proyecto" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm" 
+                           placeholder="Ej: LavaRápido Asunción" value="LavaRápido Centro">
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Tu nombre completo</label>
+                    <input type="text" data-key="nombre_emprendedor" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm" 
+                           placeholder="Juan Pérez" value="">
+                </div>
+
+                <!-- Experiencia -->
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3">¿Cuál es tu experiencia real en el rubro de lavado de autos?</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="ninguna" class="accent-teal-700">
+                            <span class="text-sm">Ninguna</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="trabaje_empleado" class="accent-teal-700" checked>
+                            <span class="text-sm">Trabajé como empleado</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="tuve_pequeno" class="accent-teal-700">
+                            <span class="text-sm">Tuve lavadero pequeño / informal</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="exp_rubro" data-key="exp_rubro" value="gestion_profesional" class="accent-teal-700">
+                            <span class="text-sm">Gestión profesional / varios empleados</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Experiencia gestionando equipos o negocios (1-5)</label>
+                    <div class="flex items-center gap-3">
+                        <input type="range" data-key="exp_gestion" min="1" max="5" step="1" value="3" 
+                               class="flex-1 accent-teal-700" oninput="updateRangeValue(this)">
+                        <span id="exp_gestion_val" class="font-mono w-8 text-center font-semibold text-teal-700">3</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">1 = Nunca gestioné nadie &nbsp;&nbsp; 5 = Llevé equipos de 5+ personas</p>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Horas por semana que puedes dedicarle al negocio</label>
+                    <input type="number" data-key="horas_semana" value="45" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                    <p class="text-xs text-slate-500 mt-1">Sé realista. 60+ horas es insostenible a largo plazo.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="adviceGrid" id="adviceGrid"></div>
+        <!-- Paso 2: Mercado y Ubicación -->
+        <div id="step-2" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 2/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Mercado y Ubicación</h3>
+                </div>
+                <p class="text-slate-600">Sin clientes no hay negocio. Sé conservador.</p>
+            </div>
 
-        <div class="reportPanel" style="margin-top:18px">
-          <div class="eyebrow">Informe final</div>
-          <p class="reportText" id="reportText"></p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Ciudad / Zona donde planeas abrir</label>
+                    <input type="text" data-key="zona" value="Asunción - Barrio Centro / Sajonia" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">¿Ya tienes ubicación identificada o alquilada?</label>
+                    <select data-key="tiene_ubicacion" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="no">No, todavía estoy buscando</option>
+                        <option value="en_proceso">En proceso de negociación</option>
+                        <option value="si_alquilada">Sí, ya tengo lugar alquilado</option>
+                        <option value="si_propio">Sí, es local propio</option>
+                    </select>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Tipo de zona / tráfico</label>
+                    <select data-key="tipo_zona" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="avenida_principal">Avenida principal de alto tráfico</option>
+                        <option value="barrio_residencial">Barrio residencial tranquilo</option>
+                        <option value="cerca_estacion">Cerca de estación de servicio / shopping</option>
+                        <option value="zona_comercial">Zona comercial / oficinas</option>
+                        <option value="industrial">Zona industrial / talleres</option>
+                    </select>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">¿Cuántos competidores directos conoces en un radio de 1-1.5km?</label>
+                    <input type="number" data-key="competidores" value="4" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3">Público objetivo principal (elige el más importante)</label>
+                    <div class="flex flex-wrap gap-2">
+                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="particulares" checked class="accent-white"> Particulares (autos familiares)
+                        </label>
+                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="flotas" class="accent-white"> Flotas de empresas / taxis / Uber
+                        </label>
+                        <label class="px-4 py-2 text-sm border border-slate-300 rounded-3xl cursor-pointer has-[:checked]:bg-teal-700 has-[:checked]:text-white has-[:checked]:border-teal-700 flex items-center gap-2">
+                            <input type="radio" name="publico" data-key="publico_objetivo" value="premium" class="accent-white"> Autos premium + detailing
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Lavados por día REALISTAS que esperas en los primeros 3 meses</label>
+                    <input type="number" data-key="lavados_dia_inicial" value="10" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm text-lg font-semibold">
+                    <p class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-exclamation-triangle mr-1"></i> Sé conservador. La mayoría sobreestima.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </section>
-  </main>
-</div>
 
-<script>
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyi-cxb4MzIDC7o1oPN8xG6CPo4wRcU_6sDSSvH2BKJU9bKywpq4BNZbhUHpXyPUhtiAA/exec';
+        <!-- Paso 3: Legal y Permisos (Paraguay) -->
+        <div id="step-3" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 3/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Legal, Permisos y Cumplimiento (Paraguay)</h3>
+                </div>
+                <p class="text-red-600 text-sm font-medium">Este es uno de los puntos donde más gente falla y termina cerrando.</p>
+            </div>
 
-const AREAS = {
-  estrategia:'Estrategia',
-  mercado:'Mercado',
-  oferta:'Oferta',
-  finanzas:'Finanzas',
-  operacion:'Operación',
-  equipo:'Equipo',
-  riesgos:'Riesgos',
-  escala:'Escala'
-};
-const WEIGHTS = {
-  estrategia:12, mercado:12, oferta:10, finanzas:18, operacion:18, equipo:10, riesgos:10, escala:10
-};
-const ADVICE = {
-  estrategia:['Visión empresarial','La base todavía necesita más definición. Sin visión clara, se abre un local pero no un modelo.','Hay intención empresarial. Bajala a hitos concretos de 30, 60 y 90 días.'],
-  mercado:['Cliente y recurrencia','El cliente está demasiado amplio. Si se apunta a todos, se termina peleando precio.','Buen enfoque comercial. Convertí eso en base de datos, WhatsApp y paquetes recurrentes.'],
-  oferta:['Oferta vendible','La oferta todavía está verde. Cada servicio necesita precio, duración, costo y margen.','La oferta tiene forma. El siguiente salto es vender paquetes y servicios premium.'],
-  finanzas:['Números reales','Esta es zona crítica. Sin costo por lavado y punto de equilibrio, abrir es apostar.','Los números ya permiten decidir mejor. Validalos con datos reales del primer mes.'],
-  operacion:['Receta operativa','Sin proceso escrito no hay replicabilidad. El negocio depende del dueño o del empleado bueno.','La operación tiene base. Probá si alguien nuevo puede repetir el método sin improvisar.'],
-  equipo:['Equipo entrenable','Faltan roles, pagos o capacitación. No se escala con favores ni informalidad.','El equipo está mejor planteado. Falta medir productividad, calidad y reclamos.'],
-  riesgos:['Protección del negocio','Faltan protocolos. Autos, objetos y reclamos pueden generar pérdidas o conflictos.','La protección está bien encaminada. Formalizá recepción con fotos y reglas claras.'],
-  escala:['Replicabilidad','Todavía no hay modelo copiável. Primero documentar y probar el primer local.','La expansión tiene lógica. El segundo local debe copiar el sistema, no reinventarlo.']
-};
+            <div class="space-y-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Estado actual de tu RUC / empresa</label>
+                    <select data-key="ruc_estado" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="sin_nada">No tengo nada todavía</option>
+                        <option value="ruc_personal">Tengo RUC como persona física</option>
+                        <option value="empresa_abierta">Ya abrí una empresa (SA o SRL)</option>
+                        <option value="en_proceso">Estoy en proceso de apertura</option>
+                    </select>
+                </div>
 
-const screens = [...document.querySelectorAll('.screen')];
-let current = 0;
-let submitted = false;
-const submissionId = (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'LAV-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+                <div class="question-card bg-white p-5 rounded-3xl border border-red-100 bg-red-50/30">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-exclamation-triangle text-red-500 mt-1"></i>
+                        <div class="flex-1">
+                            <label class="block text-sm font-semibold mb-2 text-red-700">Nivel de conocimiento sobre Licencia Ambiental MADES + habilitación municipal para lavaderos</label>
+                            <div class="flex items-center gap-3 mb-1">
+                                <input type="range" data-key="conocimiento_legal" min="1" max="5" step="1" value="2" 
+                                       class="flex-1 accent-red-600" oninput="updateRangeValue(this)">
+                                <span id="conocimiento_legal_val" class="font-mono w-8 text-center font-semibold text-red-600">2</span>
+                            </div>
+                            <p class="text-xs text-red-600">En Paraguay los lavaderos <strong>necesitan Licencia Ambiental de MADES</strong> (por efluentes). Sin ella te pueden intervenir y cerrar. Es requisito previo para la habilitación municipal.</p>
+                        </div>
+                    </div>
+                </div>
 
-function qs(sel){ return document.querySelector(sel); }
-function qsa(sel){ return [...document.querySelectorAll(sel)]; }
-function money(n){
-  if(!isFinite(n)) return '—';
-  return new Intl.NumberFormat('es-PY',{maximumFractionDigits:0}).format(Math.round(n)) + ' Gs';
-}
-function cleanNum(v){ return Number(String(v||'').replace(/[^0-9.-]/g,'')) || 0; }
-function textPoints(v){
-  const l = String(v||'').trim().length;
-  if(l===0) return 0;
-  if(l<20) return 1;
-  if(l<85) return 3;
-  return 4;
-}
-function formData(){
-  const data = {};
-  qsa('input[name], textarea[name], select[name]').forEach(el => data[el.name] = el.value || '');
-  return data;
-}
-function getAreaScores(){
-  const totals = {};
-  Object.keys(AREAS).forEach(a => totals[a] = {points:0,max:0});
-  qsa('[data-score]').forEach(el => {
-    const a = el.dataset.area;
-    if(!a) return;
-    const opt = el.options[el.selectedIndex];
-    totals[a].points += Number(opt?.dataset.points || 0);
-    totals[a].max += 4;
-  });
-  qsa('[data-text]').forEach(el => {
-    const a = el.dataset.area;
-    if(!a) return;
-    totals[a].points += textPoints(el.value);
-    totals[a].max += 4;
-  });
-  const out = {};
-  Object.keys(totals).forEach(a => out[a] = totals[a].max ? Math.round(totals[a].points / totals[a].max * 100) : 0);
-  return out;
-}
-function getFinance(){
-  const d = formData();
-  const investment = cleanNum(d.initialInvestment);
-  const fixed = cleanNum(d.fixedCosts);
-  const days = cleanNum(d.daysOpen);
-  const cars = cleanNum(d.carsPerDay);
-  const ticket = cleanNum(d.avgTicket);
-  const variable = cleanNum(d.variableCost);
-  const monthlyCars = days * cars;
-  const revenue = monthlyCars * ticket;
-  const variableTotal = monthlyCars * variable;
-  const contribution = ticket - variable;
-  const profit = revenue - variableTotal - fixed;
-  const breakEvenCarsMonth = contribution > 0 ? fixed / contribution : 0;
-  const breakEvenCarsDay = days > 0 ? breakEvenCarsMonth / days : 0;
-  const paybackMonths = profit > 0 ? investment / profit : Infinity;
-  return {investment,fixed,days,cars,ticket,variable,monthlyCars,revenue,variableTotal,contribution,profit,breakEvenCarsMonth,breakEvenCarsDay,paybackMonths};
-}
-function weightedScore(scores, finance){
-  let total=0, wsum=0;
-  Object.entries(WEIGHTS).forEach(([a,w])=>{total += (scores[a]||0)*w; wsum += w;});
-  let score = wsum ? total/wsum : 0;
-  if(finance.ticket && finance.variable && finance.fixed && finance.days && finance.cars){
-    if(finance.contribution <= 0) score -= 14;
-    if(finance.profit < 0) score -= 9;
-    if(finance.profit > 0 && finance.breakEvenCarsDay && finance.cars >= finance.breakEvenCarsDay * 1.35) score += 4;
-  }
-  return Math.max(0, Math.min(100, Math.round(score)));
-}
-function statusFor(score){
-  if(score>=85) return ['Modelo muy prometedor','Hay estructura de empresa. El paso correcto es validar el primer local con métricas reales antes de replicar.'];
-  if(score>=70) return ['Base sólida','El proyecto puede avanzar, pero conviene corregir puntos débiles antes de meter inversión fuerte.'];
-  if(score>=55) return ['Viable con ajustes','Hay potencial, pero todavía falta cerrar método, números o protección.'];
-  if(score>=35) return ['Riesgo alto','No conviene abrir grande. Primero hay que ordenar el modelo y probar en pequeño.'];
-  return ['Muy verde','Hoy parece más intención que empresa. Falta convertir la idea en sistema.'];
-}
-function show(i){
-  current = Math.max(0, Math.min(screens.length-1, i));
-  screens.forEach((s,idx)=>s.classList.toggle('active', idx===current));
-  const title = screens[current].dataset.title || 'Inicio';
-  qs('#stepText').textContent = current === 0 ? 'Inicio' : title;
-  qs('#progressBar').style.width = (current / (screens.length-1) * 100) + '%';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function nextScreen(){ show(current+1); }
-function prevScreen(){ show(current-1); }
-function finish(){
-  buildResult();
-  show(screens.length-1);
-  silentSubmit();
-}
-function buildResult(){
-  const scores = getAreaScores();
-  const finance = getFinance();
-  const score = weightedScore(scores, finance);
-  const [state, desc] = statusFor(score);
-  qs('#resultRing').style.setProperty('--score', score);
-  qs('#finalScore').textContent = score;
-  qs('#finalState').textContent = state;
-  qs('#resultTitle').textContent = state;
-  qs('#resultDescription').textContent = desc;
-  qs('#revenueKpi').textContent = money(finance.revenue);
-  qs('#profitKpi').textContent = money(finance.profit);
-  qs('#profitKpi').closest('.kpi').className = 'kpi ' + (finance.profit > 0 ? 'good' : 'bad');
-  qs('#breakEvenKpi').textContent = finance.breakEvenCarsDay ? finance.breakEvenCarsDay.toFixed(1) + ' autos/día' : '—';
-  qs('#paybackKpi').textContent = isFinite(finance.paybackMonths) ? finance.paybackMonths.toFixed(1) + ' meses' : 'No recupera';
-  qs('#paybackKpi').closest('.kpi').className = 'kpi ' + (isFinite(finance.paybackMonths) && finance.paybackMonths < 18 ? 'good' : 'warn');
-  drawAreaChart(scores);
-  drawFinanceChart(finance);
-  renderAdvice(scores);
-  qs('#reportText').textContent = makeReport(scores, finance, score, state, desc);
-}
-function renderAdvice(scores){
-  const grid = qs('#adviceGrid');
-  grid.innerHTML = '';
-  Object.entries(scores).sort((a,b)=>a[1]-b[1]).slice(0,4).forEach(([a,s])=>{
-    const [title, low, high] = ADVICE[a];
-    const div = document.createElement('div');
-    div.className = 'advice';
-    div.innerHTML = `<h4>${title} · ${s}%</h4><p>${s>=70 ? high : low}</p>`;
-    grid.appendChild(div);
-  });
-}
-function makeReport(scores, f, score, state, desc){
-  const d = formData();
-  const strong = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([a,s])=>`${AREAS[a]} (${s}%)`).join(', ');
-  const weak = Object.entries(scores).sort((a,b)=>a[1]-b[1]).slice(0,3).map(([a,s])=>`${AREAS[a]} (${s}%)`).join(', ');
-  const risks = [];
-  if(f.contribution <= 0 && f.ticket) risks.push('El costo variable por auto iguala o supera el ticket promedio.');
-  if(f.profit < 0) risks.push('La utilidad mensual estimada es negativa con los datos actuales.');
-  if(scores.finanzas < 60) risks.push('Los números todavía no están maduros para invertir fuerte.');
-  if(scores.operacion < 60) risks.push('La receta operativa no está lista para ser replicada.');
-  if(scores.riesgos < 60) risks.push('Faltan protocolos para daños, objetos y reclamos.');
-  if(scores.escala < 60) risks.push('Todavía no hay documentación suficiente para abrir otro local.');
-  if(!risks.length) risks.push('No aparecen zonas rojas fuertes, pero falta validar con operación real.');
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-3">¿Sabes cómo vas a manejar las aguas residuales / efluentes?</label>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="no_idea" class="accent-teal-700"> No tengo idea todavía</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="pozo_septico" class="accent-teal-700" checked> Pozo séptico + tratamiento básico</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="efluentes" data-key="manejo_efluentes" value="sistema_reciclaje" class="accent-teal-700"> Sistema de reciclaje de agua + tratamiento</label>
+                        </div>
+                    </div>
 
-  const decision = score>=85 ? 'Avanzar con piloto formal, tablero de indicadores y manual operativo. No abrir segundo local hasta tener métricas reales sostenidas.'
-    : score>=70 ? 'Avanzar con cautela. Hay base, pero antes de invertir fuerte conviene cerrar las áreas débiles.'
-    : score>=55 ? 'Probar en pequeño y medir. Todavía falta convertir la idea en sistema.'
-    : 'No abrir en modo formal todavía. Primero ordenar cliente, oferta, costos, receta, personal y riesgos.';
+                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-2">¿Tienes contador o estudio contable de confianza?</label>
+                        <select data-key="tiene_contador" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                            <option value="no">No</option>
+                            <option value="si_bueno">Sí, tengo uno bueno</option>
+                            <option value="si_regular">Sí, pero no me da mucha confianza</option>
+                        </select>
+                        
+                        <label class="block text-sm font-semibold mt-4 mb-2">¿Tienes abogado para temas contractuales y municipales?</label>
+                        <select data-key="tiene_abogado" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                            <option value="no">No</option>
+                            <option value="si">Sí</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  return `${d.projectName || 'Proyecto de lavadero'}
-INFORME EJECUTIVO
+        <!-- Paso 4: Operaciones y Replicabilidad (EL MÉTODO) -->
+        <div id="step-4" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 4/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Operaciones y el Método (lo más importante)</h3>
+                </div>
+                <p class="text-slate-600">Aquí se separa el que "lava autos" del que tiene un <strong>negocio replicable</strong>.</p>
+            </div>
 
-Responsable: ${d.owner || 'No definido'}
-ID diagnóstico: ${submissionId}
+            <div class="space-y-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">¿Tienes (o planeas tener) un proceso de lavado estandarizado por escrito con pasos claros y tiempos?</label>
+                    <div class="flex gap-3 mt-3">
+                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="si_detallado" class="accent-teal-700"> Sí, lo tengo detallado
+                        </label>
+                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="en_proceso" class="accent-teal-700" checked> Lo estoy armando
+                        </label>
+                        <label class="flex-1 p-3 border border-slate-300 rounded-2xl text-center cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                            <input type="radio" name="proceso_estandar" data-key="proceso_estandar" value="no" class="accent-teal-700"> No, todavía no
+                        </label>
+                    </div>
+                </div>
 
-Resultado general:
-Score: ${score}/100
-Estado: ${state}
-Lectura: ${desc}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-3">¿Qué tan importante es para ti que el lavadero pueda funcionar bien aunque tú no estés presente físicamente todos los días?</label>
+                    <div class="flex items-center gap-3">
+                        <input type="range" data-key="replicable" min="1" max="5" step="1" value="4" 
+                               class="flex-1 accent-teal-700" oninput="updateRangeValue(this)">
+                        <span id="replicable_val" class="font-mono w-8 text-center font-semibold text-teal-700">4</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">5 = Quiero que sea un sistema que pueda delegar o replicar en otra sucursal. 1 = Quiero controlarlo todo yo.</p>
+                </div>
 
-Fortalezas principales:
-${strong || 'Pendiente'}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-2">Equipos principales que planeas tener (marca las que sí)</label>
+                        <div class="grid grid-cols-2 gap-y-1.5 text-sm mt-2">
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_hidrolavadora" checked class="accent-teal-700"> Hidrolavadora profesional</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_aspiradora" checked class="accent-teal-700"> Aspiradora / aspirado seco</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_compresor" class="accent-teal-700"> Compresor de aire</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_pulidora" class="accent-teal-700"> Pulidora / detailing</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_reciclaje" class="accent-teal-700"> Sistema reciclaje de agua</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="eq_ozono" class="accent-teal-700"> Generador de ozono</label>
+                        </div>
+                    </div>
 
-Áreas críticas:
-${weak || 'Pendiente'}
+                    <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                        <label class="block text-sm font-semibold mb-2">Tiempo promedio estimado por lavado estándar (minutos)</label>
+                        <input type="number" data-key="tiempo_lavado" value="35" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        
+                        <label class="block text-sm font-semibold mt-4 mb-2">¿Cómo asegurarás calidad consistente?</label>
+                        <div class="space-y-1 text-sm">
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_checklist" checked class="accent-teal-700"> Checklist por vehículo</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_supervisor" class="accent-teal-700"> Supervisor / revisor final</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" data-key="calidad_fotos" class="accent-teal-700"> Fotos antes/después</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-Resumen financiero:
-Inversión inicial: ${money(f.investment)}
-Días abiertos por mes: ${f.days || '—'}
-Autos esperados por día: ${f.cars || '—'}
-Ticket promedio: ${money(f.ticket)}
-Costo variable por auto: ${money(f.variable)}
-Margen de contribución por auto: ${money(f.contribution)}
-Ingresos mensuales estimados: ${money(f.revenue)}
-Costos variables mensuales: ${money(f.variableTotal)}
-Costos fijos mensuales: ${money(f.fixed)}
-Utilidad mensual estimada: ${money(f.profit)}
-Punto de equilibrio: ${f.breakEvenCarsDay ? f.breakEvenCarsDay.toFixed(1) + ' autos/día' : 'No calculable'}
-Recuperación de inversión: ${isFinite(f.paybackMonths) ? f.paybackMonths.toFixed(1) + ' meses' : 'No recupera con los datos actuales'}
+        <!-- Paso 5: Finanzas -->
+        <div id="step-5" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 5/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Finanzas y Proyecciones</h3>
+                </div>
+                <p class="text-slate-600">Aquí se define si el negocio tiene sentido económico o es solo un hobby caro.</p>
+            </div>
 
-Diagnóstico estratégico:
-Visión:
-${d.vision || 'No definida'}
+            <div class="bg-amber-50 border border-amber-200 rounded-3xl p-4 mb-5 text-sm">
+                <strong class="text-amber-700">Consejo:</strong> Usa números conservadores. En Paraguay un lavadero manual bien gestionado puede ser rentable, pero el primer año casi siempre es más lento de lo que uno espera.
+            </div>
 
-Cliente y problema:
-${d.customerProblem || 'No definido'}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Inversión inicial total estimada (₲)</label>
+                    <input type="number" data-key="inversion_inicial" value="35000000" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-slate-500 mt-1">Incluye: adecuación local + equipos + primeros insumos + marketing + capital de trabajo</p>
+                </div>
 
-Diferencial:
-${d.differentiator || 'No definido'}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Gastos fijos mensuales estimados (₲)</label>
+                    <input type="number" data-key="gastos_fijos" value="8500000" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-slate-500 mt-1">Alquiler + sueldos base + luz/agua + internet + mantenimiento + imprevistos</p>
+                </div>
 
-Servicios:
-${d.services || 'No definidos'}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Costo variable promedio por lavado (₲)</label>
+                    <input type="number" data-key="costo_variable" value="8500" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-slate-500 mt-1">Químicos, agua, electricidad por uso, esponjas, etc.</p>
+                </div>
 
-Receta operativa:
-${d.process || 'No definida'}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Precio promedio por servicio (₲)</label>
+                    <input type="number" data-key="precio_promedio" value="55000" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-slate-500 mt-1">Mezcla de lavados básicos + algunos premium. Ej: 45.000 básico / 120.000 full</p>
+                </div>
 
-Riesgos detectados:
-- ${risks.join('\n- ')}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Lavados por día promedio que esperas (meses 4-6)</label>
+                    <input type="number" data-key="lavados_dia_objetivo" value="18" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                </div>
 
-Recomendación:
-${decision}
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Crecimiento mensual esperado en volumen de lavados (%)</label>
+                    <input type="number" data-key="crecimiento_mensual" value="7" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-lg font-semibold">
+                    <p class="text-xs text-slate-500 mt-1">Realista: 5-10% mensual los primeros meses</p>
+                </div>
+            </div>
+        </div>
 
-Próximas acciones:
-1. Convertir servicios en tabla: precio, duración, costo y margen.
-2. Escribir recepción, lavado, control de calidad y entrega.
-3. Medir 30 días: autos/día, ticket promedio, reclamos, productos usados y utilidad real.
-4. Crear política de recepción con fotos, objetos de valor y reclamos.
-5. Crear manual corto para entrenar a un empleado nuevo.
+        <!-- Paso 6: Marketing -->
+        <div id="step-6" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 6/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Marketing y Adquisición de Clientes</h3>
+                </div>
+            </div>
 
-Conclusión:
-No se escala un lavadero. Se escala una receta rentable, medible y repetible.`;
-}
-function payload(){
-  const scores = getAreaScores();
-  const finance = getFinance();
-  const score = weightedScore(scores, finance);
-  const [state, desc] = statusFor(score);
-  return {
-    source:'lavadero_clean_ux_v1',
-    submissionId,
-    savedAt:new Date().toISOString(),
-    saveStatus:'COMPLETED',
-    form:formData(),
-    areaScores:scores,
-    finance,
-    globalScore:score,
-    state,
-    description:desc,
-    report:qs('#reportText').textContent || makeReport(scores, finance, score, state, desc)
-  };
-}
-function silentSubmit(){
-  if(submitted) return;
-  submitted = true;
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Presupuesto inicial de marketing (₲)</label>
+                    <input type="number" data-key="presupuesto_marketing" value="2500000" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                </div>
 
-  // Método compatible con Google Apps Script incluso abriendo el HTML como archivo local.
-  // Envía a un iframe oculto para evitar problemas de CORS y sin mostrar nada al usuario.
-  const data = JSON.stringify(payload());
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-3">¿Ya tienes nombre de marca + logo / identidad visual?</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="si_completo" class="accent-teal-700"> Sí, todo listo
+                        </label>
+                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="basico" class="accent-teal-700" checked> Tengo nombre pero no logo profesional
+                        </label>
+                        <label class="flex-1 text-center p-3 border border-slate-300 rounded-2xl cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 text-sm">
+                            <input type="radio" name="branding" data-key="tiene_branding" value="no"> No tengo nada
+                        </label>
+                    </div>
+                </div>
 
-  let iframe = document.getElementById('sheetsFrame');
-  if(!iframe){
-    iframe = document.createElement('iframe');
-    iframe.name = 'sheetsFrame';
-    iframe.id = 'sheetsFrame';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-  }
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3">Canales principales que vas a usar para conseguir clientes (marca todos los que planeas usar fuerte)</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_whatsapp" checked class="accent-teal-700"> WhatsApp Business + catálogo</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_instagram" checked class="accent-teal-700"> Instagram + Reels</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_google" class="accent-teal-700"> Google My Business + Maps</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_alianzas" checked class="accent-teal-700"> Alianzas (estaciones, talleres, empresas)</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_referidos" checked class="accent-teal-700"> Programa de referidos / fidelidad</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" data-key="canal_pago" class="accent-teal-700"> Publicidad pagada (Meta Ads)</label>
+                    </div>
+                </div>
 
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = SHEETS_URL;
-  form.target = 'sheetsFrame';
-  form.style.display = 'none';
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2">¿Ofrecerás planes de suscripción o paquetes mensuales?</label>
+                    <select data-key="suscripciones" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                        <option value="si">Sí, es parte central de mi modelo</option>
+                        <option value="parcial">Sí, pero como opción secundaria</option>
+                        <option value="no">No, por ahora solo servicio por demanda</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-  const input = document.createElement('input');
-  input.type = 'hidden';
-  input.name = 'payload';
-  input.value = data;
+        <!-- Paso 7: Equipo y Visión -->
+        <div id="step-7" class="step">
+            <div class="mb-6">
+                <div class="flex items-center gap-x-3 mb-2">
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-2xl">PASO 7/7</span>
+                    <h3 class="font-display text-2xl tracking-tight">Equipo, Gestión y Visión a Futuro</h3>
+                </div>
+            </div>
 
-  form.appendChild(input);
-  document.body.appendChild(form);
-  form.submit();
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Cantidad de empleados iniciales (sin contarte a ti)</label>
+                    <input type="number" data-key="empleados_iniciales" value="2" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                </div>
 
-  setTimeout(() => form.remove(), 3000);
-}
-function drawAreaChart(scores){
-  const c = qs('#areaChart'), ctx = c.getContext('2d'), W=c.width, H=c.height;
-  ctx.clearRect(0,0,W,H);
-  const entries = Object.entries(scores);
-  const pad=48, chartW=W-pad*2, chartH=H-86;
-  ctx.strokeStyle='rgba(255,255,255,.14)';
-  for(let i=0;i<=4;i++){ const y=pad+chartH-(chartH*i/4); ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke(); }
-  const bw = chartW/entries.length*.58;
-  entries.forEach(([a,s],i)=>{
-    const slot=chartW/entries.length, x=pad+i*slot+(slot-bw)/2, h=chartH*s/100, y=pad+chartH-h;
-    const g=ctx.createLinearGradient(0,y,0,pad+chartH); g.addColorStop(0,'#fff1b8'); g.addColorStop(.55,'#d8b45d'); g.addColorStop(1,'#6b5523');
-    ctx.fillStyle=g; roundRect(ctx,x,y,bw,h,10,true);
-    ctx.fillStyle='#f8fafc'; ctx.font='18px Arial'; ctx.textAlign='center'; ctx.fillText(s+'%',x+bw/2,y-8);
-    ctx.save(); ctx.translate(x+bw/2,H-18); ctx.rotate(-Math.PI/9); ctx.fillStyle='#cbd5e1'; ctx.font='14px Arial'; ctx.fillText(AREAS[a],0,0); ctx.restore();
-  });
-  ctx.textAlign='start';
-}
-function drawFinanceChart(f){
-  const c = qs('#financeChart'), ctx = c.getContext('2d'), W=c.width, H=c.height;
-  ctx.clearRect(0,0,W,H);
-  const items = [['Ingresos',Math.max(0,f.revenue)],['Variables',Math.max(0,f.variableTotal)],['Fijos',Math.max(0,f.fixed)],['Utilidad',Math.max(0,f.profit)]];
-  const max = Math.max(...items.map(x=>x[1]),1), pad=48, chartW=W-pad*2, chartH=H-80;
-  ctx.strokeStyle='rgba(255,255,255,.14)';
-  for(let i=0;i<=4;i++){ const y=pad+chartH-(chartH*i/4); ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(W-pad,y);ctx.stroke(); }
-  const bw=chartW/items.length*.55;
-  items.forEach(([label,value],i)=>{
-    const slot=chartW/items.length, x=pad+i*slot+(slot-bw)/2, h=chartH*value/max, y=pad+chartH-h;
-    const g=ctx.createLinearGradient(0,y,0,pad+chartH); g.addColorStop(0,label==='Utilidad'?'#4ade80':'#67e8f9'); g.addColorStop(1,label==='Utilidad'?'#14532d':'#164e63');
-    ctx.fillStyle=g; roundRect(ctx,x,y,bw,h,10,true);
-    ctx.fillStyle='#f8fafc'; ctx.font='17px Arial'; ctx.textAlign='center'; ctx.fillText(shortMoney(value),x+bw/2,y-8);
-    ctx.fillStyle='#cbd5e1'; ctx.font='15px Arial'; ctx.fillText(label,x+bw/2,H-24);
-  });
-  if(f.profit<0){ctx.fillStyle='#fb7185';ctx.font='17px Arial';ctx.textAlign='left';ctx.fillText('Utilidad negativa: '+money(f.profit),pad,30);}
-}
-function shortMoney(n){ if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return Math.round(n/1000)+'K'; return Math.round(n); }
-function roundRect(ctx,x,y,w,h,r,fill){
-  r=Math.min(r,w/2,Math.abs(h)/2); ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); if(fill) ctx.fill();
-}
-show(0);
-</script>
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200">
+                    <label class="block text-sm font-semibold mb-2">Sueldo promedio por lavador / operario (₲ / mes)</label>
+                    <input type="number" data-key="sueldo_lavador" value="2800000" 
+                           class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm">
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2">¿Cómo vas a capacitar y estandarizar el trabajo del equipo?</label>
+                    <textarea data-key="capacitacion" rows="2" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm"
+                              placeholder="Ej: 1 semana de entrenamiento con checklist + shadowing + pruebas de calidad semanales"></textarea>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-3">Visión a 24 meses</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="un_local_bien" checked class="accent-teal-700"> Mantener 1 solo local bien gestionado y rentable
+                        </label>
+                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="dos_locales" class="accent-teal-700"> Abrir una segunda sucursal
+                        </label>
+                        <label class="p-3 border border-slate-300 rounded-2xl text-sm cursor-pointer has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50 flex items-center gap-2">
+                            <input type="radio" name="vision" data-key="vision_24m" value="sistema_replicable" class="accent-teal-700"> Crear un sistema replicable (posible franquicia o más sucursales)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-card bg-white p-5 rounded-3xl border border-slate-200 md:col-span-2">
+                    <label class="block text-sm font-semibold mb-2">¿Qué te va a diferenciar de los otros lavaderos de la zona? (tu propuesta de valor)</label>
+                    <textarea data-key="propuesta_valor" rows="2" class="input-focus w-full border border-slate-300 rounded-2xl px-4 py-3 text-sm"
+                              placeholder="Ej: Atención premium + sistema de suscripción + garantía de calidad + pickup &amp; delivery"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS DASHBOARD -->
+        <div id="step-8" class="step">
+            <div class="mb-8 text-center">
+                <h2 class="font-display text-4xl tracking-tighter">Tu Informe de Preparación</h2>
+                <p class="text-slate-600 mt-1">Generado el <span id="fecha-informe"></span></p>
+            </div>
+
+            <!-- Overall Score -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
+                <div>
+                    <div class="text-center">
+                        <div class="text-sm uppercase tracking-[2px] text-slate-500 mb-1">PUNTAJE GENERAL DE PREPARACIÓN</div>
+                        <div id="score-general" 
+                             class="font-display text-[92px] leading-none font-bold text-teal-700 tabular-nums">68</div>
+                        <div class="text-sm -mt-2 text-slate-500">de 100</div>
+                    </div>
+                </div>
+                
+                <div class="max-w-xs text-sm bg-white p-5 rounded-3xl border">
+                    <div id="score-interpretacion" class="font-medium"></div>
+                    <div id="score-comentario" class="text-slate-600 text-sm mt-1"></div>
+                </div>
+            </div>
+
+            <!-- Category Scores -->
+            <div class="mb-10">
+                <h4 class="font-semibold text-lg mb-4 px-1">Puntajes por área</h4>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="category-scores">
+                    <!-- JS populated -->
+                </div>
+            </div>
+
+            <!-- Radar + Financial Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-10">
+                <!-- Radar Chart -->
+                <div class="lg:col-span-2 bg-white rounded-3xl p-6 border modern-shadow">
+                    <div class="font-semibold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-teal-600"></i>
+                        <span>Balance de preparación</span>
+                    </div>
+                    <div class="chart-container" style="height: 260px">
+                        <canvas id="radar-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Financial Summary -->
+                <div class="lg:col-span-3 bg-white rounded-3xl p-6 border modern-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-teal-600"></i>
+                            <span>Proyección financiera (12 meses)</span>
+                        </div>
+                        <button onclick="recalculateFinancials()" 
+                                class="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center gap-1 text-slate-600">
+                            <i class="fa-solid fa-sync text-xs"></i> <span>Recalcular</span>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-4 text-center">
+                        <div>
+                            <div class="text-xs text-slate-500">Inversión inicial</div>
+                            <div id="fin-inversion" class="font-semibold text-lg tabular-nums"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Utilidad proyectada año 1</div>
+                            <div id="fin-utilidad-anual" class="font-semibold text-lg text-emerald-600 tabular-nums"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Meses para recuperar inversión</div>
+                            <div id="fin-breakeven" class="font-semibold text-lg text-amber-600 tabular-nums"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="height: 180px">
+                        <canvas id="financial-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strengths & Weaknesses + Action Plan -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                <div class="bg-white rounded-3xl p-6 border modern-shadow">
+                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-emerald-600">
+                        <i class="fa-solid fa-check-circle"></i> Fortalezas
+                    </h4>
+                    <ul id="fortalezas-list" class="space-y-2 text-sm"></ul>
+                </div>
+                
+                <div class="bg-white rounded-3xl p-6 border modern-shadow">
+                    <h4 class="font-semibold mb-4 flex items-center gap-2 text-red-600">
+                        <i class="fa-solid fa-exclamation-triangle"></i> Áreas críticas a mejorar
+                    </h4>
+                    <ul id="debilidades-list" class="space-y-2 text-sm"></ul>
+                </div>
+            </div>
+
+            <!-- Action Plan -->
+            <div class="bg-white rounded-3xl p-6 border modern-shadow mb-10">
+                <h4 class="font-semibold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-tasks text-teal-600"></i> 
+                    Plan de Acción Prioritario (próximos 30-60 días)
+                </h4>
+                <div id="plan-accion" class="space-y-3"></div>
+            </div>
+
+            <!-- Final message -->
+            <div class="text-center bg-slate-900 text-white rounded-3xl p-8">
+                <p class="text-lg">Este informe es tu hoja de ruta. No es perfecto, pero es mucho mejor que empezar a ciegas.</p>
+                <p class="text-sm opacity-75 mt-2">La diferencia entre los que fracasan y los que logran es que los segundos <strong>documentan procesos</strong> y miden todo.</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div id="results-actions" class="hidden mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <button onclick="downloadPDF()" 
+                    class="flex-1 sm:flex-none px-8 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors">
+                <i class="fa-solid fa-download"></i>
+                <span>Descargar / Imprimir Informe (PDF)</span>
+            </button>
+            
+            <button onclick="sendToGoogleSheets()" 
+                    class="flex-1 sm:flex-none px-8 py-3.5 bg-teal-700 hover:bg-teal-800 text-white rounded-3xl font-semibold flex items-center justify-center gap-x-2 transition-colors shadow-lg shadow-teal-700/30">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Enviar respuestas a Google Sheets de Nicolás</span>
+            </button>
+        </div>
+        
+        <div class="text-center mt-8 text-xs text-slate-400">
+            Hecho con ❤️ para emprendedores que quieren hacer las cosas bien • Paraguay 2026
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#0f766e');
+        }
+
+        let currentStep = 0;
+        let respuestas = {};
+        let radarChartInstance = null;
+        let financialChartInstance = null;
+
+        // Load from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('lavaderoListoRespuestas');
+            if (saved) {
+                respuestas = JSON.parse(saved);
+                // Pre-fill inputs if they exist
+                setTimeout(() => {
+                    document.querySelectorAll('input, select, textarea').forEach(el => {
+                        const key = el.dataset.key;
+                        if (key && respuestas[key] !== undefined) {
+                            if (el.type === 'checkbox') {
+                                el.checked = respuestas[key];
+                            } else if (el.type === 'radio') {
+                                if (el.value === respuestas[key]) el.checked = true;
+                            } else {
+                                el.value = respuestas[key];
+                            }
+                        }
+                    });
+                }, 300);
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('lavaderoListoRespuestas', JSON.stringify(respuestas));
+        }
+
+        function updateRangeValue(input) {
+            const valId = input.dataset.key + '_val';
+            const valEl = document.getElementById(valId);
+            if (valEl) valEl.textContent = input.value;
+        }
+
+        function collectCurrentStepAnswers() {
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            if (!currentStepEl) return;
+
+            currentStepEl.querySelectorAll('input, select, textarea').forEach(el => {
+                const key = el.dataset.key;
+                if (!key) return;
+
+                if (el.type === 'checkbox') {
+                    respuestas[key] = el.checked;
+                } else if (el.type === 'radio') {
+                    if (el.checked) respuestas[key] = el.value;
+                } else {
+                    respuestas[key] = el.value;
+                }
+            });
+            saveProgress();
+        }
+
+        function updateProgress() {
+            const totalSteps = 7;
+            const percent = Math.round((currentStep / totalSteps) * 100);
+            
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-text').innerHTML = `Paso ${currentStep} de ${totalSteps}`;
+            document.getElementById('progress-percent').innerHTML = `${percent}%`;
+        }
+
+        function goToStep(step) {
+            // Save current answers
+            if (currentStep > 0 && currentStep < 8) {
+                collectCurrentStepAnswers();
+            }
+
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            
+            currentStep = step;
+
+            if (step === 0) {
+                document.getElementById('step-0').classList.add('active');
+            } else if (step >= 1 && step <= 7) {
+                const stepEl = document.getElementById(`step-${step}`);
+                if (stepEl) stepEl.classList.add('active');
+                updateProgress();
+            } else if (step === 8) {
+                document.getElementById('step-8').classList.add('active');
+                generateReport();
+            }
+        }
+
+        function startApp() {
+            // Preload some defaults if empty
+            if (!respuestas.nombre_emprendedor) {
+                respuestas.nombre_emprendedor = "Tu Nombre";
+            }
+            goToStep(1);
+        }
+
+        function nextStep() {
+            if (currentStep < 7) {
+                goToStep(currentStep + 1);
+            } else {
+                goToStep(8);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+
+        // Scoring logic
+        function calculateScores(data) {
+            const scores = {
+                perfil: 70,
+                mercado: 65,
+                legal: 40,
+                operaciones: 55,
+                finanzas: 60,
+                marketing: 50,
+                equipo: 55
+            };
+
+            // Perfil
+            if (data.exp_rubro === 'gestion_profesional') scores.perfil += 18;
+            else if (data.exp_rubro === 'tuve_pequeno') scores.perfil += 10;
+            else if (data.exp_rubro === 'trabaje_empleado') scores.perfil += 5;
+            
+            scores.perfil += (parseInt(data.exp_gestion) || 3) * 4;
+            if (parseInt(data.horas_semana) > 35) scores.perfil += 8;
+
+            // Mercado
+            if (data.tipo_zona === 'avenida_principal' || data.tipo_zona === 'cerca_estacion') scores.mercado += 15;
+            scores.mercado -= Math.min(15, (parseInt(data.competidores) || 3) * 3);
+            if (parseInt(data.lavados_dia_inicial) >= 12) scores.mercado += 12;
+            else if (parseInt(data.lavados_dia_inicial) < 8) scores.mercado -= 10;
+
+            // Legal (very important in PY)
+            if (data.ruc_estado === 'empresa_abierta') scores.legal += 15;
+            else if (data.ruc_estado === 'ruc_personal') scores.legal += 5;
+            
+            scores.legal += (parseInt(data.conocimiento_legal) || 2) * 8;
+            if (data.manejo_efluentes === 'sistema_reciclaje') scores.legal += 18;
+            else if (data.manejo_efluentes === 'pozo_septico') scores.legal += 8;
+            if (data.tiene_contador === 'si_bueno') scores.legal += 10;
+            if (data.tiene_abogado === 'si') scores.legal += 8;
+
+            // Operaciones & Replicabilidad (KEY)
+            if (data.proceso_estandar === 'si_detallado') scores.operaciones += 22;
+            else if (data.proceso_estandar === 'en_proceso') scores.operaciones += 10;
+            
+            scores.operaciones += (parseInt(data.replicable) || 3) * 7;
+            if (data.calidad_checklist) scores.operaciones += 8;
+            if (data.calidad_supervisor) scores.operaciones += 6;
+            if (data.eq_reciclaje) scores.operaciones += 10;
+
+            // Finanzas
+            const inv = parseInt(data.inversion_inicial) || 35000000;
+            const fijos = parseInt(data.gastos_fijos) || 8500000;
+            const variable = parseInt(data.costo_variable) || 8500;
+            const precio = parseInt(data.precio_promedio) || 55000;
+            const margen = precio - variable;
+            
+            if (margen > 40000) scores.finanzas += 15;
+            if (fijos < 10000000) scores.finanzas += 10;
+            if (inv < 40000000) scores.finanzas += 8;
+
+            // Marketing
+            if (data.tiene_branding === 'si_completo') scores.marketing += 12;
+            if (data.canal_instagram && data.canal_whatsapp) scores.marketing += 10;
+            if (data.suscripciones === 'si') scores.marketing += 15;
+            if (parseInt(data.presupuesto_marketing) > 2000000) scores.marketing += 8;
+
+            // Equipo
+            if (parseInt(data.empleados_iniciales) >= 2) scores.equipo += 10;
+            if (data.capacitacion && data.capacitacion.length > 20) scores.equipo += 12;
+            if (data.vision_24m === 'sistema_replicable') scores.equipo += 18;
+            else if (data.vision_24m === 'dos_locales') scores.equipo += 10;
+
+            // Clamp 0-100
+            Object.keys(scores).forEach(k => {
+                scores[k] = Math.max(25, Math.min(98, Math.round(scores[k])));
+            });
+
+            // Overall (weighted)
+            const overall = Math.round(
+                scores.perfil * 0.12 +
+                scores.mercado * 0.15 +
+                scores.legal * 0.18 +
+                scores.operaciones * 0.20 +   // highest weight - replicability
+                scores.finanzas * 0.15 +
+                scores.marketing * 0.10 +
+                scores.equipo * 0.10
+            );
+
+            return { overall, ...scores };
+        }
+
+        function getInterpretation(score) {
+            if (score >= 80) return { color: 'emerald', text: '¡Excelente preparación!', desc: 'Tienes una base sólida. Enfócate en ejecutar rápido y documentar todo.' };
+            if (score >= 65) return { color: 'teal', text: 'Buena base, con trabajo realista', desc: 'Puedes avanzar, pero hay varias áreas importantes que debes fortalecer antes de invertir fuerte.' };
+            if (score >= 50) return { color: 'amber', text: 'Preparación media-baja', desc: 'Riesgo alto de problemas. Te recomiendo resolver las brechas críticas antes de abrir.' };
+            return { color: 'red', text: 'Necesitas más preparación', desc: 'Abrir ahora sería muy riesgoso. Enfócate primero en legal, procesos y modelo financiero.' };
+        }
+
+        function generateReport() {
+            // Collect all answers one last time
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                const key = el.dataset.key;
+                if (!key) return;
+                if (el.type === 'checkbox') respuestas[key] = el.checked;
+                else if (el.type === 'radio' && el.checked) respuestas[key] = el.value;
+                else if (el.type !== 'radio') respuestas[key] = el.value;
+            });
+            saveProgress();
+
+            const scores = calculateScores(respuestas);
+            const interpretation = getInterpretation(scores.overall);
+
+            // Overall score
+            document.getElementById('score-general').textContent = scores.overall;
+            document.getElementById('score-general').className = `font-display text-[92px] leading-none font-bold text-${interpretation.color}-700 tabular-nums`;
+            
+            document.getElementById('score-interpretacion').innerHTML = `<span class="font-semibold text-${interpretation.color}-600">${interpretation.text}</span>`;
+            document.getElementById('score-comentario').textContent = interpretation.desc;
+
+            // Category scores cards
+            const catContainer = document.getElementById('category-scores');
+            catContainer.innerHTML = '';
+            
+            const categories = [
+                { key: 'perfil', label: 'Perfil Emprendedor', icon: 'user' },
+                { key: 'mercado', label: 'Mercado', icon: 'chart-line' },
+                { key: 'legal', label: 'Legal & Permisos', icon: 'balance-scale' },
+                { key: 'operaciones', label: 'Operaciones & Método', icon: 'cogs' },
+                { key: 'finanzas', label: 'Finanzas', icon: 'coins' },
+                { key: 'marketing', label: 'Marketing', icon: 'bullhorn' },
+                { key: 'equipo', label: 'Equipo & Visión', icon: 'users' }
+            ];
+
+            categories.forEach(cat => {
+                const score = scores[cat.key];
+                const color = score >= 70 ? 'emerald' : score >= 55 ? 'teal' : score >= 45 ? 'amber' : 'red';
+                
+                const div = document.createElement('div');
+                div.className = `bg-white border p-4 rounded-3xl flex flex-col`;
+                div.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-x-2 text-sm">
+                            <i class="fa-solid fa-${cat.icon} text-slate-400"></i>
+                            <span class="font-medium text-sm">${cat.label}</span>
+                        </div>
+                        <span class="font-mono text-xl font-semibold text-${color}-600">${score}</span>
+                    </div>
+                    <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-1.5 bg-${color}-500 rounded-full transition-all" style="width: ${score}%"></div>
+                    </div>
+                `;
+                catContainer.appendChild(div);
+            });
+
+            // Radar Chart
+            renderRadarChart(scores);
+
+            // Financial projections
+            renderFinancials(scores);
+
+            // Fortalezas y Debilidades
+            renderStrengthsWeaknesses(scores, respuestas);
+
+            // Plan de Acción
+            renderActionPlan(scores, respuestas);
+
+            // Date
+            document.getElementById('fecha-informe').textContent = new Date().toLocaleDateString('es-PY', { 
+                day: 'numeric', month: 'long', year: 'numeric' 
+            });
+
+            // Show actions
+            document.getElementById('results-actions').classList.remove('hidden');
+            document.getElementById('results-actions').classList.add('flex');
+        }
+
+        function renderRadarChart(scores) {
+            const ctx = document.getElementById('radar-chart');
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Perfil', 'Mercado', 'Legal', 'Operaciones', 'Finanzas', 'Marketing', 'Equipo'],
+                    datasets: [{
+                        label: 'Tu preparación',
+                        data: [scores.perfil, scores.mercado, scores.legal, scores.operaciones, scores.finanzas, scores.marketing, scores.equipo],
+                        backgroundColor: 'rgba(15, 118, 110, 0.2)',
+                        borderColor: '#0f766e',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#0f766e',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0f766e'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: { stepSize: 25, display: false },
+                            grid: { color: '#e2e8f0' },
+                            angleLines: { color: '#e2e8f0' },
+                            pointLabels: { font: { size: 11, weight: 500 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function renderFinancials(scores) {
+            // Get financial inputs
+            const inv = parseFloat(respuestas.inversion_inicial) || 35000000;
+            const fijos = parseFloat(respuestas.gastos_fijos) || 8500000;
+            const variable = parseFloat(respuestas.costo_variable) || 8500;
+            const precio = parseFloat(respuestas.precio_promedio) || 55000;
+            const lavadosInicial = parseFloat(respuestas.lavados_dia_inicial) || 10;
+            const crecimiento = (parseFloat(respuestas.crecimiento_mensual) || 7) / 100;
+            const diasMes = 26;
+
+            // Calculate 12 months
+            let meses = [];
+            let utilidadAcumulada = -inv;
+            let breakEvenMonth = 13;
+
+            for (let m = 1; m <= 12; m++) {
+                const lavadosDia = Math.round(lavadosInicial * Math.pow(1 + crecimiento, m - 1));
+                const ingresos = lavadosDia * precio * diasMes;
+                const variablesTotal = lavadosDia * variable * diasMes;
+                const gastos = fijos + variablesTotal;
+                const utilidad = ingresos - gastos;
+                utilidadAcumulada += utilidad;
+
+                if (utilidadAcumulada >= 0 && breakEvenMonth === 13) {
+                    breakEvenMonth = m;
+                }
+
+                meses.push({
+                    mes: m,
+                    ingresos: Math.round(ingresos),
+                    gastos: Math.round(gastos),
+                    utilidad: Math.round(utilidad),
+                    acumulada: Math.round(utilidadAcumulada)
+                });
+            }
+
+            // Update summary numbers
+            const anualUtilidad = meses.reduce((sum, m) => sum + m.utilidad, 0);
+            document.getElementById('fin-inversion').innerHTML = (inv / 1000000).toFixed(0) + 'M <span class="text-xs font-normal">Gs</span>';
+            document.getElementById('fin-utilidad-anual').innerHTML = (anualUtilidad / 1000000).toFixed(1) + 'M <span class="text-xs font-normal">Gs</span>';
+            document.getElementById('fin-breakeven').innerHTML = breakEvenMonth <= 12 ? breakEvenMonth + ' meses' : '> 12 meses';
+
+            // Chart
+            const ctx = document.getElementById('financial-chart');
+            if (financialChartInstance) financialChartInstance.destroy();
+
+            financialChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: meses.map(m => 'M' + m.mes),
+                    datasets: [
+                        {
+                            label: 'Ingresos',
+                            data: meses.map(m => m.ingresos / 1000000),
+                            borderColor: '#0f766e',
+                            backgroundColor: 'rgba(15, 118, 110, 0.1)',
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            fill: true
+                        },
+                        {
+                            label: 'Gastos',
+                            data: meses.map(m => m.gastos / 1000000),
+                            borderColor: '#64748b',
+                            borderDash: [3, 2],
+                            tension: 0.35,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Utilidad Neta',
+                            data: meses.map(m => m.utilidad / 1000000),
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    scales: {
+                        y: {
+                            ticks: { callback: v => v + 'M' },
+                            grid: { color: '#f1e7e0' }
+                        },
+                        x: { grid: { color: '#f1e7e0' } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15, font: {size: 11} } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ctx.raw.toFixed(1) + ' millones Gs'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Store for recalc
+            window.currentFinancialData = { meses, inv, breakEvenMonth, anualUtilidad };
+        }
+
+        function recalculateFinancials() {
+            // Re-collect financial answers and re-render
+            const finStep = document.getElementById('step-5');
+            finStep.querySelectorAll('input').forEach(el => {
+                if (el.dataset.key) respuestas[el.dataset.key] = el.value;
+            });
+            
+            const scores = calculateScores(respuestas);
+            renderFinancials(scores);
+        }
+
+        function renderStrengthsWeaknesses(scores, data) {
+            const fortalezas = [];
+            const debilidades = [];
+
+            if (scores.operaciones >= 70) fortalezas.push('Tienes claro la importancia de procesos estandarizados y replicabilidad.');
+            if (scores.legal >= 65) fortalezas.push('Buen conocimiento o avance en temas legales y ambientales.');
+            if (parseInt(data.exp_gestion) >= 4) fortalezas.push('Experiencia previa gestionando personas.');
+            if (data.vision_24m === 'sistema_replicable') fortalezas.push('Mentalidad de empresario que quiere escalar, no solo un local.');
+            if (scores.finanzas >= 65) fortalezas.push('Modelo financiero con márgenes razonables.');
+
+            if (scores.legal < 55) debilidades.push('Legal y permisos (especialmente Licencia Ambiental MADES) es tu mayor riesgo actual.');
+            if (scores.operaciones < 60) debilidades.push('Falta de procesos documentados y sistemas para que funcione sin ti.');
+            if (scores.mercado < 55) debilidades.push('Estimación de demanda o conocimiento de competencia puede ser optimista.');
+            if (parseInt(data.conocimiento_legal) <= 2) debilidades.push('Poco conocimiento de los requisitos ambientales y municipales específicos para lavaderos en Paraguay.');
+            if (scores.equipo < 55 && parseInt(data.empleados_iniciales) > 0) debilidades.push('Plan de capacitación y estandarización del equipo todavía débil.');
+
+            // Fill lists
+            const fList = document.getElementById('fortalezas-list');
+            fList.innerHTML = fortalezas.length ? 
+                fortalezas.map(f => `<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> <span>${f}</span></li>`).join('') :
+                '<li class="text-sm text-slate-500">Sigue trabajando en las áreas débiles para construir fortalezas sólidas.</li>';
+
+            const dList = document.getElementById('debilidades-list');
+            dList.innerHTML = debilidades.length ?
+                debilidades.map(d => `<li class="flex gap-2"><i class="fa-solid fa-arrow-right text-red-500 mt-1"></i> <span>${d}</span></li>`).join('') :
+                '<li class="text-sm text-emerald-600">¡Buen trabajo! Tus áreas débiles están controladas.</li>';
+        }
+
+        function renderActionPlan(scores, data) {
+            const plan = [];
+            const container = document.getElementById('plan-accion');
+
+            if (scores.legal < 60) {
+                plan.push({
+                    prioridad: 'ALTA',
+                    accion: 'Investigar y comenzar trámite de Licencia Ambiental en MADES + habilitación municipal',
+                    detalle: 'Este es el riesgo #1 de cierre. No abras sin esto resuelto.'
+                });
+            }
+            if (scores.operaciones < 65 || !data.proceso_estandar || data.proceso_estandar === 'no') {
+                plan.push({
+                    prioridad: 'ALTA',
+                    accion: 'Documentar tu proceso de lavado paso a paso con tiempos y fotos',
+                    detalle: 'Este es el corazón de hacer que el negocio sea replicable y delegable.'
+                });
+            }
+            if (scores.mercado < 60) {
+                plan.push({
+                    prioridad: 'MEDIA',
+                    accion: 'Hacer observación real de competidores + encuesta rápida a 30 potenciales clientes',
+                    detalle: 'Valida tu estimación de lavados por día antes de invertir.'
+                });
+            }
+            if (!data.tiene_contador || data.tiene_contador === 'no') {
+                plan.push({
+                    prioridad: 'ALTA',
+                    accion: 'Contratar o contactar un contador de confianza que entienda el rubro',
+                    detalle: 'Necesitas ayuda con costos reales, impuestos y flujo de caja.'
+                });
+            }
+            if (parseInt(data.replicable) >= 4 && (!data.calidad_checklist || !data.calidad_supervisor)) {
+                plan.push({
+                    prioridad: 'MEDIA',
+                    accion: 'Diseñar sistema simple de control de calidad (checklist + supervisor)',
+                    detalle: 'Para que la calidad sea consistente aunque no estés.'
+                });
+            }
+
+            // Always add these two
+            plan.push({
+                prioridad: 'ALTA',
+                accion: 'Definir tu propuesta de valor única y nombre + logo profesional',
+                detalle: 'Sin diferenciación clara vas a competir solo por precio.'
+            });
+
+            if (plan.length === 0) {
+                plan.push({
+                    prioridad: 'BAJA',
+                    accion: 'Tienes buena base. Ahora ejecuta: elige ubicación, arma el plan financiero detallado y comienza trámites legales.',
+                    detalle: ''
+                });
+            }
+
+            container.innerHTML = plan.map((item, idx) => `
+                <div class="flex gap-4 p-4 bg-slate-50 rounded-2xl">
+                    <div class="font-mono text-xs px-3 py-1 h-fit rounded-xl font-bold ${item.prioridad === 'ALTA' ? 'bg-red-100 text-red-700' : item.prioridad === 'MEDIA' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">
+                        ${item.prioridad}
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-semibold">${idx + 1}. ${item.accion}</div>
+                        ${item.detalle ? `<div class="text-sm text-slate-600 mt-0.5">${item.detalle}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function downloadPDF() {
+            window.print();
+        }
+
+        // Google Sheets integration
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYOUR_SCRIPT_ID_HERE/exec'; 
+        // ↑↑↑ REEMPLAZA ESTO CON TU URL REAL DESPUÉS DE DEPLOYAR EL APPS SCRIPT
+
+        async function sendToGoogleSheets() {
+            if (!confirm('¿Enviar todas tus respuestas + puntajes al Google Sheet de Nicolás?')) return;
+
+            const scores = calculateScores(respuestas);
+            
+            const payload = {
+                timestamp: new Date().toISOString(),
+                nombre_proyecto: respuestas.nombre_proyecto || '',
+                nombre_emprendedor: respuestas.nombre_emprendedor || '',
+                puntaje_general: scores.overall,
+                ...respuestas,
+                scores: scores
+            };
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for GitHub Pages + Apps Script
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                alert('¡Respuestas enviadas correctamente! Gracias. Nicolás las verá en su Google Sheet.');
+            } catch (e) {
+                console.error(e);
+                alert('Hubo un problema al enviar. Por favor copia el informe y envíalo manualmente por WhatsApp.');
+            }
+        }
+
+        function resetAll() {
+            if (!confirm('¿Borrar todo el progreso y empezar de nuevo?')) return;
+            localStorage.removeItem('lavaderoListoRespuestas');
+            location.reload();
+        }
+
+        // Keyboard support
+        function setupKeyboard() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && currentStep >= 1 && currentStep <= 7) {
+                    e.preventDefault();
+                    nextStep();
+                }
+                if (e.key === 'Escape' && currentStep === 8) {
+                    // could go back but nah
+                }
+            });
+        }
+
+        function initializeRangeListeners() {
+            // Update displayed values for ranges on load
+            setTimeout(() => {
+                document.querySelectorAll('input[type="range"]').forEach(input => {
+                    const valId = input.dataset.key + '_val';
+                    const valEl = document.getElementById(valId);
+                    if (valEl) {
+                        valEl.textContent = input.value;
+                        input.oninput = () => valEl.textContent = input.value;
+                    }
+                });
+            }, 500);
+        }
+
+        // Main init
+        function init() {
+            initializeTailwind();
+            loadProgress();
+            setupKeyboard();
+            initializeRangeListeners();
+
+            // Show welcome by default
+            document.getElementById('step-0').classList.add('active');
+
+            // Add next/prev buttons dynamically to each step (except last)
+            for (let i = 1; i <= 7; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                if (!stepEl) continue;
+
+                const btnContainer = document.createElement('div');
+                btnContainer.className = `mt-8 flex justify-between no-print`;
+                
+                const prevBtn = document.createElement('button');
+                prevBtn.className = `px-6 py-3 rounded-3xl border border-slate-300 flex items-center gap-x-2 text-sm font-medium hover:bg-slate-50`;
+                prevBtn.innerHTML = `<i class="fa-solid fa-arrow-left mr-2"></i> Anterior`;
+                prevBtn.onclick = () => prevStep();
+
+                const nextBtn = document.createElement('button');
+                nextBtn.className = `px-8 py-3 bg-teal-700 text-white rounded-3xl flex items-center gap-x-2 text-sm font-semibold hover:bg-teal-800 shadow`;
+                nextBtn.innerHTML = i === 7 ? `Ver mi Informe Completo <i class="fa-solid fa-chart-bar ml-2"></i>` : `Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>`;
+                nextBtn.onclick = () => nextStep();
+
+                btnContainer.appendChild(prevBtn);
+                btnContainer.appendChild(nextBtn);
+                stepEl.appendChild(btnContainer);
+            }
+
+            // Make sure financial inputs trigger recalc if on results
+            console.log('%c[LavaderoListo] App inicializada correctamente. Lista para GitHub Pages.', 'color:#64748b');
+        }
+
+        // Boot
+        window.onload = init;
+    </script>
 </body>
 </html>
