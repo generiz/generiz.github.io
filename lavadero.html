@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Business Diagnostic App | Lavadero Replicable</title>
+  <style>
+    :root{
+      --bg:#070b14;
+      --panel:#0f172a;
+      --panel2:#111c33;
+      --text:#f8fafc;
+      --muted:#9aa7bd;
+      --line:rgba(255,255,255,.12);
+      --gold:#d6b35a;
+      --gold2:#f7df95;
+      --green:#71e6ad;
+      --blue:#7dd3fc;
+      --red:#fb7185;
+      --orange:#f59e0b;
+      --radius:24px;
+      --shadow:0 26px 80px rgba(0,0,0,.38);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(214,179,90,.23), transparent 34%),
+        radial-gradient(circle at 90% 8%, rgba(113,230,173,.13), transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(125,211,252,.10), transparent 35%),
+        linear-gradient(135deg,#050812,#07111f 55%,#111827);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .app{max-width:1220px;margin:0 auto;padding:34px 20px 56px}
+    .hero{
+      display:grid;
+      grid-template-columns:1.28fr .72fr;
+      gap:22px;
+      margin-bottom:22px;
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+    .heroMain{padding:34px}
+    .tag{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#111827;font-weight:900;font-size:12px;letter-spacing:.12em;
+      text-transform:uppercase;border-radius:999px;padding:9px 14px;margin-bottom:18px;
+    }
+    h1{margin:0 0 12px;font-size:42px;line-height:1.03;letter-spacing:-.045em}
+    .lead{margin:0;color:var(--muted);font-size:18px;line-height:1.55;max-width:790px}
+    .heroSide{padding:24px;display:flex;flex-direction:column;gap:16px;justify-content:space-between}
+    .bigScore{
+      display:grid;grid-template-columns:165px 1fr;gap:18px;align-items:center;
+    }
+    .ring{
+      width:165px;height:165px;border-radius:50%;display:grid;place-items:center;
+      background:conic-gradient(var(--gold) calc(var(--score)*1%), rgba(255,255,255,.1) 0);
+      position:relative;
+    }
+    .ring:after{content:"";position:absolute;inset:12px;border-radius:50%;background:#0b1222;border:1px solid var(--line)}
+    .ringText{position:relative;z-index:2;text-align:center}
+    .ringText strong{display:block;font-size:42px;letter-spacing:-.06em}
+    .ringText span{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted)}
+    .scoreCopy h3{margin:0 0 7px;font-size:20px}
+    .scoreCopy p{margin:0;color:var(--muted);line-height:1.45}
+    .miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini{
+      padding:14px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid var(--line)
+    }
+    .mini span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+    .mini strong{font-size:18px}
+    .layout{display:grid;grid-template-columns:310px 1fr;gap:22px;align-items:start}
+    .nav{padding:16px;position:sticky;top:16px}
+    .nav button{
+      width:100%;border:0;background:transparent;color:var(--muted);
+      padding:13px 13px;border-radius:16px;text-align:left;cursor:pointer;
+      display:flex;align-items:center;gap:11px;font-weight:800;
+    }
+    .nav button:hover{background:rgba(255,255,255,.055);color:var(--text)}
+    .nav button.active{background:linear-gradient(135deg,rgba(214,179,90,.23),rgba(255,255,255,.045));color:var(--text);border:1px solid rgba(214,179,90,.38)}
+    .nav .num{
+      width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+      background:rgba(255,255,255,.075);color:var(--gold);font-size:12px;flex:none;
+    }
+    .main{padding:24px}
+    .progress{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:23px}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--green));transition:.25s ease}
+    section{display:none}
+    section.active{display:block}
+    h2{font-size:29px;line-height:1.1;margin:0 0 8px;letter-spacing:-.035em}
+    .helper{margin:0 0 24px;color:var(--muted);line-height:1.5}
+    .question{
+      padding:18px;border-radius:20px;border:1px solid var(--line);
+      background:rgba(255,255,255,.045);margin-bottom:14px;
+    }
+    label{display:block;font-weight:900;line-height:1.35;margin-bottom:8px}
+    small{display:block;color:var(--muted);line-height:1.45;margin-bottom:11px}
+    input,textarea,select{
+      width:100%;border:1px solid rgba(255,255,255,.14);
+      background:rgba(5,8,18,.62);color:var(--text);
+      border-radius:15px;padding:13px 14px;font:inherit;outline:none;
+    }
+    textarea{min-height:96px;resize:vertical}
+    input:focus,textarea:focus,select:focus{border-color:rgba(214,179,90,.68);box-shadow:0 0 0 4px rgba(214,179,90,.12)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .actions{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:23px}
+    .actions div{display:flex;gap:11px;flex-wrap:wrap}
+    button.action{
+      border:0;border-radius:16px;padding:13px 17px;cursor:pointer;
+      font-weight:900;color:#111827;background:linear-gradient(135deg,var(--gold),var(--gold2));
+      box-shadow:0 10px 28px rgba(214,179,90,.18);
+    }
+    button.secondary{background:rgba(255,255,255,.065);color:var(--text);border:1px solid var(--line);box-shadow:none}
+    button.danger{background:rgba(251,113,133,.13);color:#fecdd3;border:1px solid rgba(251,113,133,.35);box-shadow:none}
+    .dashboard{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+    .chartCard{padding:18px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+    .chartCard h3{margin:0 0 13px;font-size:18px}
+    canvas{width:100%;height:280px;background:rgba(5,8,18,.35);border-radius:18px;border:1px solid rgba(255,255,255,.08)}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:18px 0}
+    .metric{padding:16px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid var(--line)}
+    .metric span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+    .metric strong{font-size:20px;line-height:1.1}
+    .report{
+      padding:20px;border-radius:22px;border:1px solid var(--line);
+      background:rgba(5,8,18,.58);white-space:pre-wrap;line-height:1.55;color:#e6edf8;
+    }
+    .adviceGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+    .advice{
+      padding:17px;border-radius:20px;background:rgba(255,255,255,.045);border:1px solid var(--line);
+    }
+    .advice h4{margin:0 0 8px;font-size:16px}
+    .advice p{margin:0;color:var(--muted);line-height:1.45}
+    .riskList{margin:0;padding-left:19px;color:#e6edf8;line-height:1.55}
+    .pill{
+      display:inline-flex;border-radius:999px;padding:6px 10px;
+      background:rgba(214,179,90,.14);border:1px solid rgba(214,179,90,.28);
+      color:#fde9a7;font-weight:800;font-size:12px;margin:4px 6px 4px 0;
+    }
+    .footerNote{color:var(--muted);font-size:13px;line-height:1.45;margin-top:12px}
+    @media(max-width:980px){
+      .hero,.layout,.dashboard,.adviceGrid{grid-template-columns:1fr}
+      .nav{position:relative;top:auto}
+      h1{font-size:34px}
+      .bigScore{grid-template-columns:1fr;text-align:center}
+      .ring{margin:auto}
+      .metrics{grid-template-columns:1fr 1fr}
+      .two{grid-template-columns:1fr}
+    }
+    @media(max-width:560px){.metrics,.miniGrid{grid-template-columns:1fr}}
+    @media print{
+      body{background:white;color:#111}
+      .app{max-width:none;padding:0}
+      .card{box-shadow:none;background:white;border:1px solid #ddd}
+      .hero{display:block}
+      .heroSide,.nav,.actions,.progress{display:none}
+      .main,.heroMain{padding:18px}
+      section{display:block;break-inside:avoid}
+      .lead,.helper,small,.footerNote,.advice p{color:#555}
+      input,textarea,select{background:white;color:#111;border:1px solid #bbb}
+      .question,.chartCard,.metric,.advice,.report{background:white;border:1px solid #ddd;color:#111}
+      canvas{border:1px solid #ddd;background:white}
+      .tag{color:#111}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="card heroMain">
+      <div class="tag">Business Diagnostic App</div>
+      <h1>Lavadero Replicable: diagnóstico, gráficos y plan de acción</h1>
+      <p class="lead">
+        Herramienta para evaluar si el proyecto es solo un lavadero o si puede convertirse en un modelo de negocio repetible, medible y escalable.
+      </p>
+    </div>
+    <div class="card heroSide">
+      <div class="bigScore">
+        <div class="ring" id="ring" style="--score:0">
+          <div class="ringText"><strong id="scoreNum">0</strong><span>score</span></div>
+        </div>
+        <div class="scoreCopy">
+          <h3 id="scoreTitle">Sin diagnóstico</h3>
+          <p id="scoreDesc">Completá las etapas y la app generará un estudio ejecutivo con gráficos y consejos.</p>
+        </div>
+      </div>
+      <div class="miniGrid">
+        <div class="mini"><span>Área más fuerte</span><strong id="bestArea">—</strong></div>
+        <div class="mini"><span>Área crítica</span><strong id="worstArea">—</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="card nav" id="nav"></aside>
+    <main class="card main">
+      <div class="progress"><div class="bar" id="bar"></div></div>
+
+      <form id="form">
+        <section class="active" data-title="Base" data-area="base">
+          <h2>1. Base del proyecto</h2>
+          <p class="helper">Primero se define si esto nace como changa, oficio o empresa con posibilidad de réplica.</p>
+
+          <div class="two">
+            <div class="question">
+              <label>Nombre tentativo</label>
+              <input name="nombre" data-text-score data-area-score="base" placeholder="Ej: Óscar AutoCare"/>
+            </div>
+            <div class="question">
+              <label>Tipo de modelo</label>
+              <select name="tipo_modelo" data-score data-area-score="base">
+                <option value="" data-points="0">Seleccionar</option>
+                <option data-points="1">Lavadero básico</option>
+                <option data-points="2">Lavadero ordenado con servicios claros</option>
+                <option data-points="3">Marca con método, paquetes y expansión</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Visión a 3 años</label>
+            <small>Qué debería existir en 3 años si el proyecto sale bien.</small>
+            <textarea name="vision" data-text-score data-area-score="base"></textarea>
+          </div>
+
+          <div class="question">
+            <label>¿Qué tan claro está el objetivo de expansión?</label>
+            <select name="expansion_clara" data-score data-area-score="base">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No está claro</option>
+              <option data-points="1">Solo quiero que funcione un local</option>
+              <option data-points="2">Quiero abrir otro local si el primero funciona</option>
+              <option data-points="3">Quiero construir un sistema replicable desde el día 1</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Cliente" data-area="cliente">
+          <h2>2. Cliente y propuesta de valor</h2>
+          <p class="helper">Un negocio premium no atiende “a cualquiera”. Define su cliente, su problema y su razón para volver.</p>
+
+          <div class="question">
+            <label>Cliente principal</label>
+            <select name="cliente_principal" data-score data-area-score="cliente">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="1">Cualquier persona con auto</option>
+              <option data-points="2">Personas de la zona con autos particulares</option>
+              <option data-points="3">Clientes recurrentes: oficinas, flotas, conductores, empresas</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Problema concreto que resuelve</label>
+            <textarea name="problema_cliente" data-text-score data-area-score="cliente" placeholder="Ej: falta de tiempo, mala calidad, poca confianza, necesidad de factura, mantenimiento de flota..."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Diferencial competitivo</label>
+            <textarea name="diferencial" data-text-score data-area-score="cliente" placeholder="Por qué elegirían este lavadero y no otro."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Estrategia de recurrencia</label>
+            <select name="recurrencia" data-score data-area-score="cliente">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No definida</option>
+              <option data-points="1">Promos ocasionales</option>
+              <option data-points="2">WhatsApp, reseñas y seguimiento</option>
+              <option data-points="3">Membresías, paquetes, flotas y base de datos</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Oferta" data-area="oferta">
+          <h2>3. Oferta, precios y margen</h2>
+          <p class="helper">La oferta debe ser entendible, vendible y medible. Sin eso, todo se vuelve “depende del auto”.</p>
+
+          <div class="question">
+            <label>Servicios iniciales</label>
+            <textarea name="servicios" data-text-score data-area-score="oferta" placeholder="Básico, completo, premium, motor, tapizado, encerado, flotas..."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Definición de cada servicio</label>
+            <select name="servicios_definidos" data-score data-area-score="oferta">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No definido</option>
+              <option data-points="1">Idea general</option>
+              <option data-points="2">Incluye y precio definidos</option>
+              <option data-points="3">Incluye, no incluye, precio, duración y costo definidos</option>
+            </select>
+          </div>
+
+          <div class="two">
+            <div class="question">
+              <label>Ticket promedio esperado</label>
+              <input name="ticket_promedio" data-text-score data-area-score="oferta" placeholder="Ej: 70.000 Gs"/>
+            </div>
+            <div class="question">
+              <label>Servicio más rentable</label>
+              <input name="servicio_rentable" data-text-score data-area-score="oferta" placeholder="Ej: completo + encerado"/>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Paquetes o membresías</label>
+            <select name="paquetes" data-score data-area-score="oferta">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No</option>
+              <option data-points="1">Lo pensaré después</option>
+              <option data-points="2">Paquetes simples por cantidad de lavados</option>
+              <option data-points="3">Planes mensuales, flotas y venta recurrente</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Receta" data-area="receta">
+          <h2>4. Receta operativa</h2>
+          <p class="helper">La receta es el corazón del modelo replicable. Permite repetir calidad con otra gente y en otro local.</p>
+
+          <div class="question">
+            <label>Proceso paso a paso desde recepción hasta entrega</label>
+            <textarea name="proceso" data-text-score data-area-score="receta" placeholder="Recepción, revisión, fotos, prelavado, exterior, interior, control, entrega..."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Checklist de calidad</label>
+            <select name="checklist" data-score data-area-score="receta">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No existe</option>
+              <option data-points="1">Está en la cabeza</option>
+              <option data-points="2">Lista básica</option>
+              <option data-points="3">Checklist formal por servicio y responsable</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Uso de productos y cantidades</label>
+            <select name="productos" data-score data-area-score="receta">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No definido</option>
+              <option data-points="1">Se usa “a ojo”</option>
+              <option data-points="2">Productos definidos</option>
+              <option data-points="3">Productos, cantidades, proveedores y stock mínimo definidos</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Dependencia del dueño</label>
+            <select name="dependencia_dueno" data-score data-area-score="receta">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">Sin el dueño se desordena</option>
+              <option data-points="1">Depende de empleados buenos</option>
+              <option data-points="2">Hay encargado, pero falta manual</option>
+              <option data-points="3">Funciona por método, roles y control</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Números" data-area="numeros">
+          <h2>5. Números y punto de equilibrio</h2>
+          <p class="helper">Abrir sin números es apostar. Este bloque mide si el negocio se puede sostener.</p>
+
+          <div class="two">
+            <div class="question">
+              <label>Inversión inicial</label>
+              <input name="inversion" data-text-score data-area-score="numeros" placeholder="Alquiler, equipos, productos, cartelería..."/>
+            </div>
+            <div class="question">
+              <label>Costos fijos mensuales</label>
+              <input name="costos_fijos" data-text-score data-area-score="numeros" placeholder="Alquiler + sueldos + agua + luz + otros"/>
+            </div>
+          </div>
+
+          <div class="question">
+            <label>Costo real por lavado</label>
+            <select name="costo_lavado" data-score data-area-score="numeros">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No sé</option>
+              <option data-points="1">Tengo una idea aproximada</option>
+              <option data-points="2">Calculé productos y tiempo</option>
+              <option data-points="3">Calculé costo por servicio, margen y punto de equilibrio</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Punto de equilibrio</label>
+            <input name="punto_equilibrio" data-text-score data-area-score="numeros" placeholder="Ej: necesito 12 autos por día para no perder"/>
+          </div>
+
+          <div class="question">
+            <label>Capital para aguantar meses flojos</label>
+            <select name="capital_reserva" data-score data-area-score="numeros">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No tengo reserva</option>
+              <option data-points="1">Tengo menos de 1 mes</option>
+              <option data-points="2">Tengo 1 a 2 meses</option>
+              <option data-points="3">Tengo 3 meses o más de operación</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Equipo" data-area="equipo">
+          <h2>6. Personal, roles y capacitación</h2>
+          <p class="helper">No se escala si todo depende de “gente de confianza”. Se escala con roles, capacitación y control.</p>
+
+          <div class="question">
+            <label>Roles necesarios</label>
+            <textarea name="roles" data-text-score data-area-score="equipo" placeholder="Recepción, lavado exterior, interior, caja, control de calidad, encargado..."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Método de capacitación</label>
+            <select name="capacitacion" data-score data-area-score="equipo">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">Aprende mirando</option>
+              <option data-points="1">Explicación informal</option>
+              <option data-points="2">Entrenamiento básico</option>
+              <option data-points="3">Manual, práctica, evaluación y checklist</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Sistema de pago</label>
+            <select name="pago" data-score data-area-score="equipo">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No definido</option>
+              <option data-points="1">Por día o informal</option>
+              <option data-points="2">Sueldo o comisión definidos</option>
+              <option data-points="3">Pago definido con incentivo por calidad y productividad</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Reglas no negociables</label>
+            <textarea name="reglas" data-text-score data-area-score="equipo" placeholder="Cuidado del auto, trato al cliente, puntualidad, objetos de valor, uso de productos..."></textarea>
+          </div>
+        </section>
+
+        <section data-title="Riesgos" data-area="riesgos">
+          <h2>7. Riesgos, reclamos y protección</h2>
+          <p class="helper">El lavadero toca propiedad ajena. Un solo reclamo mal gestionado puede matar la confianza.</p>
+
+          <div class="question">
+            <label>Recepción con registro del estado del auto</label>
+            <select name="registro_estado" data-score data-area-score="riesgos">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No se registra</option>
+              <option data-points="1">Se mira rápido</option>
+              <option data-points="2">Se anotan daños visibles</option>
+              <option data-points="3">Se revisa, fotografía y confirma con el cliente</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Política de objetos de valor</label>
+            <select name="objetos" data-score data-area-score="riesgos">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No hay política</option>
+              <option data-points="1">Se avisa verbalmente</option>
+              <option data-points="2">Cartel o aviso escrito</option>
+              <option data-points="3">Aviso escrito, confirmación y protocolo de recepción</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Cómo se resuelve un reclamo</label>
+            <textarea name="reclamos" data-text-score data-area-score="riesgos"></textarea>
+          </div>
+
+          <div class="question">
+            <label>Responsabilidad por daños</label>
+            <select name="danos" data-score data-area-score="riesgos">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No definido</option>
+              <option data-points="1">Se ve caso por caso</option>
+              <option data-points="2">Hay criterio general</option>
+              <option data-points="3">Hay protocolo, fotos, límites y responsable</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Escala" data-area="escala">
+          <h2>8. Replicabilidad y expansión</h2>
+          <p class="helper">La pregunta no es “¿puedo abrir?”. La pregunta es: ¿puedo copiar este modelo en otro barrio con otra gente?</p>
+
+          <div class="question">
+            <label>¿Qué no debería cambiar nunca entre locales?</label>
+            <textarea name="no_cambia" data-text-score data-area-score="escala" placeholder="Marca, atención, olor, proceso, checklist, calidad, precios base..."></textarea>
+          </div>
+
+          <div class="question">
+            <label>Segundo local estimado</label>
+            <input name="segundo_local" data-text-score data-area-score="escala" placeholder="Cuánto costaría copiar el modelo en otra zona"/>
+          </div>
+
+          <div class="question">
+            <label>Condición para abrir otro local</label>
+            <select name="condicion_segundo" data-score data-area-score="escala">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">Cuando haya plata</option>
+              <option data-points="1">Cuando el primero venda bien</option>
+              <option data-points="2">Cuando sea rentable varios meses</option>
+              <option data-points="3">Cuando tenga rentabilidad, encargado, manual, métricas y reclamos bajos</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label>Documentación para replicar</label>
+            <select name="documentacion" data-score data-area-score="escala">
+              <option value="" data-points="0">Seleccionar</option>
+              <option data-points="0">No existe</option>
+              <option data-points="1">Notas sueltas</option>
+              <option data-points="2">Manual parcial</option>
+              <option data-points="3">Manual operativo, números, proveedores, capacitación y marca</option>
+            </select>
+          </div>
+        </section>
+
+        <section data-title="Estudio" data-area="estudio">
+          <h2>9. Estudio final del modelo</h2>
+          <p class="helper">La app genera un diagnóstico ejecutivo con gráficos, áreas débiles, riesgos y consejos concretos.</p>
+
+          <div class="metrics">
+            <div class="metric"><span>Puntaje global</span><strong id="mScore">0/100</strong></div>
+            <div class="metric"><span>Estado</span><strong id="mState">—</strong></div>
+            <div class="metric"><span>Más fuerte</span><strong id="mBest">—</strong></div>
+            <div class="metric"><span>Más débil</span><strong id="mWorst">—</strong></div>
+          </div>
+
+          <div class="dashboard">
+            <div class="chartCard">
+              <h3>Gráfico por área</h3>
+              <canvas id="barChart" width="800" height="360"></canvas>
+            </div>
+            <div class="chartCard">
+              <h3>Radar de replicabilidad</h3>
+              <canvas id="radarChart" width="800" height="360"></canvas>
+            </div>
+          </div>
+
+          <div id="pillBox"></div>
+
+          <div class="adviceGrid" id="adviceGrid"></div>
+
+          <div class="question">
+            <label>Informe ejecutivo automático</label>
+            <div class="report" id="report"></div>
+          </div>
+
+          <div class="question">
+            <label>Riesgos detectados</label>
+            <ul class="riskList" id="riskList"></ul>
+          </div>
+
+          <p class="footerNote">
+            Podés imprimir esta pantalla como PDF. El valor de la herramienta no está en “verse linda”: está en obligar a convertir entusiasmo en método, números y plan de ejecución.
+          </p>
+        </section>
+      </form>
+
+      <div class="actions">
+        <div>
+          <button class="action secondary" id="prev">Anterior</button>
+          <button class="action secondary" id="save">Guardar avance</button>
+          <button class="action danger" id="clear">Limpiar</button>
+        </div>
+        <div>
+          <button class="action secondary" id="print">Imprimir / PDF</button>
+          <button class="action secondary" id="copyReport">Copiar informe</button>
+          <button class="action" id="next">Siguiente</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const AREAS = {
+  base:'Base',
+  cliente:'Cliente',
+  oferta:'Oferta',
+  receta:'Receta',
+  numeros:'Números',
+  equipo:'Equipo',
+  riesgos:'Riesgos',
+  escala:'Escala'
+};
+
+const AREA_ADVICE = {
+  base: {
+    title:'Definir la visión empresarial',
+    low:'La base todavía parece más intención que modelo. Hay que aclarar si se busca autoempleo, local único o sistema replicable.',
+    high:'La visión tiene dirección. Ahora toca convertirla en procesos, métricas y responsabilidades.'
+  },
+  cliente: {
+    title:'Cerrar cliente y recurrencia',
+    low:'El cliente está poco definido. Si se apunta a “todos”, se termina compitiendo por precio.',
+    high:'Hay buen enfoque comercial. El siguiente paso es diseñar mecanismos para que el cliente vuelva.'
+  },
+  oferta: {
+    title:'Ordenar servicios y margen',
+    low:'La oferta necesita paquetes claros. Cada servicio debe tener precio, duración, costo y margen.',
+    high:'La oferta está tomando forma. Conviene empujar servicios recurrentes y premium para subir ticket.'
+  },
+  receta: {
+    title:'Construir la receta operativa',
+    low:'Sin receta escrita no hay replicabilidad. El negocio depende demasiado del dueño o del empleado de turno.',
+    high:'Hay base operativa. Falta probar si alguien nuevo puede repetir el método sin improvisar.'
+  },
+  numeros: {
+    title:'Poner números reales',
+    low:'Esta es zona roja. Sin costo por lavado, punto de equilibrio y reserva, abrir es apostar.',
+    high:'Los números están mejor encaminados. Hay que revisarlos con operación real y no con optimismo.'
+  },
+  equipo: {
+    title:'Diseñar equipo entrenable',
+    low:'El personal todavía no está convertido en sistema. Hay que definir roles, pagos, capacitación y reglas.',
+    high:'El equipo tiene estructura. El objetivo es que la calidad no dependa de una sola persona.'
+  },
+  riesgos: {
+    title:'Proteger el negocio',
+    low:'Hay riesgos legales y de reputación. Autos, objetos y reclamos necesitan protocolo antes de abrir.',
+    high:'La protección está considerada. Conviene formalizar recepción, fotos y política de reclamos.'
+  },
+  escala: {
+    title:'Preparar expansión real',
+    low:'Todavía no hay modelo copiável. Antes de hablar de segundo local, hay que documentar el primero.',
+    high:'La expansión tiene lógica. El segundo local debería abrirse solo cuando el primero funcione por sistema.'
+  }
+};
+
+const sections = [...document.querySelectorAll('section')];
+const form = document.getElementById('form');
+const nav = document.getElementById('nav');
+let current = 0;
+
+sections.forEach((sec,i)=>{
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.innerHTML = `<span class="num">${i+1}</span><span>${sec.dataset.title}</span>`;
+  btn.onclick = () => show(i);
+  nav.appendChild(btn);
+});
+
+function show(i){
+  current = Math.max(0, Math.min(sections.length-1, i));
+  sections.forEach((s,idx)=>s.classList.toggle('active', idx===current));
+  [...nav.children].forEach((b,idx)=>b.classList.toggle('active', idx===current));
+  document.getElementById('prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('next').textContent = current === sections.length-1 ? 'Actualizar estudio' : 'Siguiente';
+  document.getElementById('bar').style.width = ((current+1)/sections.length*100)+'%';
+  calculate();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function textPoints(value){
+  const len = (value || '').trim().length;
+  if(len === 0) return 0;
+  if(len < 18) return 1;
+  if(len < 70) return 2;
+  return 3;
+}
+
+function getScores(){
+  const totals = {};
+  Object.keys(AREAS).forEach(a => totals[a] = {points:0, max:0});
+
+  [...form.querySelectorAll('[data-score]')].forEach(el=>{
+    const area = el.dataset.areaScore;
+    if(!area || !totals[area]) return;
+    const opt = el.options[el.selectedIndex];
+    totals[area].points += Number(opt?.dataset.points || 0);
+    totals[area].max += 3;
+  });
+
+  [...form.querySelectorAll('[data-text-score]')].forEach(el=>{
+    const area = el.dataset.areaScore;
+    if(!area || !totals[area]) return;
+    totals[area].points += textPoints(el.value);
+    totals[area].max += 3;
+  });
+
+  const areaScores = {};
+  let points = 0, max = 0;
+  Object.keys(totals).forEach(a=>{
+    points += totals[a].points;
+    max += totals[a].max;
+    areaScores[a] = totals[a].max ? Math.round((totals[a].points / totals[a].max) * 100) : 0;
+  });
+
+  const global = max ? Math.round((points/max)*100) : 0;
+  return {areaScores, global};
+}
+
+function statusFor(score){
+  if(score >= 85) return {title:'Modelo muy prometedor', desc:'Ya se ve estructura de empresa. Falta validar con operación real y documentar fino.'};
+  if(score >= 70) return {title:'Base sólida', desc:'Puede avanzar, pero debe cerrar puntos débiles antes de invertir fuerte o replicar.'};
+  if(score >= 50) return {title:'Proyecto interesante, riesgo medio', desc:'Hay intención, pero todavía faltan números, método o controles.'};
+  if(score >= 30) return {title:'Todavía verde', desc:'No conviene abrir a ciegas. Primero hay que ordenar el modelo.'};
+  return {title:'Sin modelo suficiente', desc:'Hoy parece más idea que empresa. Hay que construir base antes de meter plata.'};
+}
+
+function sortedAreas(areaScores){
+  return Object.entries(areaScores).sort((a,b)=>b[1]-a[1]);
+}
+
+function val(name){
+  return (new FormData(form).get(name) || '').toString().trim();
+}
+
+function calculate(){
+  const {areaScores, global} = getScores();
+  const status = statusFor(global);
+  const sorted = sortedAreas(areaScores);
+  const best = sorted[0] || ['-',0];
+  const worst = sorted[sorted.length-1] || ['-',0];
+
+  document.getElementById('scoreNum').textContent = global;
+  document.getElementById('ring').style.setProperty('--score', global);
+  document.getElementById('scoreTitle').textContent = status.title;
+  document.getElementById('scoreDesc').textContent = status.desc;
+  document.getElementById('bestArea').textContent = AREAS[best[0]] || '—';
+  document.getElementById('worstArea').textContent = AREAS[worst[0]] || '—';
+
+  document.getElementById('mScore').textContent = global + '/100';
+  document.getElementById('mState').textContent = status.title;
+  document.getElementById('mBest').textContent = (AREAS[best[0]] || '—') + ' ' + best[1] + '%';
+  document.getElementById('mWorst').textContent = (AREAS[worst[0]] || '—') + ' ' + worst[1] + '%';
+
+  renderPills(areaScores);
+  renderAdvice(areaScores);
+  renderRisks(areaScores, global);
+  renderReport(areaScores, global, status, best, worst);
+  drawBarChart(areaScores);
+  drawRadarChart(areaScores);
+}
+
+function renderPills(areaScores){
+  const box = document.getElementById('pillBox');
+  box.innerHTML = '';
+  Object.entries(areaScores).forEach(([a,s])=>{
+    const span = document.createElement('span');
+    span.className = 'pill';
+    span.textContent = `${AREAS[a]}: ${s}%`;
+    box.appendChild(span);
+  });
+}
+
+function renderAdvice(areaScores){
+  const grid = document.getElementById('adviceGrid');
+  grid.innerHTML = '';
+  const sortedWeak = Object.entries(areaScores).sort((a,b)=>a[1]-b[1]).slice(0,4);
+  sortedWeak.forEach(([a,s])=>{
+    const data = AREA_ADVICE[a];
+    const div = document.createElement('div');
+    div.className='advice';
+    div.innerHTML = `<h4>${data.title} · ${s}%</h4><p>${s >= 70 ? data.high : data.low}</p>`;
+    grid.appendChild(div);
+  });
+}
+
+function renderRisks(areaScores, global){
+  const list = document.getElementById('riskList');
+  list.innerHTML = '';
+  const risks = [];
+  if(areaScores.numeros < 60) risks.push('Riesgo financiero: falta costo real por lavado, punto de equilibrio o reserva para meses flojos.');
+  if(areaScores.receta < 60) risks.push('Riesgo operativo: la calidad puede depender de personas y no de una receta escrita.');
+  if(areaScores.riesgos < 60) risks.push('Riesgo de reclamos: falta protocolo de recepción, fotos, objetos de valor o daños.');
+  if(areaScores.cliente < 60) risks.push('Riesgo comercial: cliente objetivo y recurrencia poco definidos.');
+  if(areaScores.equipo < 60) risks.push('Riesgo de personal: roles, capacitación o pagos no están suficientemente claros.');
+  if(areaScores.escala < 60) risks.push('Riesgo de falsa expansión: hablar de segundo local sin haber documentado el primero.');
+  if(global >= 75 && risks.length === 0) risks.push('No aparecen zonas rojas fuertes, pero el modelo igual debe validarse con clientes reales antes de escalar.');
+  if(risks.length === 0) risks.push('El diagnóstico todavía tiene pocos datos. Completá más respuestas para detectar riesgos reales.');
+  risks.forEach(r=>{
+    const li = document.createElement('li');
+    li.textContent = r;
+    list.appendChild(li);
+  });
+}
+
+function renderReport(areaScores, global, status, best, worst){
+  const name = val('nombre') || 'Proyecto de lavadero';
+  const weak = Object.entries(areaScores).sort((a,b)=>a[1]-b[1]).slice(0,3).map(([a,s])=>`${AREAS[a]} (${s}%)`).join(', ');
+  const strong = Object.entries(areaScores).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([a,s])=>`${AREAS[a]} (${s}%)`).join(', ');
+
+  let recommendation;
+  if(global >= 85){
+    recommendation = 'Avanzar con prueba piloto formal, manual operativo, tablero de control y preparación de encargado. No abrir un segundo local hasta tener 3 a 6 meses de métricas reales.';
+  } else if(global >= 70){
+    recommendation = 'Avanzar con cautela. Antes de invertir fuerte, cerrar las áreas débiles, calcular punto de equilibrio y escribir la receta operativa.';
+  } else if(global >= 50){
+    recommendation = 'No escalar todavía. Puede probarse en pequeño, pero el proyecto necesita más estructura antes de asumir alquiler grande, personal fijo o deuda.';
+  } else {
+    recommendation = 'No abrir todavía en modo formal. Primero convertir la idea en modelo: cliente, oferta, costos, receta, riesgos y personal.';
+  }
+
+  const report =
+`${name}
+ESTUDIO EJECUTIVO DEL MODELO REPLICABLE
+
+Puntaje global: ${global}/100
+Estado: ${status.title}
+Lectura: ${status.desc}
+
+Fortalezas principales:
+${strong || 'Pendiente de completar'}
+
+Áreas críticas:
+${weak || 'Pendiente de completar'}
+
+Visión declarada:
+${val('vision') || 'No definida'}
+
+Propuesta al cliente:
+${val('problema_cliente') || 'No definida'}
+
+Diferencial:
+${val('diferencial') || 'No definido'}
+
+Servicios:
+${val('servicios') || 'No definidos'}
+
+Receta operativa:
+${val('proceso') || 'No definida'}
+
+Números:
+- Inversión inicial: ${val('inversion') || 'Pendiente'}
+- Costos fijos: ${val('costos_fijos') || 'Pendiente'}
+- Punto de equilibrio: ${val('punto_equilibrio') || 'Pendiente'}
+- Ticket promedio: ${val('ticket_promedio') || 'Pendiente'}
+
+Conclusión:
+${recommendation}
+
+Plan de acción recomendado:
+1. Escribir el manual operativo del primer local.
+2. Definir servicios con precio, duración, costo y margen.
+3. Calcular punto de equilibrio real por día y por mes.
+4. Crear checklist de recepción, lavado, control y entrega.
+5. Probar 30 días con medición diaria: autos lavados, ticket promedio, reclamos, costos y clientes que vuelven.
+6. Recién después de validar el primer local, diseñar el segundo como copia del sistema y no como improvisación nueva.
+
+Frase clave:
+No se escala un lavadero. Se escala una receta que ya demostró funcionar.`;
+
+  document.getElementById('report').textContent = report;
+}
+
+function drawBarChart(areaScores){
+  const c = document.getElementById('barChart');
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.font = '24px Inter, Arial';
+  ctx.fillStyle = '#f8fafc';
+  const entries = Object.entries(areaScores);
+  const pad = 54;
+  const chartW = W - pad*2;
+  const chartH = H - 80;
+  const barW = chartW / entries.length * .62;
+  ctx.strokeStyle = 'rgba(255,255,255,.14)';
+  ctx.lineWidth = 1;
+  for(let i=0;i<=4;i++){
+    const y = pad + chartH - (chartH*i/4);
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-pad,y); ctx.stroke();
+    ctx.fillStyle = '#9aa7bd'; ctx.font = '16px Inter, Arial';
+    ctx.fillText((i*25).toString(), 14, y+5);
+  }
+  entries.forEach(([a,s],i)=>{
+    const x = pad + i*(chartW/entries.length) + (chartW/entries.length-barW)/2;
+    const h = chartH*(s/100);
+    const y = pad + chartH - h;
+    const grad = ctx.createLinearGradient(0,y,0,pad+chartH);
+    grad.addColorStop(0,'#f7df95');
+    grad.addColorStop(.55,'#d6b35a');
+    grad.addColorStop(1,'#8d7333');
+    ctx.fillStyle = grad;
+    roundRect(ctx,x,y,barW,h,10,true,false);
+    ctx.fillStyle = '#f8fafc'; ctx.font = '18px Inter, Arial'; ctx.textAlign='center';
+    ctx.fillText(s+'%', x+barW/2, y-9);
+    ctx.save();
+    ctx.translate(x+barW/2, H-18);
+    ctx.rotate(-Math.PI/7);
+    ctx.fillStyle = '#cbd5e1'; ctx.font = '15px Inter, Arial';
+    ctx.fillText(AREAS[a], 0, 0);
+    ctx.restore();
+    ctx.textAlign='start';
+  });
+}
+
+function drawRadarChart(areaScores){
+  const c = document.getElementById('radarChart');
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0,0,W,H);
+  const entries = Object.entries(areaScores);
+  const cx = W/2, cy = H/2 + 8, maxR = Math.min(W,H)*.34;
+  ctx.strokeStyle='rgba(255,255,255,.14)';
+  ctx.fillStyle='rgba(255,255,255,.03)';
+  for(let level=1; level<=4; level++){
+    const r=maxR*level/4;
+    ctx.beginPath();
+    entries.forEach(([a,s],i)=>{
+      const ang = -Math.PI/2 + i*2*Math.PI/entries.length;
+      const x = cx + Math.cos(ang)*r;
+      const y = cy + Math.sin(ang)*r;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+  entries.forEach(([a,s],i)=>{
+    const ang = -Math.PI/2 + i*2*Math.PI/entries.length;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(ang)*maxR, cy+Math.sin(ang)*maxR); ctx.stroke();
+    ctx.fillStyle='#cbd5e1'; ctx.font='16px Inter, Arial'; ctx.textAlign='center';
+    const lx = cx + Math.cos(ang)*(maxR+38);
+    const ly = cy + Math.sin(ang)*(maxR+30);
+    ctx.fillText(AREAS[a], lx, ly);
+  });
+  ctx.beginPath();
+  entries.forEach(([a,s],i)=>{
+    const ang = -Math.PI/2 + i*2*Math.PI/entries.length;
+    const r=maxR*(s/100);
+    const x = cx + Math.cos(ang)*r;
+    const y = cy + Math.sin(ang)*r;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fillStyle='rgba(214,179,90,.28)';
+  ctx.strokeStyle='#f7df95';
+  ctx.lineWidth=3;
+  ctx.fill(); ctx.stroke();
+  entries.forEach(([a,s],i)=>{
+    const ang = -Math.PI/2 + i*2*Math.PI/entries.length;
+    const r=maxR*(s/100);
+    const x = cx + Math.cos(ang)*r;
+    const y = cy + Math.sin(ang)*r;
+    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+    ctx.fillStyle='#f7df95'; ctx.fill();
+  });
+}
+
+function roundRect(ctx,x,y,w,h,r,fill,stroke){
+  if(h < 0) return;
+  r = Math.min(r, w/2, h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+  if(fill) ctx.fill();
+  if(stroke) ctx.stroke();
+}
+
+form.addEventListener('input', calculate);
+window.addEventListener('resize', calculate);
+
+document.getElementById('next').onclick = e => {
+  e.preventDefault();
+  if(current < sections.length-1) show(current+1);
+  else calculate();
+};
+document.getElementById('prev').onclick = e => { e.preventDefault(); show(current-1); };
+document.getElementById('print').onclick = e => { e.preventDefault(); calculate(); window.print(); };
+document.getElementById('save').onclick = e => {
+  e.preventDefault();
+  localStorage.setItem('lavaderoPremiumDiagnostic', JSON.stringify(Object.fromEntries(new FormData(form).entries())));
+  alert('Avance guardado en este navegador.');
+};
+document.getElementById('clear').onclick = e => {
+  e.preventDefault();
+  if(confirm('¿Limpiar todas las respuestas?')){
+    form.reset();
+    localStorage.removeItem('lavaderoPremiumDiagnostic');
+    calculate();
+  }
+};
+document.getElementById('copyReport').onclick = async e => {
+  e.preventDefault();
+  calculate();
+  const text = document.getElementById('report').textContent;
+  try{
+    await navigator.clipboard.writeText(text);
+    alert('Informe copiado.');
+  }catch{
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    alert('Informe copiado.');
+  }
+};
+
+function load(){
+  const raw = localStorage.getItem('lavaderoPremiumDiagnostic');
+  if(raw){
+    try{
+      const data = JSON.parse(raw);
+      Object.entries(data).forEach(([k,v])=>{
+        if(form.elements[k]) form.elements[k].value = v;
+      });
+    }catch{}
+  }
+  show(0);
+}
+load();
+</script>
+</body>
+</html>
