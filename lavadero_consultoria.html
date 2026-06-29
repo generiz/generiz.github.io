@@ -434,17 +434,13 @@ td{color:#dfe7f5}
           </div>
 
           <div class="q">
-            <label>Guardar resultados en Google Sheets</label>
-            <small>La conexión ya viene configurada. Al presionar “Guardar en Google Sheets”, la app enviará respuestas, puntajes, cálculos financieros e informe final a una hoja llamada “Respuestas”.</small>
-            <input id="googleSheetUrl" name="googleSheetUrl" placeholder="URL de Google Apps Script ya configurada"/>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-              <button class="action secondary" id="saveSheetUrl">Actualizar URL</button>
-              <button class="action" id="sendSheets">Guardar en Google Sheets</button>
-            </div>
-            <p class="footerNote" id="sheetStatus">Estado: conexión configurada automáticamente.</p>
+            <label>Registro automático en Google Sheets</label>
+            <small>La conexión ya viene configurada. La app guarda un borrador automático mientras se completa y, al llegar a este estudio final, marca el diagnóstico como COMPLETADO en tu hoja “Respuestas”.</small>
+            <input type="hidden" id="googleSheetUrl" name="googleSheetUrl"/>
+            <p class="footerNote" id="sheetStatus">Estado: conexión configurada. El guardado automático se activa al completar el formulario.</p>
           </div>
 
-          <p class="footerNote">Exportación local: además de Google Sheets, podés descargar Word, Excel, CSV, JSON o imprimir como PDF. El HTML no guarda datos en internet salvo cuando presionás “Guardar en Google Sheets”.</p>
+          <p class="footerNote">Exportación local: además del guardado automático en Google Sheets, podés descargar Word, Excel, CSV, JSON o imprimir como PDF.</p>
         </section>
       </form>
 
@@ -459,7 +455,6 @@ td{color:#dfe7f5}
           <button class="action secondary" id="exportXls">Excel</button>
           <button class="action secondary" id="exportCsv">CSV</button>
           <button class="action secondary" id="exportJson">JSON</button>
-          <button class="action secondary" id="sendSheetsTop">Sheets</button>
           <button class="action secondary" id="print">PDF</button>
           <button class="action" id="next">Siguiente</button>
         </div>
@@ -644,6 +639,9 @@ function show(i){
   document.getElementById('next').textContent = current===sections.length-1?'Actualizar estudio':'Siguiente';
   document.getElementById('bar').style.width = ((current+1)/sections.length*100)+'%';
   calculate();
+  if(current === sections.length - 1){
+    setTimeout(() => sendToGoogleSheets('COMPLETED', {silent:false, force:true}), 600);
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderPills(scores){
@@ -840,14 +838,24 @@ function exportCsv(){
   const rows=[...document.querySelectorAll('#summaryTable tr')].map(tr=>[...tr.children].map(td=>csvEscape(td.textContent)).join(',')).join('\n');
   download(cleanFilename()+'_datos.csv', rows, 'text/csv;charset=utf-8');
 }
-function buildPayload(){
+function getSubmissionId(){
+  let id = localStorage.getItem('lavaderoSubmissionId');
+  if(!id){
+    id = 'LAV-' + Date.now() + '-' + Math.random().toString(36).slice(2,8).toUpperCase();
+    localStorage.setItem('lavaderoSubmissionId', id);
+  }
+  return id;
+}
+function buildPayload(saveStatus='DRAFT'){
   calculate();
   const areaScores = getAreaScores();
   const finance = getFinance();
   const global = weightedScore(areaScores, finance);
   const [state, description] = statusFor(global);
   return {
-    source: 'lavadero_consultoria_pro_v4',
+    source: 'lavadero_consultoria_pro_v6_autosave',
+    submissionId: getSubmissionId(),
+    saveStatus,
     savedAt: new Date().toISOString(),
     form: formData(),
     areaScores,
@@ -869,16 +877,35 @@ function setSheetStatus(text){
   const el = document.getElementById('sheetStatus');
   if(el) el.textContent = 'Estado: ' + text;
 }
-async function sendToGoogleSheets(){
+let autosaveTimer = null;
+let lastAutosaveSignature = '';
+let lastCompletedSignature = '';
+
+function payloadSignature(){
+  const areaScores = getAreaScores();
+  const finance = getFinance();
+  return JSON.stringify({
+    form: formData(),
+    areaScores,
+    finance,
+    globalScore: weightedScore(areaScores, finance)
+  });
+}
+async function sendToGoogleSheets(saveStatus='DRAFT', options={}){
   const url = getSheetUrl();
   if(!url){
-    alert('Pegá primero la URL del Web App de Google Apps Script.');
-    show(sections.length-1);
+    setSheetStatus('sin URL de Google Apps Script configurada.');
     return;
   }
+
+  const signature = payloadSignature();
+  if(saveStatus === 'DRAFT' && signature === lastAutosaveSignature && !options.force) return;
+  if(saveStatus === 'COMPLETED' && signature === lastCompletedSignature && !options.force) return;
+
   localStorage.setItem('lavaderoGoogleSheetUrl', url);
-  const payload = buildPayload();
-  setSheetStatus('enviando datos a Google Sheets...');
+  const payload = buildPayload(saveStatus);
+
+  if(!options.silent) setSheetStatus('guardando automáticamente en Google Sheets...');
   try{
     await fetch(url, {
       method: 'POST',
@@ -886,35 +913,33 @@ async function sendToGoogleSheets(){
       headers: {'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify(payload)
     });
-    setSheetStatus('datos enviados. Abrí la hoja “Respuestas” para confirmar la fila nueva.');
-    alert('Enviado a Google Sheets. Revisá la hoja “Respuestas”.');
+    if(saveStatus === 'DRAFT') lastAutosaveSignature = signature;
+    if(saveStatus === 'COMPLETED') lastCompletedSignature = signature;
+    const label = saveStatus === 'COMPLETED' ? 'diagnóstico COMPLETADO guardado' : 'borrador guardado';
+    setSheetStatus(label + ' · ID ' + getSubmissionId());
   }catch(err){
-    setSheetStatus('error al enviar. Revisá la URL del Apps Script y que el despliegue esté publicado como Web App.');
-    alert('No se pudo enviar. Revisá la URL del Apps Script.');
+    setSheetStatus('error de guardado. Revisar implementación del Apps Script.');
   }
 }
-function saveGoogleSheetUrl(){
-  const url = (document.getElementById('googleSheetUrl')?.value || '').trim();
-  if(!url){ alert('Pegá la URL primero.'); return; }
-  localStorage.setItem('lavaderoGoogleSheetUrl', url);
-  setSheetStatus('URL guardada en este navegador.');
+function scheduleAutosave(){
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    sendToGoogleSheets('DRAFT', {silent:true});
+  }, 2500);
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 
-form.addEventListener('input', calculate);
+form.addEventListener('input', () => { calculate(); scheduleAutosave(); });
 window.addEventListener('resize', calculate);
 document.getElementById('next').onclick=e=>{e.preventDefault(); if(current<sections.length-1) show(current+1); else calculate();};
 document.getElementById('prev').onclick=e=>{e.preventDefault(); show(current-1);};
 document.getElementById('print').onclick=e=>{e.preventDefault();calculate();window.print();};
 document.getElementById('save').onclick=e=>{e.preventDefault();localStorage.setItem('lavaderoProData',JSON.stringify(formData()));alert('Avance guardado en este navegador.');};
-document.getElementById('clear').onclick=e=>{e.preventDefault();if(confirm('¿Limpiar todo?')){form.reset();localStorage.removeItem('lavaderoProData');calculate();}};
+document.getElementById('clear').onclick=e=>{e.preventDefault();if(confirm('¿Limpiar todo?')){form.reset();localStorage.removeItem('lavaderoProData');localStorage.removeItem('lavaderoSubmissionId');calculate();}};
 document.getElementById('exportDoc').onclick=e=>{e.preventDefault();exportDoc();};
 document.getElementById('exportXls').onclick=e=>{e.preventDefault();exportXls();};
 document.getElementById('exportCsv').onclick=e=>{e.preventDefault();exportCsv();};
 document.getElementById('exportJson').onclick=e=>{e.preventDefault();exportJson();};
-document.getElementById('sendSheets').onclick=e=>{e.preventDefault();sendToGoogleSheets();};
-document.getElementById('sendSheetsTop').onclick=e=>{e.preventDefault();sendToGoogleSheets();};
-document.getElementById('saveSheetUrl').onclick=e=>{e.preventDefault();saveGoogleSheetUrl();};
 
 (function load(){
   if(!form.elements.date.value) form.elements.date.value=new Date().toISOString().slice(0,10);
