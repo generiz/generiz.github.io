@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ufotech | Test rápido de notebook</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0d1b2f;
+      --panel2:#12243c;
+      --line:#243b5c;
+      --text:#eaf2ff;
+      --muted:#93a8c5;
+      --good:#38d996;
+      --bad:#ff647c;
+      --warn:#ffd166;
+      --accent:#42a5ff;
+      --accent2:#8a5cff;
+      --shadow:0 18px 60px rgba(0,0,0,.38);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(66,165,255,.22), transparent 32%),
+        radial-gradient(circle at 88% 6%, rgba(138,92,255,.26), transparent 32%),
+        linear-gradient(135deg, #050914, var(--bg) 55%, #08152a);
+    }
+    button,select,input,textarea{font:inherit}
+    .wrap{width:min(1600px, calc(100% - 28px)); margin:0 auto; padding:18px 0 28px}
+    .top{
+      display:grid;
+      grid-template-columns: 1.4fr .9fr;
+      gap:14px;
+      align-items:stretch;
+      margin-bottom:14px;
+    }
+    .hero,.clock,.card{
+      background:linear-gradient(180deg, rgba(18,36,60,.94), rgba(13,27,47,.94));
+      border:1px solid rgba(147,168,197,.2);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero{padding:18px; position:relative; overflow:hidden}
+    .hero:after{
+      content:"";
+      position:absolute;
+      inset:auto -80px -110px auto;
+      width:280px; height:280px;
+      background:radial-gradient(circle, rgba(66,165,255,.22), transparent 66%);
+      pointer-events:none;
+    }
+    .brand{display:flex; align-items:center; gap:12px; margin-bottom:10px}
+    .mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2)); display:grid; place-items:center; font-weight:900; letter-spacing:-1px}
+    h1{margin:0;font-size:clamp(24px,2.8vw,42px);line-height:1.02;letter-spacing:-.045em}
+    .sub{color:var(--muted); margin:8px 0 0; max-width:900px; line-height:1.45}
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+    .btn{
+      border:1px solid rgba(255,255,255,.16);
+      color:var(--text);
+      background:linear-gradient(135deg, rgba(66,165,255,.95), rgba(138,92,255,.95));
+      padding:11px 14px;
+      border-radius:13px;
+      cursor:pointer;
+      font-weight:750;
+      transition:.18s transform, .18s filter, .18s border-color;
+    }
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    .btn.secondary{background:rgba(255,255,255,.06)}
+    .btn.ghost{background:transparent;color:var(--muted)}
+    .clock{padding:18px; display:grid; gap:12px}
+    .time{font-size:clamp(32px,4.6vw,68px);font-weight:900;letter-spacing:-.06em;line-height:.9}
+    .date{color:var(--muted)}
+    .scorebox{display:grid; grid-template-columns: repeat(4,1fr); gap:8px}
+    .score{padding:10px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}
+    .score b{display:block;font-size:22px;line-height:1;color:var(--text)}
+    .score span{font-size:12px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns: 1.1fr .9fr .9fr; gap:14px}
+    .card{padding:14px; min-width:0}
+    .card h2{font-size:16px;margin:0 0 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .tag{font-size:12px;color:var(--muted);font-weight:650;border:1px solid rgba(255,255,255,.12);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.045)}
+    .tag.ok{color:var(--good);border-color:rgba(56,217,150,.3);background:rgba(56,217,150,.08)}
+    .tag.bad{color:var(--bad);border-color:rgba(255,100,124,.32);background:rgba(255,100,124,.08)}
+    .tag.warn{color:var(--warn);border-color:rgba(255,209,102,.32);background:rgba(255,209,102,.08)}
+    .mediaBox{position:relative;border-radius:16px;overflow:hidden;background:#020712;border:1px solid rgba(255,255,255,.12);min-height:290px;display:grid;place-items:center}
+    video{width:100%;height:100%;object-fit:cover;min-height:290px;background:#020712}
+    .overlayText{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);text-align:center;padding:22px;pointer-events:none}
+    .controls{display:grid; gap:9px; margin-top:10px}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .row select,.row input{flex:1;min-width:160px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);color:var(--text);border-radius:12px;padding:10px;outline:none}
+    select option{background:#0d1b2f;color:white}
+    .meter{height:18px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.1);position:relative}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--good),var(--warn),var(--bad));transition:width .08s linear}
+    .meterLabel{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:6px}
+    .infoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}
+    .info{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px;min-height:64px}
+    .info small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .info strong{display:block;font-size:14px;word-break:break-word;line-height:1.25}
+    .wide{grid-column: span 2}
+    .kbd{display:grid;gap:6px;user-select:none}
+    .kbdrow{display:flex;gap:6px;justify-content:center}
+    .key{min-width:34px;height:34px;padding:0 8px;border-radius:9px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);display:grid;place-items:center;color:var(--muted);font-size:12px;font-family:var(--mono);transition:.12s}
+    .key.widekey{min-width:70px}.key.space{min-width:210px}.key.hit{background:rgba(56,217,150,.25);border-color:rgba(56,217,150,.58);color:var(--text);box-shadow:0 0 0 3px rgba(56,217,150,.08)}
+    .lastKey{font-family:var(--mono);font-size:22px;font-weight:800;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;text-align:center;margin:10px 0;color:var(--text);min-height:56px;display:grid;place-items:center}
+    textarea{width:100%;min-height:80px;resize:vertical;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;color:var(--text);padding:12px;outline:none}
+    .checks{display:grid;grid-template-columns: repeat(3, 1fr);gap:8px;margin-top:10px}
+    .checkItem{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:14px;padding:10px;display:grid;gap:8px}
+    .checkTitle{font-size:13px;font-weight:750}.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.tri button{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--muted);border-radius:9px;padding:7px 5px;cursor:pointer;font-size:11px;font-weight:800}.tri button[data-state="ok"].active{background:rgba(56,217,150,.2);color:var(--good);border-color:rgba(56,217,150,.5)}.tri button[data-state="bad"].active{background:rgba(255,100,124,.2);color:var(--bad);border-color:rgba(255,100,124,.5)}.tri button[data-state="det"].active{background:rgba(255,209,102,.18);color:var(--warn);border-color:rgba(255,209,102,.45)}
+    .report{font-family:var(--mono);font-size:12px;color:#cfe0ff;background:rgba(0,0,0,.23);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;white-space:pre-wrap;max-height:260px;overflow:auto}
+    .note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:10px}.note b{color:var(--text)}
+    .full{grid-column:1/-1}
+    .split{display:grid;grid-template-columns: 1fr 1fr; gap:14px}
+    .pillLine{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted)}
+    @media(max-width:1200px){.grid{grid-template-columns:1fr 1fr}.cameraCard{grid-column:1/-1}.top{grid-template-columns:1fr}.split{grid-template-columns:1fr}}
+    @media(max-width:760px){.wrap{width:min(100% - 18px, 1600px);padding-top:9px}.grid,.top{grid-template-columns:1fr}.infoGrid{grid-template-columns:1fr}.wide{grid-column:auto}.checks{grid-template-columns:1fr 1fr}.scorebox{grid-template-columns:repeat(2,1fr)}.key{min-width:25px;height:30px;font-size:10px;padding:0 4px}.key.space{min-width:120px}.key.widekey{min-width:48px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="top">
+      <div class="hero">
+        <div class="brand"><div class="mark">UF</div><div><h1>Test rápido de notebook</h1><p class="sub">Una pantalla para chequear cámara, micrófono, parlantes, teclado, pantalla y datos básicos del equipo. Ideal para revisión rápida antes de cargar inventario o entregar una máquina.</p></div></div>
+        <div class="actions">
+          <button class="btn" id="startAll">Pedir permisos y arrancar test</button>
+          <button class="btn secondary" id="refreshInfo">Actualizar datos</button>
+          <button class="btn secondary" id="copyReport">Copiar informe</button>
+          <button class="btn ghost" id="fullscreenBtn">Pantalla completa</button>
+        </div>
+        <div class="pillLine" id="permPills"></div>
+      </div>
+      <div class="clock">
+        <div>
+          <div class="time" id="time">--:--</div>
+          <div class="date" id="date">Cargando fecha</div>
+        </div>
+        <div class="scorebox">
+          <div class="score"><b id="okCount">0</b><span>OK manual</span></div>
+          <div class="score"><b id="badCount">0</b><span>BAD manual</span></div>
+          <div class="score"><b id="detCount">0</b><span>Detalle</span></div>
+          <div class="score"><b id="testCount">0</b><span>Tests tocados</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card cameraCard">
+        <h2>Cámara <span class="tag warn" id="camStatus">sin permiso</span></h2>
+        <div class="mediaBox">
+          <video id="video" autoplay muted playsinline></video>
+          <div class="overlayText" id="camOverlay">Presioná “Pedir permisos y arrancar test” para ver la cámara.</div>
+        </div>
+        <div class="controls">
+          <div class="row"><select id="cameraSelect"></select><button class="btn secondary" id="startCam">Probar cámara</button><button class="btn secondary" id="stopCam">Detener</button></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Micrófono <span class="tag warn" id="micStatus">sin permiso</span></h2>
+        <div class="meterLabel"><span>Nivel de entrada</span><span id="micDb">0%</span></div>
+        <div class="meter"><div class="bar" id="micBar"></div></div>
+        <div class="controls">
+          <div class="row"><select id="micSelect"></select><button class="btn secondary" id="startMic">Probar micrófono</button></div>
+        </div>
+        <div class="note">Hablá o tocá cerca del micrófono. Si la barra se mueve, el navegador recibe señal.</div>
+        <h2 style="margin-top:18px">Parlantes / salida <span class="tag warn" id="spkStatus">pendiente</span></h2>
+        <div class="controls">
+          <div class="row"><select id="speakerSelect"></select></div>
+          <div class="row"><button class="btn secondary" id="beepLeft">Test izquierdo</button><button class="btn secondary" id="beepBoth">Test ambos</button><button class="btn secondary" id="beepRight">Test derecho</button></div>
+        </div>
+        <audio id="audioTest"></audio>
+        <div class="note">Chrome permite elegir salida de audio en algunos equipos. Si no aparece selector, igual se puede probar por la salida predeterminada.</div>
+      </article>
+
+      <article class="card">
+        <h2>Datos rápidos del equipo <span class="tag ok" id="infoStatus">leído</span></h2>
+        <div class="infoGrid" id="infoGrid"></div>
+        <div class="note"><b>Limitación real:</b> una web normal no puede leer serial, service tag, modelo exacto ni RAM exacta por seguridad del navegador. Para eso hace falta una app local, PowerShell, WMI, Electron o un agente instalado.</div>
+      </article>
+
+      <article class="card full">
+        <div class="split">
+          <div>
+            <h2>Teclado <span class="tag warn" id="kbdStatus">esperando tecla</span></h2>
+            <div class="lastKey" id="lastKey">Presioná cualquier tecla</div>
+            <div class="kbd" id="keyboard"></div>
+            <textarea id="typeBox" placeholder="Escribí acá para probar letras, números, símbolos y acentos..."></textarea>
+          </div>
+          <div>
+            <h2>Checklist visual rápido <span class="tag" id="manualStatus">manual</span></h2>
+            <div class="checks" id="checks"></div>
+            <h2 style="margin-top:14px">Observaciones técnicas</h2>
+            <textarea id="notes" placeholder="Ej: pantalla con mancha leve abajo a la derecha, teclado OK, batería dura poco..."></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="card full">
+        <h2>Informe copiable <span class="tag" id="reportStatus">auto</span></h2>
+        <div class="report" id="report"></div>
+      </article>
+    </section>
+  </div>
+
+<script>
+(() => {
+  const $ = sel => document.querySelector(sel);
+  const state = {
+    streamCam:null,
+    streamMic:null,
+    audioCtx:null,
+    micAnalyser:null,
+    micData:null,
+    devices:[],
+    info:{},
+    manual:{},
+    keys:new Set(),
+    permissions:{camera:'desconocido', microphone:'desconocido'},
+  };
+
+  const checks = ['Pantalla','Teclado','Touchpad','WiFi','Bluetooth','USB','HDMI','Cámara','Micrófono','Parlantes','Batería','Cargador','Disco','RAM','Sistema','Office'];
+
+  const keysLayout = [
+    ['Escape','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'],
+    ['Backquote','Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0','Minus','Equal','Backspace'],
+    ['Tab','KeyQ','KeyW','KeyE','KeyR','KeyT','KeyY','KeyU','KeyI','KeyO','KeyP','BracketLeft','BracketRight','Backslash'],
+    ['CapsLock','KeyA','KeyS','KeyD','KeyF','KeyG','KeyH','KeyJ','KeyK','KeyL','Semicolon','Quote','Enter'],
+    ['ShiftLeft','KeyZ','KeyX','KeyC','KeyV','KeyB','KeyN','KeyM','Comma','Period','Slash','ShiftRight'],
+    ['ControlLeft','MetaLeft','AltLeft','Space','AltRight','ControlRight','ArrowLeft','ArrowUp','ArrowDown','ArrowRight']
+  ];
+  const keyLabels = {
+    Escape:'Esc', Backquote:'`', Minus:'-', Equal:'=', Backspace:'Back', Tab:'Tab', BracketLeft:'[', BracketRight:']', Backslash:'\\',
+    CapsLock:'Caps', Semicolon:';', Quote:"'", Enter:'Enter', ShiftLeft:'Shift', ShiftRight:'Shift', ControlLeft:'Ctrl', ControlRight:'Ctrl',
+    MetaLeft:'Win', AltLeft:'Alt', AltRight:'Alt', Space:'Space', ArrowLeft:'←', ArrowUp:'↑', ArrowDown:'↓', ArrowRight:'→'
+  };
+  for(let i=0;i<=9;i++) keyLabels['Digit'+i]=String(i);
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch => keyLabels['Key'+ch]=ch);
+
+  function setTag(el, text, type){
+    el.textContent = text;
+    el.className = 'tag ' + (type || '');
+  }
+
+  function nowClock(){
+    const d = new Date();
+    $('#time').textContent = d.toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    $('#date').textContent = d.toLocaleDateString('es-PY',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  }
+  setInterval(nowClock,1000); nowClock();
+
+  function buildKeyboard(){
+    const root = $('#keyboard'); root.innerHTML='';
+    keysLayout.forEach(row => {
+      const div = document.createElement('div'); div.className='kbdrow';
+      row.forEach(code => {
+        const k = document.createElement('div');
+        k.className = 'key' + (['Backspace','CapsLock','Enter','ShiftLeft','ShiftRight','Tab'].includes(code) ? ' widekey' : '') + (code === 'Space' ? ' space' : '');
+        k.dataset.code = code;
+        k.textContent = keyLabels[code] || code;
+        div.appendChild(k);
+      });
+      root.appendChild(div);
+    });
+  }
+
+  function buildChecks(){
+    const root = $('#checks'); root.innerHTML='';
+    checks.forEach(name => {
+      state.manual[name] = '';
+      const box = document.createElement('div'); box.className='checkItem';
+      box.innerHTML = `<div class="checkTitle">${name}</div>
+        <div class="tri">
+          <button data-state="ok">OK</button>
+          <button data-state="bad">BAD</button>
+          <button data-state="det">DET</button>
+        </div>`;
+      box.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.manual[name] = btn.dataset.state;
+          box.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+          updateCounts(); updateReport();
+        });
+      });
+      root.appendChild(box);
+    });
+  }
+
+  function updateCounts(){
+    const vals = Object.values(state.manual);
+    $('#okCount').textContent = vals.filter(v=>v==='ok').length;
+    $('#badCount').textContent = vals.filter(v=>v==='bad').length;
+    $('#detCount').textContent = vals.filter(v=>v==='det').length;
+    $('#testCount').textContent = state.keys.size + vals.filter(Boolean).length;
+  }
+
+  function getBatteryInfo(){
+    if(!navigator.getBattery) return Promise.resolve(null);
+    return navigator.getBattery().then(b => ({
+      nivel: Math.round(b.level * 100) + '%',
+      cargando: b.charging ? 'Sí' : 'No',
+      tiempoCarga: isFinite(b.chargingTime) ? Math.round(b.chargingTime/60)+' min' : 'No disponible',
+      tiempoDescarga: isFinite(b.dischargingTime) ? Math.round(b.dischargingTime/60)+' min' : 'No disponible'
+    })).catch(()=>null);
+  }
+
+  function estimateOS(){
+    const ua = navigator.userAgent;
+    const platform = navigator.userAgentData?.platform || navigator.platform || '';
+    if(/Windows/i.test(platform) || /Windows/i.test(ua)) return 'Windows';
+    if(/macOS|Mac/i.test(platform) || /Macintosh/i.test(ua)) return 'macOS';
+    if(/Android/i.test(ua)) return 'Android';
+    if(/iPhone|iPad|iOS/i.test(platform+ua)) return 'iOS/iPadOS';
+    if(/Linux/i.test(platform+ua)) return 'Linux';
+    return platform || 'No detectado';
+  }
+
+  async function readInfo(){
+    const nav = navigator;
+    const scr = screen;
+    const battery = await getBatteryInfo();
+    let gpu = 'No disponible';
+    try{
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const ext = gl && gl.getExtension('WEBGL_debug_renderer_info');
+      if(gl && ext) gpu = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+    }catch(e){}
+    state.info = {
+      'Sistema estimado': estimateOS(),
+      'Navegador': nav.userAgentData?.brands?.map(b=>`${b.brand} ${b.version}`).join(', ') || nav.userAgent.split(' ').slice(-2).join(' '),
+      'CPU / hilos lógicos': nav.hardwareConcurrency ? `${nav.hardwareConcurrency} hilos` : 'No disponible',
+      'RAM aproximada': nav.deviceMemory ? `${nav.deviceMemory} GB aprox.` : 'No disponible',
+      'GPU WebGL': gpu,
+      'Pantalla': `${scr.width} × ${scr.height}`,
+      'Resolución ventana': `${window.innerWidth} × ${window.innerHeight}`,
+      'Pixel ratio': String(window.devicePixelRatio || 1),
+      'Profundidad color': scr.colorDepth ? `${scr.colorDepth} bits` : 'No disponible',
+      'Orientación': scr.orientation?.type || 'No disponible',
+      'Idioma': nav.language || 'No disponible',
+      'Online': nav.onLine ? 'Sí' : 'No',
+      'Touch': ('maxTouchPoints' in nav) ? `${nav.maxTouchPoints} puntos` : 'No disponible',
+      'Cookies': nav.cookieEnabled ? 'Sí' : 'No',
+      'Batería': battery ? `${battery.nivel} | Cargando: ${battery.cargando}` : 'No disponible',
+      'Modelo exacto': 'Bloqueado por navegador',
+      'Serial / Service Tag': 'Bloqueado por navegador',
+      'Disco / salud SMART': 'Bloqueado por navegador',
+    };
+    renderInfo(); updateReport();
+  }
+
+  function renderInfo(){
+    const root = $('#infoGrid'); root.innerHTML='';
+    Object.entries(state.info).forEach(([k,v]) => {
+      const item = document.createElement('div');
+      item.className = 'info' + (k === 'GPU WebGL' || k.includes('Serial') || k.includes('Modelo') || k.includes('Disco') ? ' wide' : '');
+      item.innerHTML = `<small>${k}</small><strong>${String(v)}</strong>`;
+      root.appendChild(item);
+    });
+  }
+
+  async function queryPerms(){
+    const wrap = $('#permPills'); wrap.innerHTML='';
+    async function one(name){
+      try{
+        if(!navigator.permissions) throw new Error('no api');
+        const p = await navigator.permissions.query({name});
+        state.permissions[name] = p.state;
+        p.onchange = () => { state.permissions[name] = p.state; queryPerms(); };
+      }catch(e){ state.permissions[name] = 'no consultable'; }
+    }
+    await Promise.all([one('camera'), one('microphone')]);
+    Object.entries(state.permissions).forEach(([k,v]) => {
+      const pill = document.createElement('span');
+      pill.className = 'pill';
+      pill.textContent = `${k}: ${v}`;
+      wrap.appendChild(pill);
+    });
+  }
+
+  async function loadDevices(){
+    try{
+      state.devices = await navigator.mediaDevices.enumerateDevices();
+      fillSelect('#cameraSelect', state.devices.filter(d=>d.kind==='videoinput'), 'Cámara');
+      fillSelect('#micSelect', state.devices.filter(d=>d.kind==='audioinput'), 'Micrófono');
+      fillSelect('#speakerSelect', state.devices.filter(d=>d.kind==='audiooutput'), 'Salida de audio');
+      updateReport();
+    }catch(e){ console.warn(e); }
+  }
+
+  function fillSelect(sel, arr, label){
+    const s = $(sel); s.innerHTML='';
+    if(!arr.length){
+      const opt = document.createElement('option'); opt.textContent = `${label}: no detectado`; opt.value=''; s.appendChild(opt); return;
+    }
+    arr.forEach((d,i)=>{
+      const opt = document.createElement('option');
+      opt.value = d.deviceId;
+      opt.textContent = d.label || `${label} ${i+1}`;
+      s.appendChild(opt);
+    });
+  }
+
+  async function startCamera(){
+    try{
+      stopCamera();
+      const deviceId = $('#cameraSelect').value;
+      const constraints = {video: deviceId ? {deviceId:{exact:deviceId}} : {width:{ideal:1280},height:{ideal:720}}, audio:false};
+      state.streamCam = await navigator.mediaDevices.getUserMedia(constraints);
+      $('#video').srcObject = state.streamCam;
+      $('#camOverlay').style.display='none';
+      setTag($('#camStatus'),'funcionando','ok');
+      await loadDevices(); queryPerms(); updateReport();
+    }catch(err){
+      setTag($('#camStatus'),'error permiso/dispositivo','bad');
+      $('#camOverlay').style.display='grid';
+      $('#camOverlay').textContent = 'No se pudo abrir la cámara: ' + err.message;
+      updateReport();
+    }
+  }
+
+  function stopCamera(){
+    if(state.streamCam){ state.streamCam.getTracks().forEach(t=>t.stop()); state.streamCam=null; }
+    $('#video').srcObject = null;
+    $('#camOverlay').style.display='grid';
+  }
+
+  async function startMic(){
+    try{
+      if(state.streamMic) state.streamMic.getTracks().forEach(t=>t.stop());
+      const deviceId = $('#micSelect').value;
+      state.streamMic = await navigator.mediaDevices.getUserMedia({audio: deviceId ? {deviceId:{exact:deviceId}} : true, video:false});
+      state.audioCtx = state.audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const source = state.audioCtx.createMediaStreamSource(state.streamMic);
+      state.micAnalyser = state.audioCtx.createAnalyser();
+      state.micAnalyser.fftSize = 512;
+      source.connect(state.micAnalyser);
+      state.micData = new Uint8Array(state.micAnalyser.frequencyBinCount);
+      setTag($('#micStatus'),'recibiendo señal','ok');
+      meterLoop();
+      await loadDevices(); queryPerms(); updateReport();
+    }catch(err){
+      setTag($('#micStatus'),'error permiso/dispositivo','bad');
+      $('#micDb').textContent = err.message;
+      updateReport();
+    }
+  }
+
+  function meterLoop(){
+    if(!state.micAnalyser) return;
+    state.micAnalyser.getByteTimeDomainData(state.micData);
+    let sum=0;
+    for(const v of state.micData){ const x = (v-128)/128; sum += x*x; }
+    const rms = Math.sqrt(sum/state.micData.length);
+    const pct = Math.min(100, Math.round(rms*220));
+    $('#micBar').style.width = pct + '%';
+    $('#micDb').textContent = pct + '%';
+    requestAnimationFrame(meterLoop);
+  }
+
+  async function beep(pan=0){
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const dest = ctx.createMediaStreamDestination();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+      osc.type='sine'; osc.frequency.value = pan === 0 ? 700 : 520;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.45, ctx.currentTime + .03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + .55);
+      if(panner){ panner.pan.value = pan; osc.connect(gain).connect(panner).connect(dest); }
+      else { osc.connect(gain).connect(dest); }
+      const audio = $('#audioTest'); audio.srcObject = dest.stream;
+      const sink = $('#speakerSelect').value;
+      if(sink && audio.setSinkId) await audio.setSinkId(sink);
+      await audio.play(); osc.start(); osc.stop(ctx.currentTime + .6);
+      setTag($('#spkStatus'),'sonido enviado','ok');
+      setTimeout(()=>ctx.close(), 900);
+      updateReport();
+    }catch(err){
+      setTag($('#spkStatus'),'error al reproducir','bad');
+      console.warn(err); updateReport();
+    }
+  }
+
+  function updateReport(){
+    const devices = state.devices.reduce((acc,d)=>{acc[d.kind]=(acc[d.kind]||0)+1; return acc;},{});
+    const manualLines = Object.entries(state.manual).filter(([,v])=>v).map(([k,v])=>`- ${k}: ${v.toUpperCase()}`).join('\n') || '- Sin checklist manual todavía';
+    const infoLines = Object.entries(state.info).map(([k,v])=>`- ${k}: ${v}`).join('\n');
+    const notes = $('#notes').value.trim() || 'Sin observaciones';
+    const typed = $('#typeBox').value.trim();
+    $('#report').textContent = `UFOTECH - TEST RÁPIDO\nFecha: ${new Date().toLocaleString('es-PY')}\n\nESTADO AUTOMÁTICO\n- Cámara: ${$('#camStatus').textContent}\n- Micrófono: ${$('#micStatus').textContent}\n- Parlantes: ${$('#spkStatus').textContent}\n- Teclado: ${state.keys.size} teclas detectadas\n- Dispositivos: cámaras ${devices.videoinput||0}, micrófonos ${devices.audioinput||0}, salidas audio ${devices.audiooutput||0}\n\nDATOS DEL EQUIPO\n${infoLines}\n\nCHECKLIST MANUAL\n${manualLines}\n\nPRUEBA DE ESCRITURA\n${typed || 'Sin texto escrito'}\n\nOBSERVACIONES\n${notes}\n`;
+  }
+
+  document.addEventListener('keydown', e => {
+    state.keys.add(e.code || e.key);
+    const el = document.querySelector(`[data-code="${CSS.escape(e.code)}"]`);
+    if(el) el.classList.add('hit');
+    $('#lastKey').textContent = `${e.key === ' ' ? 'Espacio' : e.key}  |  ${e.code}`;
+    setTag($('#kbdStatus'), 'detectando teclas', 'ok');
+    updateCounts(); updateReport();
+  });
+  document.addEventListener('keyup', e => {
+    const el = document.querySelector(`[data-code="${CSS.escape(e.code)}"]`);
+    if(el) setTimeout(()=>el.classList.remove('hit'), 130);
+  });
+
+  $('#notes').addEventListener('input', updateReport);
+  $('#typeBox').addEventListener('input', updateReport);
+  $('#startCam').addEventListener('click', startCamera);
+  $('#stopCam').addEventListener('click', () => {stopCamera(); setTag($('#camStatus'),'detenida','warn'); updateReport();});
+  $('#startMic').addEventListener('click', startMic);
+  $('#beepLeft').addEventListener('click', () => beep(-1));
+  $('#beepBoth').addEventListener('click', () => beep(0));
+  $('#beepRight').addEventListener('click', () => beep(1));
+  $('#refreshInfo').addEventListener('click', async()=>{await readInfo(); await loadDevices(); await queryPerms();});
+  $('#startAll').addEventListener('click', async()=>{await readInfo(); await startCamera(); await startMic(); await loadDevices(); await queryPerms();});
+  $('#copyReport').addEventListener('click', async()=>{
+    updateReport();
+    try{ await navigator.clipboard.writeText($('#report').textContent); setTag($('#reportStatus'),'copiado','ok'); }
+    catch(e){ setTag($('#reportStatus'),'no copiado','bad'); }
+    setTimeout(()=>setTag($('#reportStatus'),'auto',''),1600);
+  });
+  $('#fullscreenBtn').addEventListener('click', ()=>{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  $('#cameraSelect').addEventListener('change', startCamera);
+  $('#micSelect').addEventListener('change', startMic);
+
+  buildKeyboard(); buildChecks(); readInfo(); loadDevices(); queryPerms(); updateReport();
+})();
+</script>
+</body>
+</html>
