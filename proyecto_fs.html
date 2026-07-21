@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo · Farmacia Salud</title><style>
+:root{
+  --u-teal:#007d8a; --u-green:#009b67; --u-orange:#f39a21; --u-red:#d83a52; --u-blue:#2c4c9b;
+  --ink:#071827; --muted:#607080; --line:rgba(7,24,39,.13); --paper:#fbf9f6; --paper2:#f2ede8; --shadow:0 28px 80px rgba(7,24,39,.12); --radius:28px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:
+radial-gradient(circle at 8% 12%, rgba(0,125,138,.14), transparent 34%),
+radial-gradient(circle at 92% 18%, rgba(243,154,33,.14), transparent 30%),
+linear-gradient(135deg, var(--paper), var(--paper2))}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{background:linear-gradient(160deg,#071827,#0a3550);color:#fff;padding:26px;position:sticky;top:0;height:100vh}
+.logo{font-size:28px;font-weight:950;letter-spacing:-.04em}.logo span{color:#7ce4ec}
+.url{font-size:13px;color:rgba(255,255,255,.72);margin-top:4px}
+.navbtn{width:100%;text-align:left;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.08);color:#fff;padding:14px 16px;border-radius:16px;margin-top:10px;cursor:pointer;font-weight:800}
+.navbtn.active{background:linear-gradient(135deg,var(--u-teal),var(--u-green));border-color:transparent}
+.main{padding:26px 28px}
+.hero{padding:28px 30px;border-radius:28px;background:linear-gradient(145deg,#071827,#0a3550 60%,#0d2840);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-20%;background:conic-gradient(from 120deg,rgba(0,125,138,.18),rgba(243,154,33,.16),rgba(216,58,82,.14),rgba(0,155,103,.15),rgba(0,125,138,.18));filter:blur(42px)}
+.hero>*{position:relative;z-index:1}
+.kicker{font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#9bd8dd}.hero h1{margin:10px 0 8px;font-size:42px;letter-spacing:-.06em}.hero p{margin:0;color:rgba(255,255,255,.82);font-size:18px}
+.panel{display:none;margin-top:22px}.panel.active{display:block}
+.grid2{display:grid;grid-template-columns:1.42fr .58fr;gap:16px}.grid2b{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 14px 34px rgba(7,24,39,.06)}
+.card h2{margin:0 0 8px;font-size:28px;letter-spacing:-.04em}.card p{margin:0;color:#607080}
+.toolbar{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.62);margin-bottom:12px}
+.badge{padding:8px 10px;border-radius:999px;background:rgba(0,125,138,.1);color:#0f5a63;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.sheetWrap,.dashWrap{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff}
+.sheetHead{display:grid;grid-template-columns:52px 130px repeat(10,1fr);font-weight:800;font-size:11px;color:#475569;background:#f7fafc;border-bottom:1px solid var(--line)}
+.sheetHead div,.sheetRow div{padding:10px 12px;border-right:1px solid var(--line)}
+.sheetBody{font-size:13px}.sheetRow{display:grid;grid-template-columns:52px 130px repeat(10,1fr);border-bottom:1px solid var(--line)}.sheetRow:nth-child(even){background:#fafbfd}
+.live{background:rgba(0,125,138,.08);animation:blink 2.8s ease-in-out infinite}@keyframes blink{50%{background:rgba(243,154,33,.12)}}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{padding:16px;border-radius:18px;background:#071827;color:#fff}.metric strong{display:block;font-size:30px;letter-spacing:-.05em}.metric span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.64)}
+.charts{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}.chart{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}.bars{display:flex;align-items:flex-end;gap:14px;height:220px;margin-top:12px}.bar{flex:1;border-radius:16px 16px 0 0;background:linear-gradient(180deg,var(--u-teal),var(--u-blue));position:relative;animation:raise 1.1s cubic-bezier(.2,.8,.2,1) both}.bar:nth-child(2){background:linear-gradient(180deg,var(--u-orange),var(--u-red))}.bar:nth-child(3){background:linear-gradient(180deg,var(--u-green),var(--u-teal))}.bar:nth-child(4){background:linear-gradient(180deg,var(--u-blue),var(--u-teal))}.bar:nth-child(5){background:linear-gradient(180deg,var(--u-red),var(--u-orange))}.bar:nth-child(6){background:linear-gradient(180deg,var(--u-teal),var(--u-green))}.bar em{position:absolute;left:50%;transform:translateX(-50%);bottom:-28px;font-style:normal;font-size:11px;font-weight:800;color:#64748b}@keyframes raise{from{height:0}}
+.donut{width:220px;height:220px;border-radius:50%;margin:18px auto 0;background:conic-gradient(var(--u-teal) 0 42%, var(--u-orange) 42% 70%, var(--u-red) 70% 84%, var(--u-green) 84% 100%);display:grid;place-items:center;box-shadow:inset 0 0 0 24px rgba(255,255,255,.95)}.donut:after{content:"Hoy";width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:28px;font-weight:950}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.mini{padding:16px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.channel,.ticket,.wiki{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff;margin-top:10px}.icon{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:#071827;color:#fff;font-weight:900}.grow{flex:1}.status{padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.w1{background:rgba(243,154,33,.12);color:#9a5f10}.w2{background:rgba(0,125,138,.12);color:#0f5a63}.w3{background:rgba(0,155,103,.12);color:#0c6b48}
+.action{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;padding:12px 14px;border-radius:14px;background:#071827;color:#fff;font-weight:900;cursor:pointer}.btn.alt{background:linear-gradient(135deg,var(--u-teal),var(--u-green))}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.grid2,.grid2b,.charts,.metrics,.row{grid-template-columns:1fr}.sheetWrap{overflow:auto}.sheetHead,.sheetRow{min-width:1520px}}
+</style></head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">Farmacia <span>Salud</span></div>
+    <div class="url">https://nicolaspintos.com/proyecto_fs</div>
+    <button class="navbtn active" onclick="openPanel('overview',this)">Resumen</button>
+    <button class="navbtn" onclick="openPanel('sheets',this)">Google Sheets</button>
+    <button class="navbtn" onclick="openPanel('looker',this)">Looker Studio</button>
+    <button class="navbtn" onclick="openPanel('ops',this)">Operación</button>
+    <button class="navbtn" onclick="openPanel('wiki',this)">Wiki</button>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <div class="kicker">Prototipo funcional</div>
+      <h1>Capa colaborativa</h1>
+      <p>Reportes · comunicación · tickets · wiki.</p>
+    </div>
+
+    <section id="overview" class="panel active">
+      <div class="metrics">
+        <div class="metric"><strong>₲ 58.870.000</strong><span>ventas del día</span></div>
+        <div class="metric"><strong>₲ 11.460.000</strong><span>caja consolidada</span></div>
+        <div class="metric"><strong>₲ 1.892.000.000</strong><span>inventario valorizado</span></div>
+        <div class="metric"><strong>09:25</strong><span>última sync</span></div>
+      </div>
+      <div class="row">
+        <div class="mini"><strong>6 sucursales</strong><p>Centro, Luque, Limpio, San Lorenzo, Fernando y Villa Elisa.</p></div>
+        <div class="mini"><strong>Mix financiero</strong><p>Efectivo, tarjetas, transferencias, ticket promedio y margen estimado.</p></div>
+        <div class="mini"><strong>Base futura</strong><p>Datos exportables para una migración completa.</p></div>
+      </div>
+    </section>
+
+    <section id="sheets" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <div class="toolbar"><div class="badge">demo</div><strong>Hoja simulada</strong></div>
+          <div class="sheetWrap">
+            <div class="sheetHead"><div>#</div><div>Sucursal</div><div>Ventas día</div><div>Efectivo</div><div>Tarjetas</div><div>Transfer.</div><div>Caja actual</div><div>Inventario</div><div>Stock crítico</div><div>Ticket prom.</div><div>Margen %</div><div>Actualizado</div></div>
+            <div class="sheetBody" id="sheetBody"></div>
+          </div>
+          <div class="action"><button class="btn alt" onclick="syncSheet()">Simular lectura</button><button class="btn" onclick="randomizeRows()">Actualizar datos</button></div>
+        </div>
+        <div class="card">
+          <h2>Flujo</h2>
+          <p>Firebird → script Python → Google Sheets → Looker Studio.</p>
+          <div class="toolbar" style="margin-top:18px"><div class="badge">sync</div><span id="syncLabel">Última lectura: 09:25</span></div>
+          <div class="mini" style="margin-top:10px"><strong>Lectura</strong><p>Ventas, medios de cobro, caja, inventario y ticket promedio por sucursal.</p></div>
+          <div class="mini" style="margin-top:10px"><strong>Frecuencia</strong><p>Cada 5 minutos.</p></div>
+          <div class="mini" style="margin-top:10px"><strong>Uso</strong><p>Base intermedia para gerencia y reporting.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="looker" class="panel">
+      <div class="card">
+        <div class="toolbar"><div class="badge">live</div><strong>Dashboard gerencial</strong></div>
+        <div class="metrics">
+          <div class="metric"><strong id="mVentas">₲ 58.870.000</strong><span>ventas del día</span></div>
+          <div class="metric"><strong id="mCaja">₲ 11.460.000</strong><span>caja consolidada</span></div>
+          <div class="metric"><strong id="mInv">₲ 1.892.000.000</strong><span>inventario</span></div>
+          <div class="metric"><strong id="mHora">09:25</strong><span>actualización</span></div>
+        </div>
+        <div class="charts">
+          <div class="chart"><strong>Ventas por sucursal</strong><div class="bars" id="bars"></div></div>
+          <div class="chart"><strong>Distribución medios de cobro</strong><div class="donut"></div></div>
+        </div>
+        <div class="row">
+          <div class="mini"><strong>Ticket promedio</strong><p id="mTicket">₲ 86.500</p></div>
+          <div class="mini"><strong>Margen bruto estimado</strong><p id="mMargen">22,8%</p></div>
+          <div class="mini"><strong>Stock crítico</strong><p id="mStock">18 ítems</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ops" class="panel">
+      <div class="grid2b">
+        <div class="card">
+          <h2>Mattermost</h2>
+          <div class="channel"><div class="icon">#</div><div class="grow"><strong>stock-reposicion</strong><p>Pedidos y faltantes.</p></div></div>
+          <div class="channel"><div class="icon">#</div><div class="grow"><strong>caja-cierre</strong><p>Validaciones y observaciones.</p></div></div>
+          <div class="channel"><div class="icon">#</div><div class="grow"><strong>rrhh-turnos</strong><p>Cambios y permisos.</p></div></div>
+        </div>
+        <div class="card">
+          <h2>Zammad</h2>
+          <div class="ticket"><div class="icon">!</div><div class="grow"><strong>Impresora fiscal</strong><p>Sucursal Centro</p></div><span class="status w1">Alta</span></div>
+          <div class="ticket"><div class="icon">A</div><div class="grow"><strong>AnyDesk caído</strong><p>Sucursal San Lorenzo</p></div><span class="status w2">En proceso</span></div>
+          <div class="ticket"><div class="icon">U</div><div class="grow"><strong>Usuario sin acceso</strong><p>Sucursal Luque</p></div><span class="status w3">Resuelto</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wiki" class="panel">
+      <div class="grid2b">
+        <div class="card">
+          <h2>Wiki interna</h2>
+          <div class="wiki"><div class="icon">W</div><div class="grow"><strong>Manual de caja</strong><p>Cierre, arqueo y contingencias.</p></div></div>
+          <div class="wiki"><div class="icon">S</div><div class="grow"><strong>Soporte</strong><p>Qué hacer si cae WhatsApp Web o AnyDesk.</p></div></div>
+          <div class="wiki"><div class="icon">N</div><div class="grow"><strong>Nuevas incorporaciones</strong><p>Checklist, accesos y flujo base.</p></div></div>
+        </div>
+        <div class="card">
+          <h2>Objetivo</h2>
+          <p>Menos dependencia de explicaciones orales. Más procedimientos repetibles.</p>
+          <div class="row">
+            <div class="mini"><strong>Onboarding</strong><p>Ingreso ordenado.</p></div>
+            <div class="mini"><strong>Manual</strong><p>Consulta rápida.</p></div>
+            <div class="mini"><strong>Escala</strong><p>Base para crecer.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const data = [
+  {id:2,sucursal:'Centro',ventas:12480000,efectivo:3980000,tarjetas:6220000,transfer:2280000,caja:2410000,inventario:418000000,stock:2,ticket:94800,margen:24.1,hora:'09:25'},
+  {id:3,sucursal:'Luque',ventas:8720000,efectivo:3210000,tarjetas:3940000,transfer:1570000,caja:1660000,inventario:276000000,stock:4,ticket:81300,margen:21.7,hora:'09:25'},
+  {id:4,sucursal:'Limpio',ventas:9630000,efectivo:3550000,tarjetas:4210000,transfer:1870000,caja:1850000,inventario:289000000,stock:3,ticket:79200,margen:22.4,hora:'09:25'},
+  {id:5,sucursal:'San Lorenzo',ventas:7810000,efectivo:2620000,tarjetas:3610000,transfer:1580000,caja:1340000,inventario:247000000,stock:5,ticket:76500,margen:20.9,hora:'09:25'},
+  {id:6,sucursal:'Fernando',ventas:10890000,efectivo:3720000,tarjetas:4950000,transfer:2220000,caja:2190000,inventario:356000000,stock:1,ticket:88700,margen:23.5,hora:'09:25'},
+  {id:7,sucursal:'Villa Elisa',ventas:9340000,efectivo:3390000,tarjetas:4170000,transfer:1780000,caja:2010000,inventario:306000000,stock:3,ticket:84100,margen:22.0,hora:'09:25'}
+];
+function gs(n){ return '₲ ' + Math.round(n).toLocaleString('es-PY'); }
+function renderSheet(){
+  const body=document.getElementById('sheetBody');
+  body.innerHTML='';
+  data.forEach((r)=>{
+    const row=document.createElement('div');
+    row.className='sheetRow';
+    row.innerHTML=`<div>${r.id}</div><div>${r.sucursal}</div><div class="live">${gs(r.ventas)}</div><div>${gs(r.efectivo)}</div><div>${gs(r.tarjetas)}</div><div>${gs(r.transfer)}</div><div>${gs(r.caja)}</div><div>${gs(r.inventario)}</div><div>${r.stock} ítems</div><div>${gs(r.ticket)}</div><div>${r.margen.toFixed(1)}%</div><div>${r.hora}</div>`;
+    body.appendChild(row);
+  });
+}
+function totals(){
+  return {
+    ventas:data.reduce((a,b)=>a+b.ventas,0),
+    caja:data.reduce((a,b)=>a+b.caja,0),
+    inv:data.reduce((a,b)=>a+b.inventario,0),
+    stock:data.reduce((a,b)=>a+b.stock,0),
+    ticket:data.reduce((a,b)=>a+b.ticket,0)/data.length,
+    margen:data.reduce((a,b)=>a+b.margen,0)/data.length,
+    efectivo:data.reduce((a,b)=>a+b.efectivo,0),
+    tarjetas:data.reduce((a,b)=>a+b.tarjetas,0),
+    transfer:data.reduce((a,b)=>a+b.transfer,0)
+  }
+}
+function renderBars(){
+  const bars=document.getElementById('bars'); bars.innerHTML='';
+  const labels=['CE','LU','LI','SL','FE','VE'];
+  data.forEach((r,i)=>{
+    const max=Math.max(...data.map(x=>x.ventas));
+    const h=Math.round(r.ventas/max*100);
+    const d=document.createElement('div');
+    d.className='bar'; d.style.height=h+'%'; d.innerHTML=`<em>${labels[i]}</em>`;
+    bars.appendChild(d);
+  });
+  const t=totals();
+  document.getElementById('mVentas').textContent=gs(t.ventas);
+  document.getElementById('mCaja').textContent=gs(t.caja);
+  document.getElementById('mInv').textContent=gs(t.inv);
+  document.getElementById('mTicket').textContent=gs(t.ticket);
+  document.getElementById('mMargen').textContent=t.margen.toFixed(1).replace('.',',') + '%';
+  document.getElementById('mStock').textContent=t.stock + ' ítems';
+  document.getElementById('mHora').textContent=data[0].hora;
+}
+function randomizeRows(){
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0'); const mm=String(now.getMinutes()).padStart(2,'0');
+  data.forEach(r=>{
+    r.ventas += Math.round((Math.random()*850000)-180000);
+    if(r.ventas<6500000)r.ventas=6500000;
+    r.efectivo += Math.round((Math.random()*250000)-80000);
+    r.tarjetas += Math.round((Math.random()*300000)-100000);
+    r.transfer += Math.round((Math.random()*180000)-60000);
+    r.caja += Math.round((Math.random()*140000)-50000);
+    r.inventario += Math.round((Math.random()*3500000)-1500000);
+    r.stock = Math.max(1, r.stock + Math.round(Math.random()*2-1));
+    r.ticket += Math.round((Math.random()*6000)-2000);
+    r.margen += ((Math.random()*0.8)-0.4);
+    r.hora=`${hh}:${mm}`;
+  });
+  renderSheet(); renderBars();
+}
+function syncSheet(){
+  randomizeRows();
+  const now=new Date(); const hh=String(now.getHours()).padStart(2,'0'); const mm=String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('syncLabel').textContent='Última lectura: '+hh+':'+mm;
+}
+function openPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+renderSheet(); renderBars();
+</script>
+</body></html>
