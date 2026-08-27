@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apoyo de exposición · Países Árabes · UCOM</title>
+<style>
+:root{--bg:#07120f;--panel:#0d1b17;--panel2:#11231d;--text:#f5f2e8;--muted:#aebcb6;--gold:#d4b36a;--green:#164f3c;--line:rgba(255,255,255,.11);--py:#e9f4ee}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 20% 0%,#15382d 0,#07120f 44%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:linear-gradient(30deg,#fff 1px,transparent 1px),linear-gradient(150deg,#fff 1px,transparent 1px);background-size:34px 58px}
+.wrap{max-width:1180px;margin:auto;padding:34px 22px 80px;position:relative}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:38px}
+.brand{display:flex;gap:13px;align-items:center} .mark{width:42px;height:42px;border:1px solid var(--gold);display:grid;place-items:center;transform:rotate(45deg);border-radius:8px} .mark span{transform:rotate(-45deg);font-weight:900;color:var(--gold)}
+.brand b{display:block;font-size:14px;letter-spacing:.15em} .brand span{color:var(--muted);font-size:12px}
+.progress{font-size:12px;color:var(--muted)} .progress b{color:var(--gold);font-size:18px;margin-right:5px}
+.home{display:block} .home.hidden{display:none}
+.kicker{color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-size:12px;margin-bottom:12px}
+.home h1{font-family:Georgia,serif;font-size:clamp(36px,6vw,72px);line-height:.95;margin:0 0 18px;max-width:900px;font-weight:500}
+.home .lead{max-width:760px;font-size:18px;line-height:1.6;color:#cfdbd5;margin-bottom:30px}
+.team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.person-card{appearance:none;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid var(--line);color:var(--text);display:grid;grid-template-columns:44px 54px 1fr 28px;gap:12px;align-items:center;text-align:left;padding:14px 16px;border-radius:18px;cursor:pointer;transition:.2s}
+.person-card:hover{transform:translateY(-2px);border-color:rgba(212,179,106,.55);background:rgba(255,255,255,.065)} .person-card.ready{border-color:#58a77b;background:rgba(36,115,79,.12)}
+.num{color:var(--gold);font-weight:800;font-size:12px} .avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#18392d;border:1px solid rgba(212,179,106,.4);font-weight:800}
+.pcopy strong{font-size:16px;display:block} .pcopy span{display:block;color:#d8e1dc;font-size:13px;margin-top:2px} .pcopy small{display:block;color:var(--muted);font-size:11px;margin-top:4px} .arrow{color:var(--gold);font-size:20px}
+.speaker{display:none;animation:in .22s ease both} .speaker.active{display:block} @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.speaker-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px} button{font:inherit} .back,.done,.prev-turn,.next-turn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer} .done{border-color:rgba(212,179,106,.45);color:#f7dfaa}
+.turn-badge{color:var(--muted);font-size:13px}
+.hero-line{display:flex;gap:24px;justify-content:space-between;align-items:end;margin-bottom:26px} .eyebrow{color:var(--gold);font-weight:800;letter-spacing:.15em;text-transform:uppercase;font-size:12px} .hero-line h1{font-family:Georgia,serif;font-size:clamp(36px,5vw,62px);font-weight:500;margin:4px 0} .hero-line h2{font-size:18px;color:#d3dfd9;font-weight:500;margin:0}
+.points{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:22px 0} .point{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:18px;padding:18px} .point-top{display:flex;gap:10px;align-items:center} .point-top span{color:var(--gold);font-size:11px;font-weight:900} .point h3{margin:0;font-size:17px} .point p{color:#d5dfda;font-size:14px;line-height:1.5;margin:10px 0 14px}
+.py{border-top:1px solid rgba(255,255,255,.09);padding-top:12px;display:grid;gap:5px} .py b{font-size:12px;color:#8fd0a9} .py span{font-size:13px;line-height:1.45;color:#e5eee9}
+.script-wrap{margin-top:22px;border:1px solid rgba(212,179,106,.35);background:linear-gradient(145deg,rgba(212,179,106,.08),rgba(255,255,255,.025));border-radius:20px;overflow:hidden} .script-title{padding:13px 18px;border-bottom:1px solid rgba(212,179,106,.25);color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.13em;font-weight:900} .script{padding:18px 22px;max-width:900px} .script p{font-family:Georgia,serif;font-size:18px;line-height:1.62;margin:0 0 13px;color:#f7f3e9}
+.pass{margin-top:14px;padding:14px 18px;border-left:3px solid var(--gold);background:rgba(255,255,255,.035);color:#d8e2dc;font-size:14px}
+.navturn{display:flex;align-items:center;justify-content:space-between;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)} .navturn div{text-align:center} .navturn b{display:block;color:var(--gold)} .navturn span{display:block;color:var(--muted);font-size:11px}
+.note{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.5}
+@media(max-width:760px){.team-grid,.points{grid-template-columns:1fr} .hero-line{align-items:flex-start;flex-direction:column} .done{width:100%} .person-card{grid-template-columns:34px 48px 1fr 20px} header{align-items:flex-start;gap:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="mark"><span>U</span></div><div><b>UCOM · NEGOCIOS Y SOCIEDAD</b><span>Países Árabes · apoyo de exposición</span></div></div>
+  <div class="progress"><b id="readyCount">0</b>/8 listos</div>
+</header>
+
+<main class="home" id="home">
+  <div class="kicker">Examen Parcial · Orden de exposición</div>
+  <h1>Entrá, elegí tu nombre y repasá tu parte.</h1>
+  <div class="lead">Cada tema incluye los 4 puntos del trabajo y, ahora, una referencia directa a Paraguay en cada uno. La playlist queda sin comparación, como indicó el profesor.</div>
+  <div class="team-grid">
+    <button class="person-card" data-target="01">
+      <div class="num">01</div>
+      <div class="avatar">NP</div>
+      <div class="pcopy">
+        <strong>Nicolás Pintos</strong>
+        <span>Presentador y apertura</span>
+        <small>0:30–0:40 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="02">
+      <div class="num">02</div>
+      <div class="avatar">AM</div>
+      <div class="pcopy">
+        <strong>Anali Marecos</strong>
+        <span>Contexto cultural y valores</span>
+        <small>1:35 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="03">
+      <div class="num">03</div>
+      <div class="avatar">LF</div>
+      <div class="pcopy">
+        <strong>Lorena Fernandez</strong>
+        <span>Estilo de negociación</span>
+        <small>1:35 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="04">
+      <div class="num">04</div>
+      <div class="avatar">ME</div>
+      <div class="pcopy">
+        <strong>María Emilia Noguera</strong>
+        <span>Comunicación, etiqueta y protocolo</span>
+        <small>1:35 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="05">
+      <div class="num">05</div>
+      <div class="avatar">FE</div>
+      <div class="pcopy">
+        <strong>Fernando Emilio Talavera</strong>
+        <span>Jerarquía, autoridad y toma de decisiones</span>
+        <small>1:35 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="06">
+      <div class="num">06</div>
+      <div class="avatar">MC</div>
+      <div class="pcopy">
+        <strong>Maria Chamorro</strong>
+        <span>Relaciones, confianza y manejo del tiempo</span>
+        <small>1:35 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="07">
+      <div class="num">07</div>
+      <div class="avatar">FS</div>
+      <div class="pcopy">
+        <strong>Fabiola Sosa</strong>
+        <span>Adaptación, acuerdos y cierre</span>
+        <small>1:50 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button>
+    <button class="person-card" data-target="08">
+      <div class="num">08</div>
+      <div class="avatar">MS</div>
+      <div class="pcopy">
+        <strong>Mayra Sanchez</strong>
+        <span>Playlist cultural y conclusión</span>
+        <small>1:20 aprox.</small>
+      </div>
+      <div class="arrow">→</div>
+    </button></div>
+  <div class="note">La página guarda localmente qué partes ya fueron repasadas en este dispositivo.</div>
+</main>
+
+
+    <section class="speaker" id="speaker-01">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 01 · 0:30–0:40 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Apertura</div>
+          <h1>Nicolás Pintos</h1>
+          <h2>Presentador y apertura</h2>
+        </div>
+        <button class="done" data-done="01">Marcar como listo ✓</button>
+      </div>
+      
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>As-salamu alaykum.</p><p>Buenos días, profesor y compañeros.</p><p>Somos el grupo de Países Árabes y hoy vamos a mostrarles, de una manera rápida y visual, cómo la cultura puede cambiar la forma en que se construyen relaciones y se cierran acuerdos.</p><p>Y como pueden ver, intentamos entrar un poquito en contexto también con la vestimenta.</p><p>Para comenzar, Anali nos va a hablar del contexto cultural y de los valores que influyen en esta forma de hacer negocios.</p></div>
+      </div>
+      <div class="pass">Pase: “Para comenzar, Anali nos va a hablar del contexto cultural y de los valores que influyen en esta forma de hacer negocios.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>01/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-02">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 02 · 1:35 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 1</div>
+          <h1>Anali Marecos</h1>
+          <h2>Contexto cultural y valores</h2>
+        </div>
+        <button class="done" data-done="02">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Familia y confianza</h3></div>
+              <p>Primero se construye relación personal; café, conversación y cercanía antes de negociar.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay también importa la confianza, pero solemos entrar al negocio más rápido.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Religión y calendario</h3></div>
+              <p>Viernes, oraciones y Ramadán pueden modificar horarios y reuniones.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay la religión influye culturalmente, pero no estructura de la misma manera la agenda empresarial.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Jerarquía, honor y wasta</h3></div>
+              <p>Rango, reputación y redes personales pueden facilitar el acceso y la negociación.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay los contactos importan, pero el protocolo jerárquico suele ser más flexible.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Manejo del tiempo</h3></div>
+              <p>Silencios, interrupciones y varias reuniones pueden ser normales; se espera paciencia.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay generalmente buscamos avances y respuestas en plazos más cortos.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>En muchos países árabes, la relación personal tiene muchísimo peso antes de entrar de lleno al negocio.</p><p>Primero, la familia y la confianza funcionan como base de muchas relaciones comerciales. Es común comenzar con café, conversación y preguntas personales antes de hablar de precios. En Paraguay también valoramos mucho la confianza, pero normalmente pasamos al tema comercial con mayor rapidez.</p><p>Segundo, la religión influye de forma visible en la agenda. El viernes, los horarios de oración y el Ramadán pueden cambiar reuniones y ritmos de trabajo. En Paraguay la religión forma parte de la cultura, pero no suele organizar formalmente el calendario empresarial.</p><p>Tercero, la jerarquía, el honor y las redes de contactos —lo que puede aparecer como wasta— tienen mucho peso. En Paraguay los contactos también ayudan, pero el protocolo jerárquico suele ser menos rígido.</p><p>Y cuarto, el tiempo se maneja con más paciencia: silencios, interrupciones o varias reuniones no significan necesariamente desinterés. En Paraguay solemos esperar definiciones un poco más rápidas.</p><p>En resumen: en esta cultura la relación, el respeto y el contexto pesan tanto como la propuesta comercial.</p></div>
+      </div>
+      <div class="pass">Pase: “Con este contexto, Lorena nos va a mostrar cómo se traduce todo esto al momento de negociar.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>02/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-03">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 03 · 1:35 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 2</div>
+          <h1>Lorena Fernandez</h1>
+          <h2>Estilo de negociación</h2>
+        </div>
+        <button class="done" data-done="03">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Confianza antes que precio</h3></div>
+              <p>La relación personal se construye antes de entrar en condiciones o contrato.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay también importa la relación, pero solemos ir al objetivo comercial más rápido.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Regateo y concesiones</h3></div>
+              <p>La primera oferta puede ser un punto de partida y las concesiones se hacen gradualmente.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay se negocia, pero el precio inicial suele sentirse más cercano al precio real.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Hospitalidad dentro de la negociación</h3></div>
+              <p>Café y té ayudan a generar confianza y a bajar la formalidad antes de negociar.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay compartir una bebida es común, pero tiene menos peso protocolar.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Decisión y paciencia</h3></div>
+              <p>La autoridad superior puede definir el acuerdo; presionar puede ser contraproducente.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay muchas decisiones comerciales pueden resolverse de manera más directa.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>En el estilo de negociación árabe, lo primero no suele ser el precio: es la confianza.</p><p>Primer punto: antes de negociar condiciones, se dedica tiempo a conocer a la contraparte. En Paraguay también construimos confianza, pero una reunión puede ir más rápido al objetivo comercial.</p><p>Segundo: el regateo y las contraofertas son mucho más visibles. La primera cifra puede ser solo un punto de partida. En Paraguay negociamos precios, sí, pero normalmente el precio inicial tiene más peso.</p><p>Tercero: el té o el café forman parte del proceso. No son un detalle decorativo: ayudan a crear el clima de relación. En Paraguay podemos compartir tereré o café, pero no suele tener el mismo valor protocolar dentro de la negociación.</p><p>Cuarto: la decisión final puede depender de una autoridad superior, por eso presionar por una respuesta inmediata puede jugar en contra. En Paraguay también hay jerarquías, pero muchas negociaciones son más directas.</p><p>La idea clave es que negociar no es solo discutir números: también es respetar el ritmo y la relación.</p></div>
+      </div>
+      <div class="pass">Pase: “Ahora María Emilia nos va a mostrar qué cambia en la comunicación, la etiqueta y el protocolo.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>03/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-04">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 04 · 1:35 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 3</div>
+          <h1>María Emilia Noguera</h1>
+          <h2>Comunicación, etiqueta y protocolo</h2>
+        </div>
+        <button class="done" data-done="04">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Inicio de la reunión</h3></div>
+              <p>Saludos, conversación y hospitalidad antes del tema comercial.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay el saludo es cordial, pero solemos avanzar antes al negocio.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Café y dátiles</h3></div>
+              <p>Aceptar la hospitalidad demuestra respeto y disposición al vínculo.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay ofrecer algo es cortesía, pero rechazarlo suele tener menos carga cultural.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Uso de la mano derecha</h3></div>
+              <p>Se prioriza para saludar, entregar objetos, tarjetas, regalos y alimentos.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay la mano izquierda no tiene ese mismo significado social o religioso.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Contacto físico y regalos</h3></div>
+              <p>Hay que considerar género, religión y evitar regalos como alcohol o productos de cerdo.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay el contacto físico suele ser más flexible y esas restricciones no son generales.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>En una reunión empresarial árabe, la forma de comportarse comunica tanto como lo que uno dice.</p><p>Primero, es normal comenzar con saludos, conversación y hospitalidad antes de hablar del negocio. En Paraguay también somos cordiales, pero solemos pasar más rápido al asunto principal.</p><p>Segundo, en países del Golfo el café árabe y los dátiles son parte del protocolo. Aceptarlos demuestra respeto. En Paraguay ofrecer algo también es una cortesía, pero rechazarlo no suele tener el mismo peso cultural.</p><p>Tercero, la mano derecha tiene un valor especial para saludar, entregar tarjetas, recibir regalos o comer. En Paraguay no existe esa diferenciación cultural tan marcada entre la mano derecha y la izquierda.</p><p>Cuarto, hay que cuidar el contacto físico y los regalos, especialmente entre hombres y mujeres y con productos como alcohol o cerdo. En Paraguay el saludo físico suele ser más flexible y esos productos no tienen la misma restricción religiosa.</p><p>Por eso, en esta cultura el protocolo no es un detalle: puede influir directamente en la impresión que dejamos.</p></div>
+      </div>
+      <div class="pass">Pase: “Fernando nos va a explicar cómo funcionan la jerarquía, la autoridad y la toma de decisiones.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>04/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-05">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 05 · 1:35 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 4</div>
+          <h1>Fernando Emilio Talavera</h1>
+          <h2>Jerarquía, autoridad y toma de decisiones</h2>
+        </div>
+        <button class="done" data-done="05">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Decisión concentrada</h3></div>
+              <p>Las decisiones relevantes suelen quedar en manos de figuras de mayor rango.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay también hay jerarquías, pero suele haber más delegación operativa.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Rango, edad y experiencia</h3></div>
+              <p>Pueden influir en el respeto, el orden de intervención y la autoridad percibida.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay importan, pero el trato empresarial suele ser menos ceremonial.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Consulta interna</h3></div>
+              <p>El decisor puede escuchar a personas de confianza antes de cerrar.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay también se consulta, aunque suele seguir procesos organizacionales más explícitos.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Quién puede cerrar</h3></div>
+              <p>Una reunión puede ser positiva sin que quien está presente tenga poder final de decisión.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay es más habitual buscar desde el inicio a alguien habilitado para cerrar el acuerdo.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>En muchas organizaciones árabes, la jerarquía tiene un peso muy visible.</p><p>Primero, las decisiones importantes suelen concentrarse en personas de mayor rango. En Paraguay también existe jerarquía, pero en muchas empresas hay más margen para delegar.</p><p>Segundo, el cargo, la edad, la experiencia y la posición dentro de la organización influyen en quién habla y quién decide. En Paraguay estos factores importan, aunque el trato cotidiano suele ser menos ceremonial.</p><p>Tercero, antes de decidir puede existir consulta interna con personas de confianza o superiores. En Paraguay también se consulta, pero la cadena de aprobación suele estar más formalizada por procesos internos.</p><p>Cuarto, cuando la persona con autoridad no está presente, una reunión puede avanzar sin que exista todavía una decisión final. En Paraguay es más frecuente intentar que participe desde el inicio alguien con capacidad de cerrar.</p><p>Entonces, para negociar bien hay que identificar desde el principio quién realmente tiene autoridad para decidir.</p></div>
+      </div>
+      <div class="pass">Pase: “María Chamorro nos va a contar cómo se construye la confianza y cómo se manejan los tiempos.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>05/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-06">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 06 · 1:35 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 5</div>
+          <h1>Maria Chamorro</h1>
+          <h2>Relaciones, confianza y manejo del tiempo</h2>
+        </div>
+        <button class="done" data-done="06">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Contactos previos</h3></div>
+              <p>Recomendaciones y referencias personales pueden facilitar el acceso y la confianza.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay el networking ayuda, pero el contacto en frío suele ser más normal.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Reuniones sociales</h3></div>
+              <p>Café, comidas y encuentros sociales pueden ser parte del proceso comercial.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay ayudan a fortalecer vínculos, pero no siempre son necesarios para negociar.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Silencios y respuestas</h3></div>
+              <p>Un silencio no implica automáticamente rechazo; puede ser reflexión o espera.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay un silencio prolongado suele sentirse antes como demora o falta de interés.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Negociaciones prolongadas</h3></div>
+              <p>Pueden ser necesarias varias reuniones antes de llegar al acuerdo.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay normalmente se busca una definición comercial en menos tiempo.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>En este punto, la palabra clave es confianza.</p><p>Primero, una recomendación o un contacto previo puede abrir muchas puertas. En Paraguay el networking también ayuda, pero un contacto en frío suele ser más aceptado.</p><p>Segundo, comidas, café y encuentros sociales pueden formar parte real del proceso comercial. En Paraguay también fortalecemos relaciones fuera de la oficina, pero no siempre es una etapa necesaria para negociar.</p><p>Tercero, los silencios y los tiempos de respuesta deben manejarse con paciencia. En Paraguay un silencio prolongado suele interpretarse antes como falta de interés o demora.</p><p>Cuarto, cerrar puede requerir varias reuniones. Mostrar demasiada prisa puede perjudicar la relación. En Paraguay, cuando existe interés, solemos buscar una definición en menos tiempo.</p><p>La diferencia principal es que allá el tiempo invertido en la relación no se ve como tiempo perdido: forma parte del negocio.</p></div>
+      </div>
+      <div class="pass">Pase: “Fabiola nos va a mostrar cómo se adapta una empresa extranjera y cómo se llega al cierre.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>06/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-07">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 07 · 1:50 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Tema 6</div>
+          <h1>Fabiola Sosa</h1>
+          <h2>Adaptación, acuerdos y cierre</h2>
+        </div>
+        <button class="done" data-done="07">Marcar como listo ✓</button>
+      </div>
+      <div class="points">
+            <article class="point">
+              <div class="point-top"><span>01</span><h3>Adaptación y paciencia</h3></div>
+              <p>No conviene presionar por una firma rápida; primero se consolida la relación.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay solemos plantear antes el objetivo y esperar avances más rápidos.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>02</span><h3>Hospitalidad y religión</h3></div>
+              <p>Aceptar hospitalidad y respetar Ramadán, oración y calendario mejora la relación.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay esos factores tienen menos impacto formal sobre la agenda empresarial.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>03</span><h3>Confirmar el verdadero acuerdo</h3></div>
+              <p>Expresiones amables no siempre equivalen a aceptación definitiva.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay tendemos a pedir respuestas más directas sobre si se acepta o no.</span></div>
+            </article>
+            <article class="point">
+              <div class="point-top"><span>04</span><h3>Palabra + contrato</h3></div>
+              <p>La confianza personal pesa mucho, pero el acuerdo debe documentarse claramente.</p>
+              <div class="py"><b>🇵🇾 Paraguay</b><span>En Paraguay también importa la palabra, aunque el contrato suele aparecer antes como respaldo central.</span></div>
+            </article></div>
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>Para cerrar una negociación en esta cultura, adaptarse es tan importante como tener una buena propuesta.</p><p>Primero, hay que ser paciente y no empezar presionando por precio o firma. En Paraguay somos más directos y normalmente planteamos antes el objetivo comercial.</p><p>Segundo, aceptar la hospitalidad y respetar los tiempos religiosos ayuda a demostrar respeto. En Paraguay esos elementos existen, pero tienen menos impacto formal en la agenda del negocio.</p><p>Tercero, una respuesta amable como ‘lo estudiaremos’ o ‘Insha’Allah’ no debe interpretarse automáticamente como un sí definitivo. En Paraguay solemos buscar respuestas más explícitas para saber si avanzamos o no.</p><p>Cuarto, la confianza y la palabra tienen mucho peso, pero el acuerdo igualmente debe confirmarse y documentarse. En Paraguay también valoramos la palabra, aunque normalmente damos más protagonismo al contrato desde etapas más tempranas.</p><p>La clave del cierre sería: primero se construye confianza, después se negocian las condiciones y finalmente se formaliza el acuerdo.</p></div>
+      </div>
+      <div class="pass">Pase: “Y para terminar, Mayra nos presenta la playlist cultural y la conclusión del equipo.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>07/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+    <section class="speaker" id="speaker-08">
+      <div class="speaker-head">
+        <button class="back">← Equipo</button>
+        <div class="turn-badge">Turno 08 · 1:20 aprox.</div>
+      </div>
+      <div class="hero-line">
+        <div>
+          <div class="eyebrow">Cierre</div>
+          <h1>Mayra Sanchez</h1>
+          <h2>Playlist cultural y conclusión</h2>
+        </div>
+        <button class="done" data-done="08">Marcar como listo ✓</button>
+      </div>
+      
+      <div class="script-wrap">
+        <div class="script-title">Ayuda memoria · texto a decir</div>
+        <div class="script"><p>Para cerrar, preparamos una playlist con cinco músicas representativas del mundo árabe, como parte del componente cultural pedido en el examen.</p><p>La idea fue acompañar la investigación también desde la música y no solamente desde los negocios.</p><p>El código QR que ven en pantalla lleva directamente a la playlist.</p><p>Como conclusión del grupo, vimos que negociar en otra cultura no significa solamente traducir el idioma: significa entender cómo se construye la confianza, cómo se comunica el respeto, quién toma decisiones y qué ritmo tiene la relación.</p><p>Muchas gracias.</p></div>
+      </div>
+      <div class="pass">Cierre: “Muchas gracias.”</div>
+      <div class="navturn">
+        <button class="prev-turn">← Anterior</button>
+        <div><b>08/08</b><span>Orden de exposición</span></div>
+        <button class="next-turn">Siguiente →</button>
+      </div>
+    </section>
+</div>
+
+<script>
+const people=[...document.querySelectorAll('.person-card')], speakers=[...document.querySelectorAll('.speaker')];
+const home=document.getElementById('home');
+const key='ucom_arab_support_ready_v1';
+let ready=new Set(JSON.parse(localStorage.getItem(key)||'[]'));
+function refreshReady(){
+  people.forEach(c=>c.classList.toggle('ready',ready.has(c.dataset.target)));
+  document.getElementById('readyCount').textContent=ready.size;
+}
+function openSpeaker(id){
+  home.classList.add('hidden');
+  speakers.forEach(s=>s.classList.toggle('active',s.id==='speaker-'+id));
+  history.replaceState(null,'','#'+id);
+  scrollTo({top:0,behavior:'instant'});
+}
+function goHome(){
+  speakers.forEach(s=>s.classList.remove('active')); home.classList.remove('hidden'); history.replaceState(null,'',' ');
+  scrollTo({top:0,behavior:'instant'});
+}
+people.forEach(c=>c.onclick=()=>openSpeaker(c.dataset.target));
+document.querySelectorAll('.back').forEach(b=>b.onclick=goHome);
+document.querySelectorAll('.done').forEach(b=>b.onclick=()=>{
+  let id=b.dataset.done; ready.has(id)?ready.delete(id):ready.add(id);
+  localStorage.setItem(key,JSON.stringify([...ready])); refreshReady();
+  b.textContent=ready.has(id)?'Listo ✓':'Marcar como listo ✓';
+});
+document.querySelectorAll('.speaker').forEach((s,i)=>{
+  s.querySelector('.prev-turn').onclick=()=> i===0?goHome():openSpeaker(String(i).padStart(2,'0'));
+  s.querySelector('.next-turn').onclick=()=> i===speakers.length-1?goHome():openSpeaker(String(i+2).padStart(2,'0'));
+});
+refreshReady();
+const initial=location.hash.replace('#',''); if(/^0[1-8]$/.test(initial)) openSpeaker(initial);
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape') goHome();
+ if(!home.classList.contains('hidden')) return;
+ let idx=speakers.findIndex(s=>s.classList.contains('active'));
+ if(e.key==='ArrowRight'&&idx<speakers.length-1)openSpeaker(String(idx+2).padStart(2,'0'));
+ if(e.key==='ArrowLeft'&&idx>0)openSpeaker(String(idx).padStart(2,'0'));
+});
+</script>
+</body>
+</html>
