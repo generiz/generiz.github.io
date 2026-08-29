@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#070908">
 <meta name="description" content="Nicolás Pintos — security & privacy engineering, consultoría IT, infraestructura, automatización y sistemas.">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <title>Nicolás Pintos — Security, Privacy & IT Engineering</title>
+<script>try{if(localStorage.getItem('np-theme')==='light')document.documentElement.dataset.theme='light'}catch(e){}</script>
 <style>
 :root{--bg:#070908;--bg2:#0a0d0b;--panel:#0d110f;--panel2:#111613;--ink:#edf1ec;--muted:#858e88;--dim:#5e6862;--line:#212722;--line2:#2b332d;--accent:#b7c4b5;--amber:#bda87b;--green:#7c927f;--max:1480px;--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}a{color:inherit;text-decoration:none}::selection{background:#c4d0c2;color:#070908}.shell{width:min(var(--max),calc(100% - 80px));margin:auto}.mono{font:600 10px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase}
@@ -22,13 +23,37 @@
 .profile{background:#080a09}.profile-grid{display:grid;grid-template-columns:minmax(330px,.82fr) 1.18fr;gap:70px;align-items:stretch}.portrait{min-height:600px;position:relative;overflow:hidden;border-radius:var(--radius);border:1px solid var(--line2);background:#0c100d}.portrait img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.06) brightness(.72);position:absolute;inset:0}.portrait:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 52%,rgba(7,9,8,.96))}.portrait-label{position:absolute;z-index:2;left:25px;right:25px;bottom:24px;display:flex;justify-content:space-between;color:#a5aea8}.about{display:flex;flex-direction:column;justify-content:space-between;padding:8px 0}.about h2{font-size:clamp(54px,6vw,96px);line-height:.91;letter-spacing:-.065em;font-weight:590;margin:18px 0 28px}.about p{color:#8a948d;line-height:1.68;max-width:760px;font-size:16px}.aboutlines{margin-top:54px;border-top:1px solid var(--line2)}.aboutline{display:grid;grid-template-columns:150px 1fr;gap:25px;padding:18px 0;border-bottom:1px solid var(--line2)}.aboutline span:first-child{color:#616b64}.aboutline span:last-child{color:#aab2ad}
 .tech{overflow:hidden;background:#050706;border-bottom:1px solid var(--line);padding:21px 0}.track{display:flex;gap:30px;min-width:max-content;align-items:center;color:#5e6861;animation:marquee 38s linear infinite}.track span{font:600 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}.track i{width:3px;height:3px;background:#3d463f;border-radius:50%}@keyframes marquee{to{transform:translateX(-50%)}}
 .contact{padding:110px 0 56px;background:#080a09}.contact h2{font-size:clamp(78px,13vw,200px);line-height:.8;letter-spacing:-.082em;font-weight:620;margin:18px 0 36px}.contact-note{font-size:18px;color:#7e8881;line-height:1.6;max-width:720px}.contactlinks{margin-top:58px;border-top:1px solid var(--line2)}.contactlinks a{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line2);font-size:18px;transition:.2s}.contactlinks a:hover{padding-left:9px;color:#fff}.contactlinks .signal{padding:25px 0;color:#e9ede8}.contactlinks .signal:hover{padding-left:9px}.contact-name{display:flex;align-items:center;gap:12px}.contact-badge{display:inline-flex;align-items:center;border:1px solid #465049;border-radius:999px;padding:6px 8px;color:#89968c;font:600 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase}.security-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;color:#59635c}.security-meta a{transition:.2s}.security-meta a:hover{color:#a7b0aa}.foot{padding-top:48px;display:flex;justify-content:space-between;gap:20px;color:#555f58}.reveal{opacity:0;transform:translateY(20px);transition:.65s ease}.reveal.on{opacity:1;transform:none}
+
+.theme-toggle{appearance:none;border:1px solid #343d36;background:transparent;color:#929b95;border-radius:999px;padding:9px 13px;font:600 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.2s}.theme-toggle:hover{color:#fff;border-color:#68736b}
+html[data-theme="light"]{--bg:#f3f5f1;--bg2:#eef0ec;--panel:#fff;--panel2:#f7f8f5;--ink:#111512;--muted:#626c65;--dim:#7a847d;--line:#d6dbd6;--line2:#cbd1cc;--accent:#34483a;--amber:#7a6540;--green:#4f6855;color-scheme:light}
+html[data-theme="light"] body{background:var(--bg);color:var(--ink)}
+html[data-theme="light"] ::selection{background:#263229;color:#f7f8f5}
+html[data-theme="light"] .nav{background:rgba(243,245,241,.88);border-bottom-color:rgba(17,21,18,.1)}
+html[data-theme="light"] .brandmark{border-color:#69756d;box-shadow:0 0 0 4px rgba(70,85,74,.07)}
+html[data-theme="light"] .links{color:#626c65}html[data-theme="light"] .links a:hover{color:#111512}html[data-theme="light"] .contactbtn{color:#111512!important;border-color:#aeb6b0}
+html[data-theme="light"] .theme-toggle{color:#626c65;border-color:#b9c0ba}html[data-theme="light"] .theme-toggle:hover{color:#111512;border-color:#778178}
+html[data-theme="light"] .hero-line span{color:#727c75}html[data-theme="light"] .hero-desc{color:#657068}html[data-theme="light"] .hero-stats{color:#7b857e}html[data-theme="light"] .hero-stats b{color:#354039}
+html[data-theme="light"] .btn{border-color:#aeb6b0}html[data-theme="light"] .btn:hover{border-color:#6f7971}html[data-theme="light"] .btn.primary{background:#171b18;color:#f5f7f3;border-color:#171b18}
+html[data-theme="light"] .hero-visual{background:radial-gradient(circle at 62% 30%,rgba(76,105,84,.10),transparent 30%),linear-gradient(160deg,#fafbf8,#eef1ed 72%);border-left-color:var(--line)}
+html[data-theme="light"] .gridbg{opacity:.32;background-image:linear-gradient(rgba(17,21,18,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(17,21,18,.06) 1px,transparent 1px)}
+html[data-theme="light"] .topology:before,html[data-theme="light"] .topology:after{border-color:rgba(72,91,77,.22)}html[data-theme="light"] .core{border-color:#91a097;background:rgba(249,250,247,.94);box-shadow:0 0 80px rgba(70,91,76,.08)}html[data-theme="light"] .core span{color:#748078}
+html[data-theme="light"] .node{border-color:#c2c9c3;background:#f7f8f5;color:#566159}html[data-theme="light"] .wire{background:linear-gradient(90deg,transparent,#8b988f,transparent)}html[data-theme="light"] .status-row span:first-child{color:#707b73}html[data-theme="light"] .status-row span:last-child{color:#39443c}
+html[data-theme="light"] .stack{background:#eef1ed}html[data-theme="light"] .consult{background:#f6f7f4}html[data-theme="light"] .lab{background:#f3f5f1}html[data-theme="light"] .repo-section{background:#eef1ed}html[data-theme="light"] .profile{background:#f6f7f4}html[data-theme="light"] .contact{background:#f3f5f1}html[data-theme="light"] .tech{background:#e8ece7}
+html[data-theme="light"] .kicker,html[data-theme="light"] .stack-item .mono,html[data-theme="light"] .consult-card .mono{color:#707b73}html[data-theme="light"] .lead,html[data-theme="light"] .stack-item p,html[data-theme="light"] .consult-card p,html[data-theme="light"] .about p{color:#606b63}html[data-theme="light"] .stack-item b,html[data-theme="light"] .consult-card strong{color:#29332c}
+html[data-theme="light"] .project{background:linear-gradient(155deg,#ffffff,#f1f4f0);border-color:#cbd1cc}html[data-theme="light"] .project.private{background:linear-gradient(145deg,#f6f7f4,#ecefeb)}html[data-theme="light"] .project:hover{border-color:#8e9990}html[data-theme="light"] .project:after{border-color:rgba(80,103,86,.14)}html[data-theme="light"] .project .tag,html[data-theme="light"] .project p,html[data-theme="light"] .chip{color:#647068}html[data-theme="light"] .badge,html[data-theme="light"] .chip{border-color:#c2c9c3}
+html[data-theme="light"] .repo:hover{background:rgba(17,21,18,.025)}html[data-theme="light"] .repo-num,html[data-theme="light"] .repo-type{color:#77827a}html[data-theme="light"] .repo-desc{color:#626d65}html[data-theme="light"] .repo-arrow{color:#677269}
+html[data-theme="light"] .bridge{background:#171b18;color:#f4f6f2;border-bottom-color:#2b312c}html[data-theme="light"] .bridge p{color:#aeb7b0}html[data-theme="light"] .bridge .btn{border-color:#59625b}html[data-theme="light"] .bridge .btn.primary{background:#eef1ed;color:#171b18;border-color:#eef1ed}
+html[data-theme="light"] .portrait{background:#e8ece7;border-color:#cbd1cc}html[data-theme="light"] .portrait img{filter:grayscale(1) contrast(1.03) brightness(.9)}html[data-theme="light"] .portrait:after{background:linear-gradient(180deg,transparent 52%,rgba(239,242,238,.95))}html[data-theme="light"] .portrait-label{color:#323c35}html[data-theme="light"] .aboutline span:first-child{color:#707b73}html[data-theme="light"] .aboutline span:last-child{color:#39443c}
+html[data-theme="light"] .track{color:#69746c}html[data-theme="light"] .track i{background:#adb6af}
+html[data-theme="light"] .contact-note{color:#657068}html[data-theme="light"] .contactlinks a:hover{color:#111512}html[data-theme="light"] .contactlinks .signal{color:#111512}html[data-theme="light"] .contact-badge{border-color:#adb6af;color:#5f6a62}html[data-theme="light"] .security-meta{color:#717c74}html[data-theme="light"] .security-meta a:hover{color:#273129}html[data-theme="light"] .foot{color:#778179}
+
 @media(max-width:1050px){.shell{width:min(100% - 44px,var(--max))}.links a:not(.contactbtn){display:none}.hero{grid-template-columns:1fr}.hero-copy{min-height:760px;padding:116px 22px 55px}.hero-visual{border-left:0;border-top:1px solid var(--line);min-height:650px;padding:70px 28px 34px}.head{grid-template-columns:1fr;gap:28px}.stack-grid{grid-template-columns:repeat(2,1fr)}.project.patio,.project.sombra,.project.intra,.project.private{grid-column:span 12}.project{min-height:350px}.repo{grid-template-columns:42px 1fr 42px}.repo-desc,.repo-type{display:none}.bridge-grid,.profile-grid{grid-template-columns:1fr}.portrait{min-height:720px}.consult-grid{grid-template-columns:1fr}}
 @media(max-width:620px){.shell{width:calc(100% - 30px)}.nav{height:62px}.hero{padding-top:62px}.hero-copy{min-height:700px;padding:100px 15px 48px}.hero h1{font-size:72px}.hero-line{font-size:29px}.hero-visual{min-height:560px;padding:55px 18px 25px}.topology{min-height:360px}.topology:before{width:275px;height:275px}.topology:after{width:175px;height:175px}.core{width:105px;height:105px}.node{font-size:8px}.section{padding:82px 0}.head h2{font-size:55px}.stack-grid{grid-template-columns:1fr}.stack-item{min-height:auto}.featured{margin-top:42px}.project{padding:23px;min-height:335px}.project h3{font-size:59px;margin-top:58px}.chips{left:23px;right:23px;bottom:22px}.repo{padding:18px 0;grid-template-columns:32px 1fr 28px;gap:10px}.repo-name{font-size:15px}.bridge{padding:76px 0}.bridge h2{font-size:29vw}.portrait{min-height:530px}.consult-card{min-height:auto}.contact{padding-top:85px}.contact h2{font-size:27vw}.foot{flex-direction:column}.track{animation-duration:48s}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.track{animation:none}}
 </style>
 </head>
 <body>
-<header class="nav"><div class="shell navin"><a class="brand" href="#inicio"><span class="brandmark"></span>Nicolás Pintos</a><nav class="links"><a href="#modelo">Enfoque</a><a href="#consultoria">Consultoría IT</a><a href="#lab">Security Lab</a><a href="#ufotech">ufotech</a><a class="contactbtn" href="#contacto">Contacto</a></nav></div></header>
+<header class="nav"><div class="shell navin"><a class="brand" href="#inicio"><span class="brandmark"></span>Nicolás Pintos</a><nav class="links"><a href="#modelo">Enfoque</a><a href="#consultoria">Consultoría IT</a><a href="#lab">Security Lab</a><a href="#ufotech">ufotech</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a tema claro" aria-pressed="false">Claro</button><a class="contactbtn" href="#contacto">Contacto</a></nav></div></header>
 <main id="inicio">
 <section class="hero">
   <div class="hero-copy">
@@ -111,6 +136,28 @@
 
 <section class="contact" id="contacto"><div class="shell reveal"><div class="kicker mono">07 / Contacto</div><h2>Contacto.</h2><p class="contact-note">Consultas sobre seguridad, privacidad, arquitectura tecnológica, procurement, automatización e infraestructura.</p><div class="contactlinks"><a class="signal" href="https://signal.me/#p/+595991414172" target="_blank" rel="noopener"><span class="contact-name"><span>Signal</span><span class="contact-badge">Preferido</span></span><span>↗</span></a><a href="https://wa.me/595991414172" target="_blank" rel="noopener"><span>WhatsApp</span><span>↗</span></a><a href="https://www.linkedin.com/in/nicolaspintos/" target="_blank" rel="noopener"><span>LinkedIn</span><span>↗</span></a><a href="https://github.com/generiz" target="_blank" rel="noopener"><span>GitHub</span><span>↗</span></a></div><div class="security-meta mono"><a href="/.well-known/security.txt" target="_blank" rel="noopener">security.txt ↗</a><a href="/pgp/nicolas-pintos.asc" target="_blank" rel="noopener">PGP public key ↗</a><span>6665 4E03 D2E2 1E52 4954 9E18 ACAC 8E1D 3CED 789A</span></div><div class="foot mono"><span>© <span id="year"></span> Nicolás Pintos</span><span>nicolaspintos.com</span></div></div></section>
 </main>
-<script>document.getElementById('year').textContent=new Date().getFullYear();const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('on');observer.unobserve(entry.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));</script>
+<script>
+const themeToggle=document.getElementById('themeToggle');
+const themeColor=document.querySelector('meta[name="theme-color"]');
+function applyTheme(theme){
+  const light=theme==='light';
+  document.documentElement.dataset.theme=light?'light':'dark';
+  themeToggle.textContent=light?'Oscuro':'Claro';
+  themeToggle.setAttribute('aria-pressed',String(light));
+  themeToggle.setAttribute('aria-label',light?'Cambiar a tema oscuro':'Cambiar a tema claro');
+  themeColor.setAttribute('content',light?'#f3f5f1':'#070908');
+}
+let savedTheme='dark';
+try{savedTheme=localStorage.getItem('np-theme')==='light'?'light':'dark'}catch(e){}
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const next=document.documentElement.dataset.theme==='light'?'dark':'light';
+  try{localStorage.setItem('np-theme',next)}catch(e){}
+  applyTheme(next);
+});
+document.getElementById('year').textContent=new Date().getFullYear();
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('on');observer.unobserve(entry.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
 </body>
 </html>
