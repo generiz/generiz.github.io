@@ -1,0 +1,75 @@
+from pathlib import Path
+
+path = Path('index.html')
+s = path.read_text(encoding='utf-8')
+
+s = s.replace('<meta name="color-scheme" content="dark">', '<meta name="color-scheme" content="dark light">')
+s = s.replace(
+    '<title>Nicolás Pintos — Security, Privacy & IT Engineering</title>\n<style>',
+    '<title>Nicolás Pintos — Security, Privacy & IT Engineering</title>\n<script>try{if(localStorage.getItem(\'np-theme\')===\'light\')document.documentElement.dataset.theme=\'light\'}catch(e){}</script>\n<style>'
+)
+
+theme_css = '''
+.theme-toggle{appearance:none;border:1px solid #343d36;background:transparent;color:#929b95;border-radius:999px;padding:9px 13px;font:600 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.2s}.theme-toggle:hover{color:#fff;border-color:#68736b}
+html[data-theme="light"]{--bg:#f3f5f1;--bg2:#eef0ec;--panel:#fff;--panel2:#f7f8f5;--ink:#111512;--muted:#626c65;--dim:#7a847d;--line:#d6dbd6;--line2:#cbd1cc;--accent:#34483a;--amber:#7a6540;--green:#4f6855;color-scheme:light}
+html[data-theme="light"] body{background:var(--bg);color:var(--ink)}
+html[data-theme="light"] ::selection{background:#263229;color:#f7f8f5}
+html[data-theme="light"] .nav{background:rgba(243,245,241,.88);border-bottom-color:rgba(17,21,18,.1)}
+html[data-theme="light"] .brandmark{border-color:#69756d;box-shadow:0 0 0 4px rgba(70,85,74,.07)}
+html[data-theme="light"] .links{color:#626c65}html[data-theme="light"] .links a:hover{color:#111512}html[data-theme="light"] .contactbtn{color:#111512!important;border-color:#aeb6b0}
+html[data-theme="light"] .theme-toggle{color:#626c65;border-color:#b9c0ba}html[data-theme="light"] .theme-toggle:hover{color:#111512;border-color:#778178}
+html[data-theme="light"] .hero-line span{color:#727c75}html[data-theme="light"] .hero-desc{color:#657068}html[data-theme="light"] .hero-stats{color:#7b857e}html[data-theme="light"] .hero-stats b{color:#354039}
+html[data-theme="light"] .btn{border-color:#aeb6b0}html[data-theme="light"] .btn:hover{border-color:#6f7971}html[data-theme="light"] .btn.primary{background:#171b18;color:#f5f7f3;border-color:#171b18}
+html[data-theme="light"] .hero-visual{background:radial-gradient(circle at 62% 30%,rgba(76,105,84,.10),transparent 30%),linear-gradient(160deg,#fafbf8,#eef1ed 72%);border-left-color:var(--line)}
+html[data-theme="light"] .gridbg{opacity:.32;background-image:linear-gradient(rgba(17,21,18,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(17,21,18,.06) 1px,transparent 1px)}
+html[data-theme="light"] .topology:before,html[data-theme="light"] .topology:after{border-color:rgba(72,91,77,.22)}html[data-theme="light"] .core{border-color:#91a097;background:rgba(249,250,247,.94);box-shadow:0 0 80px rgba(70,91,76,.08)}html[data-theme="light"] .core span{color:#748078}
+html[data-theme="light"] .node{border-color:#c2c9c3;background:#f7f8f5;color:#566159}html[data-theme="light"] .wire{background:linear-gradient(90deg,transparent,#8b988f,transparent)}html[data-theme="light"] .status-row span:first-child{color:#707b73}html[data-theme="light"] .status-row span:last-child{color:#39443c}
+html[data-theme="light"] .stack{background:#eef1ed}html[data-theme="light"] .consult{background:#f6f7f4}html[data-theme="light"] .lab{background:#f3f5f1}html[data-theme="light"] .repo-section{background:#eef1ed}html[data-theme="light"] .profile{background:#f6f7f4}html[data-theme="light"] .contact{background:#f3f5f1}html[data-theme="light"] .tech{background:#e8ece7}
+html[data-theme="light"] .kicker,html[data-theme="light"] .stack-item .mono,html[data-theme="light"] .consult-card .mono{color:#707b73}html[data-theme="light"] .lead,html[data-theme="light"] .stack-item p,html[data-theme="light"] .consult-card p,html[data-theme="light"] .about p{color:#606b63}html[data-theme="light"] .stack-item b,html[data-theme="light"] .consult-card strong{color:#29332c}
+html[data-theme="light"] .project{background:linear-gradient(155deg,#ffffff,#f1f4f0);border-color:#cbd1cc}html[data-theme="light"] .project.private{background:linear-gradient(145deg,#f6f7f4,#ecefeb)}html[data-theme="light"] .project:hover{border-color:#8e9990}html[data-theme="light"] .project:after{border-color:rgba(80,103,86,.14)}html[data-theme="light"] .project .tag,html[data-theme="light"] .project p,html[data-theme="light"] .chip{color:#647068}html[data-theme="light"] .badge,html[data-theme="light"] .chip{border-color:#c2c9c3}
+html[data-theme="light"] .repo:hover{background:rgba(17,21,18,.025)}html[data-theme="light"] .repo-num,html[data-theme="light"] .repo-type{color:#77827a}html[data-theme="light"] .repo-desc{color:#626d65}html[data-theme="light"] .repo-arrow{color:#677269}
+html[data-theme="light"] .bridge{background:#171b18;color:#f4f6f2;border-bottom-color:#2b312c}html[data-theme="light"] .bridge p{color:#aeb7b0}html[data-theme="light"] .bridge .btn{border-color:#59625b}html[data-theme="light"] .bridge .btn.primary{background:#eef1ed;color:#171b18;border-color:#eef1ed}
+html[data-theme="light"] .portrait{background:#e8ece7;border-color:#cbd1cc}html[data-theme="light"] .portrait img{filter:grayscale(1) contrast(1.03) brightness(.9)}html[data-theme="light"] .portrait:after{background:linear-gradient(180deg,transparent 52%,rgba(239,242,238,.95))}html[data-theme="light"] .portrait-label{color:#323c35}html[data-theme="light"] .aboutline span:first-child{color:#707b73}html[data-theme="light"] .aboutline span:last-child{color:#39443c}
+html[data-theme="light"] .track{color:#69746c}html[data-theme="light"] .track i{background:#adb6af}
+html[data-theme="light"] .contact-note{color:#657068}html[data-theme="light"] .contactlinks a:hover{color:#111512}html[data-theme="light"] .contactlinks .signal{color:#111512}html[data-theme="light"] .contact-badge{border-color:#adb6af;color:#5f6a62}html[data-theme="light"] .security-meta{color:#717c74}html[data-theme="light"] .security-meta a:hover{color:#273129}html[data-theme="light"] .foot{color:#778179}
+'''
+marker = '@media(max-width:1050px)'
+if marker not in s:
+    raise SystemExit('responsive marker not found')
+s = s.replace(marker, theme_css + '\n' + marker, 1)
+
+old_nav = '<a href="#ufotech">ufotech</a><a class="contactbtn" href="#contacto">Contacto</a>'
+new_nav = '<a href="#ufotech">ufotech</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a tema claro" aria-pressed="false">Claro</button><a class="contactbtn" href="#contacto">Contacto</a>'
+if old_nav not in s:
+    raise SystemExit('navigation marker not found')
+s = s.replace(old_nav, new_nav, 1)
+
+old_script = "<script>document.getElementById('year').textContent=new Date().getFullYear();const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('on');observer.unobserve(entry.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));</script>"
+new_script = '''<script>
+const themeToggle=document.getElementById('themeToggle');
+const themeColor=document.querySelector('meta[name="theme-color"]');
+function applyTheme(theme){
+  const light=theme==='light';
+  document.documentElement.dataset.theme=light?'light':'dark';
+  themeToggle.textContent=light?'Oscuro':'Claro';
+  themeToggle.setAttribute('aria-pressed',String(light));
+  themeToggle.setAttribute('aria-label',light?'Cambiar a tema oscuro':'Cambiar a tema claro');
+  themeColor.setAttribute('content',light?'#f3f5f1':'#070908');
+}
+let savedTheme='dark';
+try{savedTheme=localStorage.getItem('np-theme')==='light'?'light':'dark'}catch(e){}
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const next=document.documentElement.dataset.theme==='light'?'dark':'light';
+  try{localStorage.setItem('np-theme',next)}catch(e){}
+  applyTheme(next);
+});
+document.getElementById('year').textContent=new Date().getFullYear();
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('on');observer.unobserve(entry.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>'''
+if old_script not in s:
+    raise SystemExit('script marker not found')
+s = s.replace(old_script, new_script, 1)
+
+path.write_text(s, encoding='utf-8')
