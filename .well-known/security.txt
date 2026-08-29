@@ -1,0 +1,5 @@
+Contact: https://signal.me/#p/+595991414172
+Contact: https://github.com/generiz
+Expires: 2027-08-29T23:59:59Z
+Preferred-Languages: es, en
+Canonical: https://nicolaspintos.com/.well-known/security.txt
