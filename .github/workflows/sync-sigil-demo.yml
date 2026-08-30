@@ -36,4 +36,4 @@ jobs:
           git commit -m "serve sigil demo first-party"
           git push
 
-# secure-canvas build sync 2
+# hardened-core sync
