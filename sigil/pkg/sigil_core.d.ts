@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export function sigil_demo_version(): string;
-export function run_protocol_demo(input: string, requested_loss: number): string;
 export class DemoSession {
   free(): void;
   constructor(input: Uint8Array);
@@ -15,7 +14,6 @@ export interface InitOutput {
   readonly __wbg_demosession_free: (a: number, b: number) => void;
   readonly demosession_new: (a: number, b: number) => [number, number, number];
   readonly demosession_run: (a: number, b: number, c: number) => [number, number, number, number];
-  readonly run_protocol_demo: (a: number, b: number, c: number) => [number, number, number, number];
   readonly sigil_demo_version: () => [number, number];
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
