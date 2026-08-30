@@ -182,17 +182,17 @@ export function sigil_demo_version() {
     }
 }
 
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_export_2.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
+}
+
 function passArray8ToWasm0(arg, malloc) {
     const ptr = malloc(arg.length * 1, 1) >>> 0;
     getUint8ArrayMemory0().set(arg, ptr / 1);
     WASM_VECTOR_LEN = arg.length;
     return ptr;
-}
-
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_export_2.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
 }
 
 const DemoSessionFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -211,6 +211,26 @@ export class DemoSession {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_demosession_free(ptr, 0);
+    }
+    /**
+     * Returns one authenticated receiver SymbolId for the visual renderer.
+     *
+     * This is intentionally separate from the public JSON result. Same-origin JavaScript can
+     * observe any symbol it requests, so this bridge is a visualization API, not a browser
+     * confidentiality boundary. A return value of 0 means reconstruction/authentication did not
+     * complete for the supplied fragment set.
+     * @param {number} index
+     * @param {string} missing_slots_csv
+     * @returns {number}
+     */
+    receiver_symbol_at(index, missing_slots_csv) {
+        const ptr0 = passStringToWasm0(missing_slots_csv, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.demosession_receiver_symbol_at(this.__wbg_ptr, index, ptr0, len0);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return ret[0];
     }
     /**
      * @param {Uint8Array} input

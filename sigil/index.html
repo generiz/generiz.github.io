@@ -13,7 +13,7 @@
 <body>
   <header class="top"><a class="brand" href="https://github.com/generiz/Sigil" target="_blank" rel="noreferrer">Sigil</a><a class="back" href="https://nicolaspintos.com/">← nicolaspintos.com</a></header>
   <section class="intro"><div class="eyebrow">LOOPBACK PROTOCOL DEMONSTRATOR</div><h1>Secure Canvas.<br>Boundary visible.</h1><p>La composición usa un teclado gráfico propio y evita la ruta IME normal, pero los bytes de entrada siguen siendo plaintext para el origen web. El core Rust/WASM genera secretos efímeros, sella un envelope con dos capas AEAD, lo fragmenta con Reed–Solomon y lo reconstruye en el mismo proceso. No hay AKE ni dos endpoints.</p></section>
-  <div class="note"><b>REAL:</b> bytes → SymbolId → doble AEAD → shards → reconstrucción/autenticación. &nbsp; <b>NO EXPORTADO:</b> plaintext reconstruido. &nbsp; <b>SIMULADO:</b> topología de nodos. &nbsp; <b>FUERA DEL DEMO:</b> distribución de secretos, firma de identidad, ratchet y red live.</div>
+  <div class="note"><b>REAL:</b> bytes → SymbolId → doble AEAD → shards → reconstrucción/autenticación. &nbsp; <b>RENDER:</b> después de autenticar, la UI solicita SymbolId uno por uno; el JSON no contiene plaintext. &nbsp; <b>SIMULADO:</b> topología de nodos. &nbsp; <b>FUERA DEL DEMO:</b> distribución de secretos, firma de identidad, ratchet y red live.</div>
   <main class="demo"><sigil-inline-demo id="sigilDemo"></sigil-inline-demo></main>
   <footer class="foot"><span>Sigil research build</span><a href="https://github.com/generiz/Sigil" target="_blank" rel="noreferrer">source ↗</a></footer>
   <script type="module" src="./embed.js"></script>

@@ -3,6 +3,7 @@
 export const memory: WebAssembly.Memory;
 export const __wbg_demosession_free: (a: number, b: number) => void;
 export const demosession_new: (a: number, b: number) => [number, number, number];
+export const demosession_receiver_symbol_at: (a: number, b: number, c: number, d: number) => [number, number, number];
 export const demosession_run: (a: number, b: number, c: number) => [number, number, number, number];
 export const sigil_demo_version: () => [number, number];
 export const __wbindgen_exn_store: (a: number) => void;

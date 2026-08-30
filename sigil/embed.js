@@ -13,6 +13,7 @@ class SigilInlineDemo extends HTMLElement {
     this.ready = false;
     this.timer = null;
     this.playback = 0;
+    this.showReceiverSymbols = false;
   }
 
   connectedCallback() {
@@ -60,14 +61,14 @@ class SigilInlineDemo extends HTMLElement {
         .keyboard{margin-top:15px;display:grid;gap:6px;touch-action:manipulation}.keyrow{display:flex;gap:5px;justify-content:center}.key{appearance:none;min-width:28px;min-height:37px;padding:0 7px;border:1px solid #354038;border-radius:8px;background:#0c110e;color:#aab6ad;cursor:pointer;font:650 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;touch-action:manipulation;user-select:none}.key:hover,.key:active{background:#151c17;border-color:#59665d;color:#fff}.key.wide{min-width:68px}.key.space{flex:1;max-width:190px}.keyboard-note{margin-top:10px;color:#59645d;font-size:9px;line-height:1.48}.controls{border-top:1px solid var(--line);padding:13px 17px;display:grid;gap:10px}.range{display:grid;grid-template-columns:1fr 60px;gap:7px;align-items:center}.range span{color:#667169;font:600 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em}.range input{width:100%;accent-color:#849b88}.range b{text-align:right;color:#acb7af;font-size:13px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.action{border:1px solid #3a453d;border-radius:999px;background:#0c110e;color:#9aa69d;padding:10px 11px;cursor:pointer;font-size:9px}.action.primary{background:#e6ebe6;color:#080a09;border-color:#e6ebe6;font-weight:700}.action:disabled{opacity:.35;cursor:default}
         .guide{border-bottom:1px solid var(--line);padding:14px 17px;background:#080c09;display:grid;gap:9px}.guide-head{display:flex;align-items:center;justify-content:space-between;gap:14px}.guide-head b,.guide-head span{font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase}.guide-head b{color:#9aab9e}.guide-head span{color:#617067}.guide-copy strong{display:block;color:#d9e0da;font-size:12px;margin-bottom:5px}.guide-copy p{margin:0;color:#78857c;font-size:10px;line-height:1.55;max-width:680px}.guide-progress{height:2px;background:#1e2721;overflow:hidden;border-radius:2px}.guide-progress i{display:block;width:0;height:100%;background:#8da292;transition:width .25s ease}.guide-note{color:#566159;font:550 7px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}.guide-note b{color:#7f9084}
         .pipeline{background:#090c0a}.stages{padding:17px;display:grid;gap:8px}.stage{border:1px solid #283029;border-radius:10px;background:#0d120f;padding:11px 12px;display:grid;grid-template-columns:28px 1fr;gap:5px 10px;transition:.25s}.stage.flash{border-color:#65756a;background:#111813;transform:translateY(-1px)}.stage.fail{border-color:#674b46;background:#17100f}.idx{width:25px;height:25px;border:1px solid #3c4840;border-radius:50%;display:grid;place-items:center;color:#6f7d73;font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;grid-row:1/3}.stage b{font-size:11px}.stage small{display:block;margin-top:4px;color:#66736a;font:550 8px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace}.preview{grid-column:2;color:#839188;font:500 8px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shards{grid-column:1/3;display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:5px}.shard{height:25px;border:1px solid #3b493f;border-radius:5px;background:#0a0e0b;color:#87998b;display:grid;place-items:center;font:600 6px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.shard.lost{border-color:#4f3e3b;color:#7d615d;opacity:.52}.nodes{grid-column:1/3;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.node{border:1px solid #3a463d;border-radius:8px;background:#0a0e0b;color:#91a095;padding:7px 8px;cursor:pointer;display:grid;gap:2px;min-width:65px}.node b{font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.node small{font:500 6px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#5f6d63}.node.down{border-color:#674b46;background:#17100f}.node.down b,.node.down small{color:#a8746d}.node-state{grid-column:1/3;color:#718078;font:600 7px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em}.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}.metric{padding:10px;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric span{display:block;color:#536058;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;margin-bottom:5px}.metric b{color:#a5b0a8;font:600 8px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace}
-        .receiver-body{min-height:440px;padding:24px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.peer{width:18px;height:18px;border-radius:50%;background:#809b85;box-shadow:0 0 0 6px rgba(128,155,133,.07),0 0 28px rgba(128,155,133,.13);margin-bottom:12px}.peer-label{color:#657168;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;margin-bottom:25px}.proof{min-width:170px;padding:17px;border:1px solid #354038;border-radius:12px;background:#0b100d;color:#91a095;font:700 11px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em}.proof.bad{border-color:#674b46;color:#a8746d;background:#17100f}.receiver-state{max-width:230px;margin-top:17px;color:#66736a;font:550 8px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.repeat{border-top:1px solid var(--line);padding:13px 15px;display:grid;gap:5px}.repeat span{color:#536058;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}.repeat code{color:#839188;font:500 7px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.repeat strong{color:#738078;font:600 8px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:4px}
+        .receiver-body{min-height:440px;padding:24px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.peer{width:18px;height:18px;border-radius:50%;background:#809b85;box-shadow:0 0 0 6px rgba(128,155,133,.07),0 0 28px rgba(128,155,133,.13);margin-bottom:12px}.peer-label{color:#657168;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;margin-bottom:25px}.receiver-glyphs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;min-height:40px;margin-bottom:16px}.receiver-glyphs .glyph{font-size:18px;min-width:30px;height:36px}.proof{min-width:170px;padding:17px;border:1px solid #354038;border-radius:12px;background:#0b100d;color:#91a095;font:700 11px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em}.proof.bad{border-color:#674b46;color:#a8746d;background:#17100f}.receiver-state{max-width:230px;margin-top:17px;color:#66736a;font:550 8px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.repeat{border-top:1px solid var(--line);padding:13px 15px;display:grid;gap:5px}.repeat span{color:#536058;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}.repeat code{color:#839188;font:500 7px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.repeat strong{color:#738078;font:600 8px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:4px}
         @media(max-width:1050px){.grid{grid-template-columns:1fr}.composer,.receiver{border:0}.composer,.pipeline{border-bottom:1px solid var(--line)}.receiver-body{min-height:260px}.metrics{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:560px){.head{align-items:flex-start;flex-direction:column}.truth{display:grid;gap:7px}.body{padding:13px}.key{min-width:0;flex:1;padding:0 4px}.shards{grid-template-columns:repeat(5,1fr)}.metrics{grid-template-columns:1fr 1fr}}
       </style>
       <div class="wrap">
         <div class="head"><div class="brand"><span class="dot"></span>Sigil</div><div id="runtime" class="runtime">WASM en espera</div></div>
         <div class="truth"><span><b>REAL</b> SymbolId · doble AEAD · Reed–Solomon · autenticación</span><span class="warn"><b>LOOPBACK</b> un proceso · sin AKE</span><span class="warn"><b>SIMULADO</b> topología de nodos</span></div>
-        <div class="boundary"><b>Frontera del demo:</b> el origen web conoce los bytes que componés. La salida JSON no devuelve plaintext. Esto demuestra el pipeline criptográfico local, no un canal confidencial entre dos dispositivos.</div>
+        <div class="boundary"><b>Frontera del demo:</b> el origen web conoce los bytes que componés. La salida JSON no devuelve plaintext; tras autenticar, el renderer pide SymbolId uno por uno. El mismo origen puede observarlos. Esto demuestra el pipeline criptográfico local, no un canal confidencial entre dos dispositivos.</div>
         <div class="grid">
           <section class="pane composer">
             <div class="pane-head"><span>01</span> Secure Canvas Composer</div>
@@ -106,7 +107,7 @@ class SigilInlineDemo extends HTMLElement {
           </section>
           <section class="pane receiver">
             <div class="pane-head"><span>03</span> Authentication result</div>
-            <div class="receiver-body"><div class="peer"></div><div class="peer-label">LOOPBACK VERIFY</div><div id="receiverProof" class="proof">WAITING</div><div id="receiverState" class="receiver-state">El WASM no exporta el mensaje reconstruido al JSON público.</div></div>
+            <div class="receiver-body"><div class="peer"></div><div class="peer-label">LOOPBACK VERIFY</div><div id="receiverGlyphs" class="receiver-glyphs"></div><div id="receiverProof" class="proof">WAITING</div><div id="receiverState" class="receiver-state">El WASM no exporta el mensaje reconstruido al JSON público.</div></div>
             <div class="repeat"><span>Envelope anterior</span><code id="previous">ninguno</code><span>Envelope actual</span><code id="current">ninguno</code><strong id="rotation">Nuevo envelope genera otro digest.</strong></div>
           </section>
         </div>
@@ -215,6 +216,7 @@ class SigilInlineDemo extends HTMLElement {
     this.$('reconstructPreview').textContent = '—';
     this.$('shards').replaceChildren();
     this.$('nodeList').replaceChildren();
+    this.$('receiverGlyphs').replaceChildren();
     this.$('receiverProof').textContent = 'WAITING';
     this.$('receiverProof').classList.remove('bad');
     this.$('receiverState').textContent = 'El WASM no exporta el mensaje reconstruido al JSON público.';
@@ -236,6 +238,7 @@ class SigilInlineDemo extends HTMLElement {
     if (this.session?.free) this.session.free();
     this.failedNodes.clear();
     const previous = this.currentResult?.outer_wire_digest || this.previousDigest;
+    this.showReceiverSymbols = !live;
     this.session = new this.module.DemoSession(Uint8Array.from(this.message));
     this.baseResult = JSON.parse(this.session.run(''));
     this.previousDigest = previous;
@@ -285,6 +288,21 @@ class SigilInlineDemo extends HTMLElement {
     return result.reconstruction_matches && result.outer_authenticated && result.inner_authenticated;
   }
 
+  renderReceiverSymbols() {
+    const host = this.$('receiverGlyphs');
+    host.replaceChildren();
+    if (!this.session || !this.showReceiverSymbols) return;
+    const missing = this.missingSlots().join(',');
+    for (let index = 0; index < this.message.length; index += 1) {
+      const symbolId = this.session.receiver_symbol_at(index, missing);
+      if (!symbolId) break;
+      const glyph = document.createElement('span');
+      glyph.className = 'glyph';
+      glyph.textContent = this.glyphLabel(symbolId - 1);
+      host.append(glyph);
+    }
+  }
+
   renderResult(result) {
     const usedNodes = new Set(this.assignments.map((a) => a.nodeIndex));
     const ok = this.authenticated(result);
@@ -302,10 +320,11 @@ class SigilInlineDemo extends HTMLElement {
     this.$('stageReconstruct').classList.toggle('fail', !ok);
     this.$('reconstructStatus').textContent = ok ? 'wire reconstruido · outer auth ✓ · inner auth ✓' : `${result.fragments_available}/${result.fragments_required} · autenticación no completada`;
     this.$('reconstructPreview').textContent = ok ? 'reconstruction_matches = true' : 'reconstruction_matches = false';
+    if (ok) this.renderReceiverSymbols(); else this.$('receiverGlyphs').replaceChildren();
     this.$('receiverProof').textContent = ok ? 'AUTHENTICATED' : 'NO DATA';
     this.$('receiverProof').classList.toggle('bad', !ok);
     this.$('receiverState').textContent = ok
-      ? 'Loopback autenticado. El contenido reconstruido no se devuelve al JavaScript público.'
+      ? 'Loopback autenticado. El JSON no contiene plaintext; el renderer solicita cada SymbolId autenticado para mostrarlo.'
       : 'No se alcanzó una reconstrucción autenticada. No se exporta contenido parcial.';
     this.$('previous').textContent = this.previousDigest ? `${this.previousDigest.slice(0, 18)}…` : 'ninguno';
     this.$('current').textContent = `${result.outer_wire_digest.slice(0, 18)}…`;
@@ -365,6 +384,7 @@ class SigilInlineDemo extends HTMLElement {
   async playCurrent() {
     if (!this.session || !this.baseResult) return;
     const token = ++this.playback;
+    this.showReceiverSymbols = true;
     const result = JSON.parse(this.session.run(this.missingSlots().join(',')));
     this.currentResult = result;
     this.$('replay').disabled = true;
