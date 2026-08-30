@@ -229,6 +229,7 @@ class SigilInlineDemo extends HTMLElement {
 
   async newSession(live) {
     if (!this.ready || !this.message.length) return;
+    this.playback += 1;
     if (this.session?.free) this.session.free();
     this.failedNodes.clear();
     const previous = this.currentResult?.outer_wire_digest || this.previousDigest;
@@ -354,6 +355,8 @@ class SigilInlineDemo extends HTMLElement {
     this.currentResult = result;
     this.$('replay').disabled = true;
     this.clearOutput();
+    ['core','envelope','threshold','network'].forEach((id) => { this.$(id).textContent = '—'; });
+    this.$('stageReconstruct').classList.remove('fail');
     const delay = this.guidedDelay();
 
     const step = async (number, id, title, text, reveal) => {
