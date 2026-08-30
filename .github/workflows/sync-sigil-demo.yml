@@ -35,5 +35,3 @@ jobs:
           fi
           git commit -m "serve sigil demo first-party"
           git push
-
-# hardened-core sync
