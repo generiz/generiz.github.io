@@ -1,17 +1,185 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070908">
-<meta name="description" content="Sigil live protocol demonstrator — core Rust/WebAssembly real y simulación opcional de nodos.">
-<title>Sigil — Live Protocol Demo · Nicolás Pintos</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#070908;color:#edf1ec;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.frame{position:fixed;inset:0;border:0;width:100%;height:100%;background:#070908}.back{position:fixed;z-index:20;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(7,9,8,.82);backdrop-filter:blur(14px);color:#b8c1ba;text-decoration:none;font:600 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase}.back:hover{color:#fff;border-color:rgba(255,255,255,.28)}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070908">
+  <meta name="description" content="Demostrador en vivo de Sigil: core Rust/WebAssembly real y simulación opcional de nodos.">
+  <title>Sigil — Live Protocol Demo</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    .node-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+    .endpoint-actions button.secondary{margin-top:0;background:#0b0f0c;color:#9aa69d;border-color:#39433c;font-size:10px;padding:11px 10px}
+    .endpoint-actions button.secondary:hover{border-color:#66746a;background:#101512}
+    .virtual-node{cursor:pointer;color:inherit}
+    .virtual-node:focus-visible{outline:2px solid #809487;outline-offset:2px}
+    .virtual-node.failed{background:#17110f;border-color:#6a4b45!important;opacity:.8}
+    .virtual-node.failed b{color:#b58c84}
+    .virtual-node.failed small{color:#9d7169}
+    .node-failure-state{grid-column:1/3;margin-top:3px;padding:9px 11px;border:1px solid #29312b;border-radius:8px;color:#78857c;background:#090d0a;font:600 8px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em}
+    .stage.failed{border-color:#5f4944;background:rgba(25,16,14,.76)}
+    .receiver-text.blocked{color:#9d7169;opacity:.8;font:700 18px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em}
+    .sim-packet.killed{background:#9d7169;opacity:.2}
+    @media(max-width:640px){.node-actions{grid-template-columns:1fr}.endpoint-actions button.secondary{min-height:42px}}
+  </style>
 </head>
 <body>
-<a class="back" href="/">← nicolaspintos.com</a>
-<iframe class="frame" title="Sigil live protocol demonstrator" src="https://cdn.jsdelivr.net/gh/generiz/Sigil@cbc8bedd365d8d03585b64e373eb1b1bccb22bab/index.html" referrerpolicy="no-referrer" allow="clipboard-read 'none'; clipboard-write 'none'"></iframe>
+  <header class="topbar">
+    <a class="brand" href="https://github.com/generiz/Sigil" target="_blank" rel="noreferrer">
+      <span class="brand-dot"></span><span>Sigil</span>
+    </a>
+    <div class="runtime"><span class="runtime-dot"></span><span id="runtimeLabel">cargando WASM</span></div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <div class="eyebrow">LIVE PROTOCOL DEMONSTRATOR</div>
+        <h1>Un mensaje.<br><span>Muchas representaciones.</span></h1>
+      </div>
+      <div class="intro-copy">
+        <p>La capa criptográfica y la recuperación de fragmentos se ejecutan realmente en tu navegador mediante el core Rust de Sigil compilado a WebAssembly.</p>
+        <div class="truth-strip">
+          <span><b>REAL</b> SymbolId · doble AEAD · Reed–Solomon · reconstrucción · autenticación</span>
+          <span><b>SIMULADO</b> topología, nodos y transporte entre nodos</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-shell" aria-label="Demostrador del protocolo Sigil">
+      <article class="endpoint composer-panel">
+        <div class="panel-head">
+          <span>01</span><strong>COMPOSER</strong>
+          <em id="liveState">LIVE</em>
+        </div>
+        <div class="endpoint-body">
+          <label for="messageInput">Entrada del adaptador web</label>
+          <textarea id="messageInput" maxlength="400" spellcheck="false" autocomplete="off">HOLA</textarea>
+          <div class="input-meta"><span id="byteCount">4 bytes</span><span>máx. 512 bytes UTF-8</span></div>
+        </div>
+        <div class="endpoint-actions">
+          <label class="switch-row" for="liveToggle">
+            <span><b>Procesar mientras escribís</b><small>debounce local · no envía datos</small></span>
+            <input id="liveToggle" type="checkbox" checked>
+          </label>
+
+          <label class="switch-row" for="nodeToggle">
+            <span><b>Simular nodos</b><small>topología virtual · no son servidores físicos</small></span>
+            <input id="nodeToggle" type="checkbox" checked>
+          </label>
+
+          <label class="range-control" id="nodeControl">
+            <span>pool de nodos virtuales</span>
+            <input id="nodeInput" type="range" min="2" max="1000" value="8">
+            <b id="nodeValue">8</b>
+          </label>
+
+          <label class="range-control">
+            <span>shards a perder antes de la red</span>
+            <input id="lossInput" type="range" min="0" max="8" value="0">
+            <b id="lossValue">0</b>
+          </label>
+
+          <div class="node-actions">
+            <button id="failNodeButton" type="button" class="secondary">Matar nodo aleatorio</button>
+            <button id="restoreNodesButton" type="button" class="secondary">Restaurar nodos</button>
+          </div>
+
+          <button id="sendButton" type="button">Ejecutar ahora</button>
+        </div>
+        <p class="boundary-note">El adaptador web ve este texto porque esta página es un demostrador. Después de la conversión, el core Rust trabaja con SymbolId y buffers binarios.</p>
+      </article>
+
+      <article class="pipeline-panel">
+        <div class="panel-head">
+          <span>02</span><strong>LIVE PIPELINE</strong><em id="epochLabel">idle</em>
+        </div>
+
+        <div class="stages">
+          <div class="stage" data-stage="symbols">
+            <div class="stage-index">A</div>
+            <div><b>Ephemeral symbol layer</b><span id="symbolStatus">esperando</span></div>
+            <code id="symbolPreview">—</code>
+          </div>
+          <div class="connector"><i></i></div>
+
+          <div class="stage" data-stage="crypto">
+            <div class="stage-index">B</div>
+            <div><b>Layered AEAD</b><span id="cryptoStatus">esperando</span></div>
+            <code id="wirePreview">—</code>
+          </div>
+          <div class="connector"><i></i></div>
+
+          <div class="stage fragment-stage" data-stage="fragments">
+            <div class="stage-index">C</div>
+            <div><b>Reed–Solomon shards</b><span id="fragmentStatus">esperando</span></div>
+            <div id="fragmentGrid" class="fragment-grid" aria-label="Estado de fragmentos"></div>
+          </div>
+          <div class="connector"><i></i></div>
+
+          <div class="stage node-stage" data-stage="nodes">
+            <div class="stage-index">D</div>
+            <div><b>Virtual node transport</b><span id="nodeStatus">esperando</span></div>
+            <div class="sim-label"><span>SIMULATION</span><small>tocá un nodo para apagarlo o restaurarlo; todos sus shards dejan de estar disponibles para la reconstrucción real</small></div>
+            <div id="nodeMap" class="node-map" aria-label="Topología de nodos simulados">
+              <div class="sim-endpoint sender">TX</div>
+              <div id="virtualNodes" class="virtual-nodes"></div>
+              <div class="sim-endpoint receiver">RX</div>
+              <div id="packetLayer" class="packet-layer" aria-hidden="true"></div>
+            </div>
+            <div id="nodeFailureState" class="node-failure-state">0 nodos caídos</div>
+          </div>
+          <div class="connector"><i></i></div>
+
+          <div class="stage" data-stage="reconstruct">
+            <div class="stage-index">E</div>
+            <div><b>Reconstruction + authentication</b><span id="reconstructStatus">esperando</span></div>
+            <code id="reconstructPreview">—</code>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div><span>Core</span><b id="coreVersion">—</b></div>
+          <div><span>Envelope</span><b id="wireBytes">—</b></div>
+          <div><span>Threshold</span><b id="threshold">—</b></div>
+          <div><span>Network</span><b id="networkMetric">local</b></div>
+        </div>
+      </article>
+
+      <article class="endpoint receiver-panel">
+        <div class="panel-head">
+          <span>03</span><strong>RECEIVER</strong>
+        </div>
+        <div class="receiver-body">
+          <div class="peer-marker" aria-label="peer pseudónimo verificado">
+            <span class="peer-dot"></span>
+            <small>VERIFIED PEER</small>
+          </div>
+          <div id="receiverText" class="receiver-text">—</div>
+          <div id="receiverState" class="receiver-state">esperando reconstrucción autenticada</div>
+        </div>
+        <div class="repeat-box">
+          <span>Envelope anterior</span>
+          <code id="previousDigest">ninguno</code>
+          <span>Envelope actual</span>
+          <code id="currentDigest">ninguno</code>
+          <strong id="rotationState">Ejecutá el mismo mensaje dos veces para comparar.</strong>
+        </div>
+      </article>
+    </section>
+
+    <section class="facts">
+      <div><span>CORE REAL</span><p>Symbol encoding, XChaCha20-Poly1305, Reed–Solomon, reconstrucción y autenticación se ejecutan realmente en Rust/WASM.</p></div>
+      <div><span>FALLO DE NODO</span><p>La topología es simulada, pero al apagar un nodo sus shards se eliminan del conjunto que el mismo core WASM usa para intentar reconstruir el ciphertext.</p></div>
+      <div><span>LOCAL</span><p>El mensaje de esta demo no sale del navegador. La capa de red distribuida de Sigil es una fase separada del proyecto.</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Sigil research build</span>
+    <a href="https://github.com/generiz/Sigil" target="_blank" rel="noreferrer">source</a>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
