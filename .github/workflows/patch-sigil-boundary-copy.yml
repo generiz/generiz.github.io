@@ -1,0 +1,40 @@
+name: patch-sigil-boundary-copy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-sigil-boundary-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Align Sigil copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          replacements = {
+              'Secure messaging research / Rust · WebAssembly': 'Protocol research / Rust · WebAssembly',
+              'Prototipo de mensajería segura centrado en reducir exposición de texto y rotar representaciones internas. El core Rust/WASM ejecuta doble AEAD, fragmentación Reed–Solomon, reconstrucción autenticada y controles de replay; la topología de nodos de la demo sigue siendo simulada.': 'Prototipo de investigación de pipeline criptográfico. La demo pública es loopback: el mismo proceso WASM genera secretos, sella, fragmenta, reconstruye y autentica. No hay AKE ni canal de dos partes; la topología de nodos sigue siendo simulada.',
+              'Sigil · Live protocol demonstrator': 'Sigil · Loopback protocol demonstrator',
+          }
+          for old, new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'missing expected text: {old}')
+              s = s.replace(old, new)
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name generiz
+          git config user.email 39973192+generiz@users.noreply.github.com
+          git add index.html
+          git commit -m "align sigil boundary copy"
+          git push
