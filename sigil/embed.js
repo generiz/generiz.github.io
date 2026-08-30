@@ -12,6 +12,7 @@ class SigilInlineDemo extends HTMLElement {
     this.module = null;
     this.ready = false;
     this.timer = null;
+    this.playback = 0;
   }
 
   connectedCallback() {
@@ -23,6 +24,7 @@ class SigilInlineDemo extends HTMLElement {
   disconnectedCallback() {
     if (this.session?.free) this.session.free();
     clearTimeout(this.timer);
+    this.playback += 1;
   }
 
   async activate() {
@@ -57,6 +59,7 @@ class SigilInlineDemo extends HTMLElement {
         .grid{display:grid;grid-template-columns:minmax(260px,.82fr) minmax(430px,1.36fr) minmax(230px,.72fr)}.pane{min-width:0;background:linear-gradient(160deg,#0d110f,#090c0a)}.composer{border-right:1px solid var(--line)}.receiver{border-left:1px solid var(--line)}.pane-head{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 16px;color:#7b877f;font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.13em;text-transform:uppercase}.pane-head span{color:#4f5a53}.body{padding:17px}.label{color:#58635c;font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.11em;text-transform:uppercase;margin-bottom:9px}.secure-display{min-height:94px;border:1px solid #354038;border-radius:12px;background:#070a08;padding:13px;display:flex;gap:6px;align-content:flex-start;align-items:flex-start;flex-wrap:wrap;user-select:none;-webkit-user-select:none}.glyph{min-width:24px;height:29px;padding:0 5px;border:1px solid #303a33;border-radius:6px;display:grid;place-items:center;background:#0d120f;color:#dce3dd;font:650 14px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.empty{color:#536058;font:600 9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}.meta{display:flex;justify-content:space-between;margin-top:8px;color:#536058;font:550 8px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace}
         .keyboard{margin-top:15px;display:grid;gap:6px;touch-action:manipulation}.keyrow{display:flex;gap:5px;justify-content:center}.key{appearance:none;min-width:28px;min-height:37px;padding:0 7px;border:1px solid #354038;border-radius:8px;background:#0c110e;color:#aab6ad;cursor:pointer;font:650 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;touch-action:manipulation;user-select:none}.key:hover,.key:active{background:#151c17;border-color:#59665d;color:#fff}.key.wide{min-width:68px}.key.space{flex:1;max-width:190px}.keyboard-note{margin-top:10px;color:#59645d;font-size:9px;line-height:1.45}
         .controls{border-top:1px solid var(--line);padding:13px 17px;display:grid;gap:10px}.range{display:grid;grid-template-columns:1fr 60px;gap:7px;align-items:center}.range span{color:#667169;font:600 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em}.range input{width:100%;accent-color:#849b88}.range b{text-align:right;color:#acb7af;font-size:13px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.action{border:1px solid #3a453d;border-radius:999px;background:#0c110e;color:#9aa69d;padding:10px 11px;cursor:pointer;font-size:9px}.action.primary{background:#e6ebe6;color:#080a09;border-color:#e6ebe6;font-weight:700}.action:disabled{opacity:.35;cursor:default}
+        .guide{border-bottom:1px solid var(--line);padding:14px 17px;background:#080c09;display:grid;gap:9px}.guide-head{display:flex;align-items:center;justify-content:space-between;gap:14px}.guide-head b,.guide-head span{font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase}.guide-head b{color:#9aab9e}.guide-head span{color:#617067}.guide-copy strong{display:block;color:#d9e0da;font-size:12px;margin-bottom:5px}.guide-copy p{margin:0;color:#78857c;font-size:10px;line-height:1.55;max-width:680px}.guide-progress{height:2px;background:#1e2721;overflow:hidden;border-radius:2px}.guide-progress i{display:block;width:0;height:100%;background:#8da292;transition:width .25s ease}.guide-note{color:#566159;font:550 7px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}.guide-note b{color:#7f9084}
         .pipeline{background:#090c0a}.stages{padding:17px;display:grid;gap:8px}.stage{border:1px solid #283029;border-radius:10px;background:#0d120f;padding:11px 12px;display:grid;grid-template-columns:28px 1fr;gap:5px 10px;transition:.25s}.stage.flash{border-color:#65756a;background:#111813;transform:translateY(-1px)}.stage.fail{border-color:#674b46;background:#17100f}.idx{width:25px;height:25px;border:1px solid #3c4840;border-radius:50%;display:grid;place-items:center;color:#6f7d73;font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;grid-row:1/3}.stage b{font-size:11px}.stage small{display:block;margin-top:4px;color:#66736a;font:550 8px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace}.preview{grid-column:2;color:#839188;font:500 8px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shards{grid-column:1/3;display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:5px}.shard{height:25px;border:1px solid #3b493f;border-radius:5px;background:#0a0e0b;color:#87998b;display:grid;place-items:center;font:600 6px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.shard.lost{border-color:#4f3e3b;color:#7d615d;opacity:.52}
         .nodes{grid-column:1/3;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.node{border:1px solid #3a463d;border-radius:8px;background:#0a0e0b;color:#91a095;padding:7px 8px;cursor:pointer;display:grid;gap:2px;min-width:65px}.node b{font:650 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.node small{font:500 6px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#5f6d63}.node.down{border-color:#674b46;background:#17100f}.node.down b,.node.down small{color:#a8746d}.node-state{grid-column:1/3;color:#718078;font:600 7px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em}
         .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}.metric{padding:10px;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric span{display:block;color:#536058;font:650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;margin-bottom:5px}.metric b{color:#a5b0a8;font:600 8px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -80,12 +83,20 @@ class SigilInlineDemo extends HTMLElement {
             <div class="controls">
               <label class="range"><span>pool nodos virtuales</span><input id="nodes" type="range" min="2" max="1000" value="8"><b id="nodesValue">8</b></label>
               <label class="range"><span>shards perdidos</span><input id="loss" type="range" min="0" max="8" value="0"><b id="lossValue">0</b></label>
+              <label class="range"><span>pausa visual al enviar</span><input id="delay" type="range" min="0" max="2000" step="100" value="900"><b id="delayValue">0.9 s</b></label>
               <div class="actions"><button id="fail" class="action">Matar nodo</button><button id="restore" class="action">Restaurar</button></div>
-              <div class="actions"><button id="rerun" class="action primary">Nuevo envelope</button><button id="clear" class="action">Borrar mensaje</button></div>
+              <div class="actions"><button id="rerun" class="action primary">Nuevo envelope</button><button id="replay" class="action" disabled>Ver paso a paso</button></div>
+              <button id="clear" class="action">Borrar mensaje</button>
             </div>
           </section>
           <section class="pane pipeline">
             <div class="pane-head"><span>02</span> Live pipeline</div>
+            <div class="guide">
+              <div class="guide-head"><b id="guideStep">RECORRIDO EN VIVO</b><span id="guideTiming">0.9 s / etapa</span></div>
+              <div class="guide-copy"><strong id="guideTitle">Qué hace Sigil</strong><p id="guideText">Mientras escribís, el core actualiza rápido. Al tocar ENVIAR o “Ver paso a paso”, esta vista ralentiza cada etapa para explicar qué ocurre.</p></div>
+              <div class="guide-progress"><i id="guideBar"></i></div>
+              <div class="guide-note"><b>Importante:</b> el delay es solo visual. El cifrado y la reconstrucción siguen ejecutándose a velocidad real.</div>
+            </div>
             <div class="stages">
               <div id="stageSymbols" class="stage"><div class="idx">A</div><div><b>Ephemeral symbol layer</b><small id="symbolStatus">esperando</small></div><code id="symbolPreview" class="preview">—</code></div>
               <div id="stageCrypto" class="stage"><div class="idx">B</div><div><b>Layered AEAD</b><small id="cryptoStatus">esperando</small></div><code id="wirePreview" class="preview">—</code></div>
@@ -114,9 +125,16 @@ class SigilInlineDemo extends HTMLElement {
       this.$('lossValue').textContent = this.$('loss').value;
       if (this.session) this.evaluate();
     });
+    this.$('delay').addEventListener('input', () => {
+      const ms = Number(this.$('delay').value);
+      const label = ms === 0 ? 'sin pausa' : `${(ms / 1000).toFixed(1)} s`;
+      this.$('delayValue').textContent = label;
+      this.$('guideTiming').textContent = ms === 0 ? 'sin pausa' : `${label} / etapa`;
+    });
     this.$('fail').addEventListener('click', () => this.failRandomNode());
     this.$('restore').addEventListener('click', () => { this.failedNodes.clear(); this.evaluate(); });
     this.$('rerun').addEventListener('click', () => this.newSession(false));
+    this.$('replay').addEventListener('click', () => this.playCurrent());
     this.$('clear').addEventListener('click', () => {
       this.message = [];
       this.renderComposer();
@@ -124,6 +142,9 @@ class SigilInlineDemo extends HTMLElement {
       if (this.session?.free) this.session.free();
       this.session = null;
       this.baseResult = null;
+      this.currentResult = null;
+      this.$('replay').disabled = true;
+      this.setGuide(0, 'Qué hace Sigil', 'Escribí con el teclado gráfico y tocá ENVIAR. La demo mostrará cada transformación con la pausa que elijas.');
     });
   }
 
@@ -195,6 +216,17 @@ class SigilInlineDemo extends HTMLElement {
     this.$('receiverState').textContent = 'esperando reconstrucción autenticada';
   }
 
+  setGuide(step, title, text) {
+    this.$('guideStep').textContent = step ? `PASO ${step} / 5` : 'RECORRIDO EN VIVO';
+    this.$('guideTitle').textContent = title;
+    this.$('guideText').textContent = text;
+    this.$('guideBar').style.width = `${step ? step * 20 : 0}%`;
+  }
+
+  wait(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
+
+  guidedDelay() { return Number(this.$('delay').value); }
+
   async newSession(live) {
     if (!this.ready || !this.message.length) return;
     if (this.session?.free) this.session.free();
@@ -203,9 +235,14 @@ class SigilInlineDemo extends HTMLElement {
     this.session = new this.module.DemoSession(Uint8Array.from(this.message));
     this.baseResult = JSON.parse(this.session.run(''));
     this.previousDigest = previous;
-    this.rebuildTopology();
-    await this.animateStages(live);
-    this.evaluate();
+    this.rebuildTopology(false);
+    this.$('replay').disabled = false;
+    if (live) {
+      this.evaluate();
+      this.setGuide(0, 'Actualización en vivo', 'Mientras componés, Sigil actualiza el pipeline rápidamente. Tocá ENVIAR para verlo etapa por etapa.');
+      return;
+    }
+    await this.playCurrent();
   }
 
   stableHash(value) {
@@ -214,12 +251,12 @@ class SigilInlineDemo extends HTMLElement {
     return hash >>> 0;
   }
 
-  rebuildTopology() {
+  rebuildTopology(render = true) {
     if (!this.baseResult) return;
     const count = Number(this.$('nodes').value);
     this.failedNodes = new Set([...this.failedNodes].filter((index) => index < count));
     this.assignments = this.baseResult.fragments.map((fragment, index) => ({ fragment, index, nodeIndex: this.stableHash(`${fragment.capability}:${index}`) % count }));
-    this.evaluate();
+    if (render) this.evaluate();
   }
 
   missingSlots() {
@@ -310,12 +347,60 @@ class SigilInlineDemo extends HTMLElement {
     this.evaluate();
   }
 
-  async animateStages(live) {
-    const ids = ['stageSymbols','stageCrypto','stageShards','stageNodes','stageReconstruct'];
-    const delay = live ? 45 : 110;
-    for (const id of ids) {
-      const el = this.$(id); el.classList.add('flash'); await new Promise((r) => setTimeout(r, delay)); el.classList.remove('flash');
-    }
+  async playCurrent() {
+    if (!this.session || !this.baseResult) return;
+    const token = ++this.playback;
+    const result = JSON.parse(this.session.run(this.missingSlots().join(',')));
+    this.currentResult = result;
+    this.$('replay').disabled = true;
+    this.clearOutput();
+    const delay = this.guidedDelay();
+
+    const step = async (number, id, title, text, reveal) => {
+      if (token !== this.playback) return false;
+      const el = this.$(id);
+      this.setGuide(number, title, text);
+      el.classList.add('flash');
+      reveal();
+      if (delay) await this.wait(delay);
+      el.classList.remove('flash');
+      return token === this.playback;
+    };
+
+    if (!await step(1, 'stageSymbols', 'El texto deja de ser texto del sistema', 'Las pulsaciones del Secure Canvas ya son bytes y SymbolId internos. La representación efímera cambia entre envelopes.', () => {
+      this.$('core').textContent = `v${result.version}`;
+      this.$('symbolStatus').textContent = `${result.symbol_count} SymbolId · mapa efímero`;
+      this.$('symbolPreview').textContent = result.symbol_codes.slice(0, 3).map((v) => v.slice(0, 14)).join(' · ') || '—';
+    })) return;
+
+    if (!await step(2, 'stageCrypto', 'Se cifra y vuelve a envolver', 'El stream binario entra en una capa AEAD y luego en otra capa AEAD independiente para transporte. Lo visible en red ya es ciphertext autenticado.', () => {
+      this.$('envelope').textContent = `${result.outer_wire_bytes} B`;
+      this.$('cryptoStatus').textContent = 'inner AEAD ✓ · outer AEAD ✓';
+      this.$('wirePreview').textContent = `${result.outer_wire_digest.slice(0, 24)}…`;
+    })) return;
+
+    if (!await step(3, 'stageShards', 'El ciphertext se convierte en un rompecabezas', 'Reed–Solomon divide el ciphertext externo en 20 shards. El receptor necesita un umbral suficiente, no necesariamente todas las piezas.', () => {
+      this.$('threshold').textContent = `${result.fragments_available}/${result.fragments_required} avail`;
+      this.$('shardStatus').textContent = `${result.fragments_total} shards · ${result.fragments_lost} no disponibles`;
+      this.renderShards(result);
+    })) return;
+
+    if (!await step(4, 'stageNodes', 'Las piezas se dispersan', 'La topología dibujada es simulada. Cada shard mostrado sí viene del core real; apagar un nodo quita sus shards del intento real de reconstrucción.', () => {
+      const usedNodes = new Set(this.assignments.map((a) => a.nodeIndex));
+      this.$('network').textContent = `${this.$('nodes').value} pool · ${usedNodes.size} usados`;
+      this.renderNodes(result);
+    })) return;
+
+    if (!await step(5, 'stageReconstruct', 'El receptor reconstruye antes de mostrar', 'Si quedan suficientes shards, el core recompone el ciphertext, verifica autenticidad, descifra las dos capas y recién entonces entrega símbolos al renderer.', () => {
+      this.$('reconstructStatus').textContent = 'verificando umbral y autenticidad…';
+    })) return;
+
+    this.renderResult(result);
+    const ok = result.reconstruction_possible && result.reconstruction_matches && result.receiver_matches;
+    this.setGuide(5, ok ? 'Mensaje reconstruido y autenticado' : 'Reconstrucción bloqueada', ok
+      ? 'El receptor obtuvo suficientes piezas, verificó el ciphertext y renderizó el contenido. Las claves no se muestran en la interfaz.'
+      : 'No quedaron suficientes piezas para alcanzar el umbral. Sigil no intenta mostrar un mensaje parcial o no autenticado.');
+    this.$('replay').disabled = false;
   }
 }
 
