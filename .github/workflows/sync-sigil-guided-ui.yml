@@ -1,0 +1,32 @@
+name: sync-sigil-guided-ui
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-sigil-guided-ui.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch current Sigil UI
+        run: |
+          rm -rf /tmp/sigil-src
+          git clone --depth 1 https://github.com/generiz/Sigil.git /tmp/sigil-src
+          cp /tmp/sigil-src/web-demo/embed.js sigil/embed.js
+      - name: Commit guided UI
+        run: |
+          if git diff --quiet -- sigil/embed.js; then
+            exit 0
+          fi
+          git config user.name generiz
+          git config user.email 39973192+generiz@users.noreply.github.com
+          git add sigil/embed.js
+          git commit -m "add sigil guided playback"
+          git push
