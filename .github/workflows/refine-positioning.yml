@@ -1,0 +1,75 @@
+name: refine-positioning
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refine-positioning.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refine positioning
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          replacements = {
+              '<div class="actions"><a class="btn primary" href="#consultoria">Consultoría IT ↓</a><a class="btn" href="#lab">Security Lab ↘</a></div>':
+              '<div class="actions"><a class="btn primary" href="#intervenciones">Ver intervenciones ↓</a><a class="btn" href="#sistemas">Sistemas construidos ↘</a></div>',
+
+              '<div class="hero-stats mono"><span><b>20+ años</b> en tecnología</span><span><b>Infraestructura · soporte · automatización</b></span><span>Paraguay</span></div>':
+              '<div class="hero-stats mono"><span><b>20+ años</b> en tecnología</span><span><b>Infraestructura · seguridad aplicada · automatización</b></span><span>Paraguay</span></div>',
+
+              '<div class="viz-head mono"><span>Architecture model / IT operations</span><span class="active">systems core</span></div>':
+              '<div class="viz-head mono"><span>Architecture model / trust boundaries</span><span class="active">systems core</span></div>',
+
+              '<title id="archTitle">Arquitectura de infraestructura y operación</title>':
+              '<title id="archTitle">Arquitectura de infraestructura y confianza</title>',
+
+              '<desc id="archDesc">Endpoints, red, almacenamiento, acceso, backups y automatización coordinados alrededor de un núcleo operativo.</desc>':
+              '<desc id="archDesc">Identidad, endpoints, red, datos y accesos tratados como dominios de confianza conectados.</desc>',
+
+              '<span>Reconnaissance</span><b>→</b><span>Enumeration</span><b>→</b><span>Correlation</span><b>→</b><span>Validation</span><b>→</b><span>Remediation</span>':
+              '<span>Reconnaissance</span><b>→</b><span>Enumeration</span><b>→</b><span>Correlation</span><b>→</b><span>Validation</span><b>→</b><span>Exposure mapping</span><b>→</b><span>Remediation</span>',
+
+              '<div class="aboutline"><span class="mono">Actividad</span><span>Consultoría IT · fundador de ufotech</span></div>':
+              '<div class="aboutline"><span class="mono">Actividad</span><span>Infraestructura · seguridad aplicada · fundador de ufotech</span></div>',
+
+              '<p>Trabajo sobre arquitectura, redes, identidad, exposición, segmentación, procurement y automatización. En paralelo desarrollo prototipos propios de cifrado y comunicaciones resilientes, separados de la actividad profesional facturable.</p>':
+              '<p>Trabajo sobre arquitectura, redes, identidad, exposición, segmentación, selección tecnológica y automatización. En paralelo desarrollo prototipos propios de cifrado y comunicaciones resilientes, claramente separados de las intervenciones profesionales.</p>',
+          }
+
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'expected text not found: {old[:90]}')
+              text = text.replace(old, new, 1)
+
+          forbidden_visible = [
+              'Consultoría IT ↓',
+              'Infraestructura · soporte · automatización',
+              'href="#consultoria"',
+              'href="#lab"',
+          ]
+          for item in forbidden_visible:
+              if item in text:
+                  raise SystemExit(f'stale positioning remains: {item}')
+
+          path.write_text(text)
+          PY
+      - name: Commit
+        run: |
+          git config user.name generiz
+          git config user.email 39973192+generiz@users.noreply.github.com
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "tighten intervention positioning"
+          git push
