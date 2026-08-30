@@ -1,0 +1,35 @@
+name: fix-system-title
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-system-title.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix system card titles
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = '.systems-grid .system-card{grid-column:span 4;min-height:420px;display:flex;flex-direction:column}.systems-grid .system-card .chips{position:static;left:auto;right:auto;bottom:auto;margin-top:auto;padding-top:28px}.ufotech-system{background:linear-gradient(155deg,#111714,#0a0e0b)}'
+          new = '.systems-grid .system-card{grid-column:span 4;min-height:420px;display:flex;flex-direction:column}.systems-grid .system-card h3{font-size:clamp(34px,3.9vw,58px);line-height:.94;overflow-wrap:anywhere;word-break:normal;margin:56px 0 20px}.systems-grid .system-card .chips{position:static;left:auto;right:auto;bottom:auto;margin-top:auto;padding-top:28px}.ufotech-system{background:linear-gradient(155deg,#111714,#0a0e0b)}'
+          if old not in s:
+              raise SystemExit('system-card css not found')
+          p.write_text(s.replace(old, new, 1))
+          PY
+      - name: Commit
+        run: |
+          git config user.name generiz
+          git config user.email 39973192+generiz@users.noreply.github.com
+          git add index.html
+          git commit -m "fix long system card titles"
+          git push
