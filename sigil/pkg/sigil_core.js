@@ -213,6 +213,13 @@ export function run_protocol_demo(input, requested_loss) {
     }
 }
 
+function passArray8ToWasm0(arg, malloc) {
+    const ptr = malloc(arg.length * 1, 1) >>> 0;
+    getUint8ArrayMemory0().set(arg, ptr / 1);
+    WASM_VECTOR_LEN = arg.length;
+    return ptr;
+}
+
 const DemoSessionFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_demosession_free(ptr >>> 0, 1));
@@ -231,10 +238,10 @@ export class DemoSession {
         wasm.__wbg_demosession_free(ptr, 0);
     }
     /**
-     * @param {string} input
+     * @param {Uint8Array} input
      */
     constructor(input) {
-        const ptr0 = passStringToWasm0(input, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const ptr0 = passArray8ToWasm0(input, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.demosession_new(ptr0, len0);
         if (ret[2]) {

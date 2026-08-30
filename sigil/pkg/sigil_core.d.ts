@@ -4,7 +4,7 @@ export function sigil_demo_version(): string;
 export function run_protocol_demo(input: string, requested_loss: number): string;
 export class DemoSession {
   free(): void;
-  constructor(input: string);
+  constructor(input: Uint8Array);
   run(missing_slots_csv: string): string;
 }
 
