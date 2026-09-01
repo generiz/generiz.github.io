@@ -1,0 +1,26 @@
+name: remove-contact-form
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/contact_form.py'
+      - '.github/workflows/remove-contact-form.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove contact form
+        run: python .github/scripts/contact_form.py
+      - name: Commit
+        run: |
+          git config user.name generiz
+          git config user.email 39973192+generiz@users.noreply.github.com
+          git add index.html
+          git diff --cached --quiet || git commit -m "remove contact form"
+          git push
