@@ -3,134 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark">
-<title>UCOM Workspace · Estilos de documento</title>
-<style>
-:root{
-  --bg:#08111d;--panel:#0d1825;--line:#223247;--text:#eef5fb;--muted:#8ea0b2;
-  --p:#243c8f;--s:#12a8b2;--paper:#fff;--ink:#1d2939;
-  --green:#21a366;--yellow:#f2b719;--orange:#ef7d22;--magenta:#d91b6b;--red:#e2243f;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#07101b,#0a1724);color:var(--text)}
-button,input,select{font:inherit}.hidden{display:none!important}
-.shell{max-width:1540px;margin:auto;padding:28px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
-.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#fff;color:#1b397e;font-weight:950;letter-spacing:-.06em}.eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:850}.brand h1{font-size:22px;margin:2px 0 0}.back{color:var(--text);text-decoration:none;padding:9px 13px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.03)}
-.intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:end;margin:26px 0 18px}.intro h2{font-size:clamp(32px,4vw,58px);line-height:.98;letter-spacing:-.05em;margin:7px 0 13px;max-width:920px}.intro p{max-width:760px;color:var(--muted);line-height:1.65;margin:0}.quality{font-size:12px;color:#b9c8d5;border:1px solid var(--line);border-radius:999px;padding:9px 12px;white-space:nowrap}
-.layout{display:grid;grid-template-columns:292px minmax(0,1fr);gap:20px}.controls{position:sticky;top:20px;align-self:start;border:1px solid var(--line);background:rgba(13,24,37,.94);backdrop-filter:blur(16px);border-radius:18px;padding:17px}.controls h3{margin:4px 0 16px}.group{border-top:1px solid var(--line);padding:14px 0}.group:first-of-type{border-top:0;padding-top:0}.group label{display:grid;gap:7px;font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:750}.group select,.group input[type=color]{width:100%;border:1px solid var(--line);border-radius:10px;background:#0a1522;color:var(--text);padding:10px}.group input[type=color]{height:42px;padding:4px}.switch{display:flex!important;grid-template-columns:auto 1fr!important;align-items:center;gap:9px!important;color:var(--text)!important}.palette-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.palette{height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.15);cursor:pointer}.palette[data-p="#243c8f"]{background:linear-gradient(135deg,#243c8f,#12a8b2)}.palette[data-p="#0d6b63"]{background:linear-gradient(135deg,#0d6b63,#66c2a5)}.palette[data-p="#6c3fa0"]{background:linear-gradient(135deg,#6c3fa0,#d91b6b)}.palette[data-p="#222831"]{background:linear-gradient(135deg,#222831,#9aa5b1)}
-.gallery{min-width:0}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.tab{border:1px solid var(--line);background:rgba(255,255,255,.035);color:#dce8f2;padding:9px 13px;border-radius:999px;cursor:pointer}.tab.active{background:#fff;color:#111827;border-color:#fff}.stage{min-height:900px;border:1px solid var(--line);border-radius:22px;padding:30px;overflow:auto;background-color:#07111b;background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:20px 20px}
-.paper{--tp:var(--p);--ts:var(--s);width:794px;min-height:1123px;margin:auto;background:var(--paper);color:var(--ink);box-shadow:0 28px 90px rgba(0,0,0,.36);position:relative;overflow:hidden}.paper.compact .page{padding:48px 54px}.page{padding:58px 68px 62px;min-height:1123px}.ucom-word{font-weight:950;font-size:27px;letter-spacing:-.055em;color:var(--tp);line-height:.9}.ucom-word small{display:block;margin-top:6px;font-weight:800;font-size:7.5px;letter-spacing:.14em;color:#667085;text-transform:uppercase}.meta-right{text-align:right;font-size:9px;line-height:1.55;letter-spacing:.09em;text-transform:uppercase;color:#7b8795}.header{display:grid;grid-template-columns:1fr auto;align-items:start;gap:25px;border-bottom:1px solid #e3e7ec;padding-bottom:17px}.kicker{margin-top:29px;font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--tp)}.title{font-size:34px;line-height:1.02;letter-spacing:-.045em;margin:7px 0 7px;color:#101828}.subtitle{font-size:13px;color:#667085;margin:0}.members{margin-top:23px;padding:14px 16px;border:1px solid #e1e6eb;border-left:4px solid var(--tp);border-radius:12px;background:#fbfcfe}.members b{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--tp);margin-bottom:9px}.member-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 22px;color:#475467;font-size:11px}.member-grid span:before{content:"•";color:var(--ts);font-weight:900;margin-right:7px}.lead{font-size:13px;line-height:1.58;color:#475467;margin:20px 0}.section{margin-top:19px}.section-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}.badge{height:25px;min-width:32px;padding:0 10px;border-radius:999px;background:linear-gradient(135deg,var(--tp),var(--ts));display:grid;place-items:center;color:white;font-size:10px;font-weight:900}.section h3{margin:0;font-size:14px;color:#101828}.dimension{margin-left:auto;padding:5px 9px;border-radius:999px;background:#f2f4f7;color:#667085;font-size:9px;font-weight:850}.section p{margin:0;color:#344054;font-size:12.2px;line-height:1.56;text-align:justify}.closing{display:flex;justify-content:space-between;gap:22px;align-items:end;margin-top:25px;padding-top:15px;border-top:1px solid #e3e7ec}.closing .idea{font-size:10.5px;line-height:1.45;color:#667085;max-width:570px}.closing .idea b{color:#101828}.foot{font-size:9px;color:#98a2b3;white-space:nowrap}
-/* PRISMA */.paper[data-template=prisma]:before{content:"";position:absolute;left:0;right:0;top:0;height:18px;background:linear-gradient(90deg,var(--tp),var(--ts),var(--green),var(--yellow),var(--orange),var(--magenta),var(--red))}.paper[data-template=prisma] .page{padding-top:54px}.paper[data-template=prisma].theme-mode:before{background:linear-gradient(90deg,var(--tp),var(--ts))}
-/* MONOGRAFIA */.paper[data-template=monografia]{background:#fcfcfb}.paper[data-template=monografia] .page{padding:78px 88px}.paper[data-template=monografia] .header{border:0}.paper[data-template=monografia] .meta-right{border-left:1px solid #d8d8d2;padding-left:20px}.paper[data-template=monografia] .kicker{margin-top:70px;color:#667085}.paper[data-template=monografia] .title{font-family:Georgia,"Times New Roman",serif;font-size:50px;font-weight:500;max-width:590px}.paper[data-template=monografia] .subtitle{font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.45}.paper[data-template=monografia] .members{border:0;border-top:1px solid #d8d8d2;border-bottom:1px solid #d8d8d2;border-radius:0;background:transparent;padding:17px 0}.paper[data-template=monografia] .section{display:grid;grid-template-columns:55px 1fr;column-gap:15px}.paper[data-template=monografia] .section-head{display:block}.paper[data-template=monografia] .badge{border-radius:0;width:39px;height:39px;background:transparent;border:1px solid var(--tp);color:var(--tp)}.paper[data-template=monografia] .section h3{grid-column:2;font-family:Georgia,"Times New Roman",serif;font-size:18px;margin-top:-40px;margin-bottom:7px}.paper[data-template=monografia] .section p{grid-column:2;font-family:Georgia,"Times New Roman",serif;font-size:13px;line-height:1.72;text-align:left}.paper[data-template=monografia] .dimension{display:none}
-/* INFORME */.paper[data-template=informe]{background:#f5f7fa}.paper[data-template=informe] .page{padding:48px 56px}.paper[data-template=informe] .header{background:#101828;color:white;margin:-48px -56px 0;padding:40px 56px 27px;border:0}.paper[data-template=informe] .ucom-word{color:white}.paper[data-template=informe] .ucom-word small,.paper[data-template=informe] .meta-right{color:#c7d0dc}.paper[data-template=informe] .kicker{margin-top:27px}.paper[data-template=informe] .title{font-size:38px}.paper[data-template=informe] .members{background:white;box-shadow:0 8px 22px rgba(16,24,40,.06)}.paper[data-template=informe] .lead{background:white;padding:16px;border-radius:12px;border:1px solid #e3e7ec}.paper[data-template=informe] .section{background:white;border:1px solid #e1e6ec;border-radius:13px;padding:15px 16px}.paper[data-template=informe] .section-head{margin-bottom:9px}.paper[data-template=informe] .section p{text-align:left}.paper[data-template=informe] .closing{background:#101828;color:white;margin:22px -56px -48px;padding:18px 56px 28px;border:0}.paper[data-template=informe] .closing .idea,.paper[data-template=informe] .closing .idea b,.paper[data-template=informe] .foot{color:#d9e1eb}
-/* EDITORIAL */.paper[data-template=editorial] .page{padding:55px 70px}.paper[data-template=editorial] .header{border-bottom:3px solid #101828}.paper[data-template=editorial] .kicker{margin-top:36px}.paper[data-template=editorial] .title{font-family:Georgia,"Times New Roman",serif;font-size:48px;font-weight:500;line-height:1}.paper[data-template=editorial] .subtitle{font-family:Georgia,"Times New Roman",serif;font-size:16px}.paper[data-template=editorial] .members{border:0;border-radius:0;border-top:1px solid #d0d5dd;border-bottom:1px solid #d0d5dd;padding:13px 0;background:white}.paper[data-template=editorial] .lead{font-family:Georgia,"Times New Roman",serif;font-size:17px;color:#344054;line-height:1.55;padding:18px 0;border-bottom:1px solid #d0d5dd}.paper[data-template=editorial] .section{display:grid;grid-template-columns:145px 1fr;gap:14px;border-bottom:1px solid #e4e7ec;padding-bottom:15px}.paper[data-template=editorial] .section-head{display:block}.paper[data-template=editorial] .badge{width:max-content;border-radius:3px}.paper[data-template=editorial] .section h3{font-family:Georgia,"Times New Roman",serif;font-size:17px;margin-top:8px}.paper[data-template=editorial] .dimension{display:inline-block;margin:8px 0 0}.paper[data-template=editorial] .section p{font-family:Georgia,"Times New Roman",serif;font-size:12.5px;line-height:1.7;text-align:left}
-/* EJERCICIOS */.paper[data-template=ejercicios] .page{padding:48px 58px}.paper[data-template=ejercicios] .header{border-bottom:5px solid var(--tp)}.paper[data-template=ejercicios] .kicker{margin-top:25px}.paper[data-template=ejercicios] .title{font-size:31px}.paper[data-template=ejercicios] .members{padding:11px 14px}.paper[data-template=ejercicios] .lead{font-size:11.5px}.paper[data-template=ejercicios] .section{border:1px solid #dfe4ea;border-radius:12px;padding:13px 14px;break-inside:avoid}.paper[data-template=ejercicios] .section-head{margin-bottom:8px}.paper[data-template=ejercicios] .badge{border-radius:8px;width:28px;min-width:28px;padding:0}.paper[data-template=ejercicios] .section p{text-align:left;font-size:11.5px}.paper[data-template=ejercicios] .section p:after{content:"";display:block;height:48px;margin-top:10px;border-radius:8px;background:repeating-linear-gradient(180deg,#fff 0,#fff 22px,#e8ecf0 23px)}
-.no-brand .ucom-word{visibility:hidden}.no-members .members{display:none}.no-stripe[data-template=prisma]:before{display:none}.no-stripe[data-template=prisma] .page{padding-top:58px}
-@media(max-width:1000px){.layout{grid-template-columns:1fr}.controls{position:static}.intro{grid-template-columns:1fr}.quality{justify-self:start}.stage{padding:12px}.paper{width:794px;transform-origin:top left}}
-</style>
+<meta name="color-scheme" content="light">
+<title>UCOM Workspace · Diseño de entrega</title>
+<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 <div class="shell">
-  <header class="top">
-    <div class="brand"><div class="mark">U</div><div><div class="eyebrow">UCOM Workspace · laboratorio visual</div><h1>Estilos de documento</h1></div></div>
-    <a class="back" href="../">← Volver al workspace</a>
+  <header class="topbar">
+    <div class="brand"><img src="" data-ucom-logo alt="UCOM"><div><div class="eyebrow">Workspace académico</div><h1>Diseño de entrega</h1></div></div>
+    <a class="back" href="../">← Volver al proyecto</a>
   </header>
 
-  <section class="intro">
-    <div><div class="eyebrow">A4 real · contenido real</div><h2>El diseño tiene que parecer hecho para ese trabajo.</h2><p>La estructura define jerarquía y composición. La identidad define color y marca. Se pueden combinar sin convertir cada variante en otro template distinto.</p></div>
-    <div class="quality">Referencia de calidad: documento final, no maqueta</div>
+  <section class="hero">
+    <div><div class="eyebrow">Formato visual</div><h2>Elegí cómo querés presentar esta tarea.</h2><p>Primero elegís la estructura. Después decidís si respeta la identidad UCOM, toma los colores del tema o usa una paleta propia.</p></div>
+    <div class="hero-note">Cada opción se genera como HTML A4 real. No cambia el contenido: cambia cómo se organiza, jerarquiza y presenta.</div>
+  </section>
+  <div class="spectrum"></div>
+
+  <div class="section-head"><div><div class="eyebrow">01 · Estructura</div><h3>Plantillas</h3></div><p>Seleccioná una para ver la vista previa completa.</p></div>
+  <section class="template-grid" id="templateGrid">
+    <button class="template-card active" data-template="institutional">
+      <span class="selected-dot">✓</span>
+      <div class="thumb-wrap"><div class="thumb institutional">
+        <img class="m-logo" src="" data-ucom-logo alt="">
+        <div class="m-meta">Año académico 2026<br>Universidad Comunera</div><div class="m-spectrum"></div>
+        <div class="m-title">Título del Trabajo<br>Académico</div><div class="m-sub">Subtítulo del trabajo · opcional</div>
+        <div class="mini-fields"><div class="mini-row"><b style="--a:var(--u-purple)">Materia</b><span>Nombre de la materia</span></div><div class="mini-row"><b style="--a:var(--u-green)">Profesor/a</b><span>Nombre del profesor/a</span></div><div class="mini-row"><b style="--a:var(--u-yellow)">Fecha</b><span>dd / mm / aaaa</span></div><div class="mini-row"><b style="--a:var(--u-orange)">Integrantes</b><span>Nombre · Nombre · Nombre</span></div></div>
+        <div class="m-footer">UCOM · Universidad Comunera</div>
+      </div></div>
+      <div class="card-copy"><h4>Institucional académica</h4><p>Formal, clara y reconocible. Ideal para entregas generales y trabajos grupales.</p><div class="tags"><span class="tag">A4</span><span class="tag">UCOM</span><span class="tag">Trabajo práctico</span></div></div>
+    </button>
+
+    <button class="template-card" data-template="monograph">
+      <span class="selected-dot">✓</span>
+      <div class="thumb-wrap"><div class="thumb monograph">
+        <img class="m-logo" src="" data-ucom-logo alt=""><div class="m-meta">Año académico 2026</div><div class="m-spectrum"></div><div class="mono-label">Monografía</div>
+        <div class="m-title">Título de la<br>Monografía</div><div class="m-sub">Subtítulo del trabajo · opcional</div>
+        <div class="mini-fields"><div class="mini-row"><b style="--a:var(--u-purple)">Materia</b><span>Nombre de la materia</span></div><div class="mini-row"><b style="--a:var(--u-green)">Profesor/a</b><span>Nombre del profesor/a</span></div><div class="mini-row"><b style="--a:var(--u-yellow)">Fecha</b><span>dd / mm / aaaa</span></div></div><div class="dark-foot"></div><div class="m-footer">UCOM · Universidad Comunera</div>
+      </div></div>
+      <div class="card-copy"><h4>Monografía premium</h4><p>Más editorial, con aire y jerarquía. Para investigaciones, ensayos y trabajos extensos.</p><div class="tags"><span class="tag">A4</span><span class="tag">Editorial</span><span class="tag">Investigación</span></div></div>
+    </button>
+
+    <button class="template-card" data-template="activity">
+      <span class="selected-dot">✓</span>
+      <div class="thumb-wrap"><div class="thumb activity">
+        <img class="m-logo" src="" data-ucom-logo alt=""><div class="m-meta">Año académico 2026</div><div class="m-spectrum"></div>
+        <div class="mini-topbox"><div><b style="color:var(--u-purple)">Materia</b><br>Nombre de la materia</div><div><b style="color:var(--u-yellow)">Fecha</b><br>dd / mm / aaaa</div><div><b style="color:var(--u-green)">Profesor/a</b><br>Nombre</div><div><b style="color:var(--u-orange)">Integrantes</b><br>Nombres</div></div>
+        <div class="consigna">Consigna general de la actividad.</div><div class="exs"><div class="ex" style="--x:var(--u-green)"><span class="n">1</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div><div class="ex" style="--x:var(--u-yellow)"><span class="n">2</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div><div class="ex" style="--x:var(--u-blue)"><span class="n">3</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div></div><div class="m-footer">UCOM · Página 1</div>
+      </div></div>
+      <div class="card-copy"><h4>Actividades / ejercicios</h4><p>Compacta y funcional. Pensada para Matemáticas, ejercicios, preguntas y respuestas.</p><div class="tags"><span class="tag">A4</span><span class="tag">Ejercicios</span><span class="tag">Matemáticas</span></div></div>
+    </button>
   </section>
 
-  <div class="layout">
-    <aside class="controls">
-      <div class="eyebrow">Configuración</div><h3>Dirección visual</h3>
-      <div class="group">
-        <label>Identidad<select id="identity"><option value="ucom">UCOM institucional</option><option value="theme">Colores del tema</option><option value="custom">Personalizada</option></select></label>
-        <div id="custom" class="hidden"><label>Primario<input id="primary" type="color" value="#243c8f"></label><label>Secundario<input id="secondary" type="color" value="#12a8b2"></label></div>
+  <section class="config">
+    <div class="config-panel">
+      <div class="config-title"><div><div class="eyebrow">02 · Identidad</div><h3>Personalización</h3></div></div>
+      <div class="segmented" id="identitySeg"><button class="seg active" data-identity="ucom">UCOM institucional</button><button class="seg" data-identity="theme">Colores del tema</button><button class="seg" data-identity="custom">Personalizada</button></div>
+      <div class="palettes hidden" id="themePalettes">
+        <button class="palette active" data-p="#183a63" data-s="#24749e"><span class="dots"><i style="background:#183a63"></i><i style="background:#24749e"></i></span>Azul</button>
+        <button class="palette" data-p="#0f6c5b" data-s="#5dbb9d"><span class="dots"><i style="background:#0f6c5b"></i><i style="background:#5dbb9d"></i></span>Verde</button>
+        <button class="palette" data-p="#59448f" data-s="#b07ed2"><span class="dots"><i style="background:#59448f"></i><i style="background:#b07ed2"></i></span>Violeta</button>
+        <button class="palette" data-p="#303437" data-s="#969da3"><span class="dots"><i style="background:#303437"></i><i style="background:#969da3"></i></span>Monocromo</button>
       </div>
-      <div class="group">
-        <div class="eyebrow" style="margin-bottom:9px">Paleta del tema</div>
-        <div class="palette-row">
-          <button class="palette" data-p="#243c8f" data-s="#12a8b2" aria-label="Azul UCOM"></button>
-          <button class="palette" data-p="#0d6b63" data-s="#66c2a5" aria-label="Verde"></button>
-          <button class="palette" data-p="#6c3fa0" data-s="#d91b6b" aria-label="Violeta"></button>
-          <button class="palette" data-p="#222831" data-s="#9aa5b1" aria-label="Monocromo"></button>
-        </div>
+      <div class="custom-colors hidden" id="customColors"><label class="colorbox"><input id="primaryColor" type="color" value="#43358b"><span>Primario<b id="primaryValue">#43358B</b></span></label><label class="colorbox"><input id="secondaryColor" type="color" value="#5bc5f2"><span>Secundario<b id="secondaryValue">#5BC5F2</b></span></label></div>
+
+      <div class="section-head" style="margin-top:24px"><div><div class="eyebrow">03 · Detalles</div><h3 style="font-size:18px">Elementos del documento</h3></div></div>
+      <div class="option-grid">
+        <div class="option"><div><strong>Logo UCOM</strong><span>Marca institucional</span></div><label class="switch"><input id="logoToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Franja de color</strong><span>Acento superior</span></div><label class="switch"><input id="stripeToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Integrantes</strong><span>Bloque de autores</span></div><label class="switch"><input id="membersToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Pie de página</strong><span>UCOM + numeración</span></div><label class="switch"><input id="footerToggle" type="checkbox" checked><i></i></label></div>
       </div>
-      <div class="group">
-        <label class="switch"><input id="brand" type="checkbox" checked> Marca UCOM</label>
-        <label class="switch"><input id="members" type="checkbox" checked> Bloque de integrantes</label>
-        <label class="switch"><input id="stripe" type="checkbox" checked> Acento superior</label>
-        <label class="switch"><input id="compact" type="checkbox"> Más compacto</label>
-      </div>
-    </aside>
 
-    <main class="gallery">
-      <div class="tabs">
-        <button class="tab active" data-template="prisma">Prisma académico</button>
-        <button class="tab" data-template="monografia">Monografía</button>
-        <button class="tab" data-template="informe">Informe ejecutivo</button>
-        <button class="tab" data-template="editorial">Ensayo editorial</button>
-        <button class="tab" data-template="ejercicios">Actividad / ejercicios</button>
-      </div>
-      <div class="stage">
-        <article id="paper" class="paper" data-template="prisma">
-          <div class="page">
-            <header class="header">
-              <div class="ucom-word">UCOM<small>Universidad Comunera</small></div>
-              <div class="meta-right">Materia: Negocios y Sociedad<br>Trabajo grupal · 2026</div>
-            </header>
+      <div class="actions"><span class="save-note" id="saveNote">Los cambios se ven a la derecha.</span><button class="btn" id="resetBtn">Restablecer</button><button class="btn primary" id="applyBtn">Aplicar a esta tarea</button></div>
+    </div>
 
-            <div class="kicker">Caso práctico</div>
-            <h1 class="title">Crecer sin perder el impacto</h1>
-            <p class="subtitle">Ñande Verde · Decisiones empresariales bajo un modelo de triple impacto</p>
-
-            <section class="members">
-              <b>Integrantes</b>
-              <div class="member-grid"><span>Nicolás Pintos</span><span>Integrante 2</span><span>Integrante 3</span><span>Integrante 4</span><span>Integrante 5</span><span>Integrante 6</span></div>
-            </section>
-
-            <p class="lead">El Directorio propone una estrategia en la que las decisiones no se evalúan de forma aislada: cada una prioriza una dimensión distinta y, en conjunto, busca mantener el equilibrio económico, social y ambiental de la empresa.</p>
-
-            <section class="section"><div class="section-head"><span class="badge">C</span><h3>Decisión 1 · Envases</h3><span class="dimension">Ambiental</span></div><p>La empresa elimina progresivamente los envases plásticos y desarrolla un sistema retornable. La decisión exige una inversión inicial, pero reduce residuos desde el origen y fortalece la diferenciación de marca.</p></section>
-            <section class="section"><div class="section-head"><span class="badge">B</span><h3>Decisión 2 · Proveedores</h3><span class="dimension">Económica</span></div><p>La estructura de costos se reorganiza para liberar recursos sin comprometer la continuidad operativa. El objetivo es financiar las decisiones sociales y ambientales manteniendo competitividad.</p></section>
-            <section class="section"><div class="section-head"><span class="badge">A</span><h3>Decisión 3 · Trabajadores</h3><span class="dimension">Social</span></div><p>Se prioriza mejorar salarios y beneficios del equipo actual. El crecimiento puede ser más lento, pero se busca reducir rotación, fortalecer el compromiso y consolidar una organización sostenible.</p></section>
-            <section class="section"><div class="section-head"><span class="badge">4</span><h3>Decisión 4 · Nuevo escenario</h3><span class="dimension">A definir</span></div><p>La respuesta final debe conservar la coherencia del modelo completo. Se evalúa qué dimensión queda amenazada, qué costo puede asumirse y si la decisión mantiene la viabilidad del proyecto.</p></section>
-
-            <footer class="closing"><div class="idea"><b>Idea central:</b> el triple impacto se evalúa en el conjunto de la estrategia, no en una decisión aislada.</div><div class="foot">UCOM · Universidad Comunera</div></footer>
-          </div>
+    <div class="preview-panel">
+      <div class="preview-head"><div><div class="eyebrow">Vista previa</div><h3 id="previewName">Institucional académica</h3></div><span class="status">A4 · HTML</span></div>
+      <div class="preview-stage">
+        <article class="big-paper institutional" id="bigPaper">
+          <img class="logo" src="" data-ucom-logo alt="UCOM"><div class="bp-meta">Negocios y Sociedad<br>Trabajo grupal · 2026</div><div class="big-spectrum"></div><div class="mono-kicker">Monografía</div>
+          <div class="bp-title">Crecer sin perder<br>el impacto</div><div class="bp-sub">Ñande Verde · Decisiones empresariales bajo un modelo de triple impacto</div>
+          <div class="bp-fields"><div class="bp-row"><b>Materia</b><span>Negocios y Sociedad</span></div><div class="bp-row"><b>Profesor/a</b><span>Nombre del profesor/a</span></div><div class="bp-row"><b>Fecha</b><span>04 / 09 / 2026</span></div></div>
+          <div class="bp-members"><b>Integrantes</b><div>Nicolás Pintos · Giovanna Micaela Vega Acostas<br>Ruben Dario Solabarrieta · Viviana Vega</div></div>
+          <div class="activity-top"><div style="--x:var(--u-purple)"><b>Materia</b>Negocios y Sociedad</div><div style="--x:var(--u-yellow)"><b>Fecha</b>04 / 09 / 2026</div><div style="--x:var(--u-green)"><b>Profesor/a</b>Nombre del profesor/a</div><div style="--x:var(--u-orange)"><b>Integrantes</b>Nombres y Apellidos</div></div>
+          <div class="activity-body"><div class="cons"><b>Consigna</b>Analizá el caso y justificá las decisiones del grupo.</div><div class="qa"><div class="qa-row" style="--x:var(--u-green)"><span class="qa-num">1</span><div class="qa-copy"><b>Desarrollo</b><p>Primera actividad o pregunta.</p><i></i><i></i></div><div class="qa-answer">Respuesta</div></div><div class="qa-row" style="--x:var(--u-yellow)"><span class="qa-num">2</span><div class="qa-copy"><b>Desarrollo</b><p>Segunda actividad o pregunta.</p><i></i><i></i></div><div class="qa-answer">Respuesta</div></div><div class="qa-row" style="--x:var(--u-blue)"><span class="qa-num">3</span><div class="qa-copy"><b>Desarrollo</b><p>Tercera actividad o pregunta.</p><i></i><i></i></div><div class="qa-answer">Respuesta</div></div></div></div>
+          <div class="dark-footer"></div><div class="bp-footer" id="paperFooter"><span>UCOM · Universidad Comunera</span><span>Página 1</span></div>
         </article>
       </div>
-    </main>
-  </div>
+    </div>
+  </section>
 </div>
-<script>
-const paper=document.querySelector('#paper');
-const identity=document.querySelector('#identity');
-const custom=document.querySelector('#custom');
-const primary=document.querySelector('#primary');
-const secondary=document.querySelector('#secondary');
-const brand=document.querySelector('#brand');
-const members=document.querySelector('#members');
-const stripe=document.querySelector('#stripe');
-const compact=document.querySelector('#compact');
-let themeP='#243c8f',themeS='#12a8b2';
-function applyIdentity(){
-  custom.classList.toggle('hidden',identity.value!=='custom');
-  paper.classList.toggle('theme-mode',identity.value!=='ucom');
-  let p='#243c8f',s='#12a8b2';
-  if(identity.value==='theme'){p=themeP;s=themeS}
-  if(identity.value==='custom'){p=primary.value;s=secondary.value}
-  paper.style.setProperty('--tp',p);paper.style.setProperty('--ts',s);
-}
-document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');paper.dataset.template=btn.dataset.template}));
-document.querySelectorAll('.palette').forEach(btn=>btn.addEventListener('click',()=>{themeP=btn.dataset.p;themeS=btn.dataset.s;identity.value='theme';applyIdentity()}));
-identity.addEventListener('change',applyIdentity);primary.addEventListener('input',applyIdentity);secondary.addEventListener('input',applyIdentity);
-brand.addEventListener('change',()=>paper.classList.toggle('no-brand',!brand.checked));
-members.addEventListener('change',()=>paper.classList.toggle('no-members',!members.checked));
-stripe.addEventListener('change',()=>paper.classList.toggle('no-stripe',!stripe.checked));
-compact.addEventListener('change',()=>paper.classList.toggle('compact',compact.checked));
-applyIdentity();
-</script>
+<script defer src="./app.js"></script>
 </body>
 </html>
