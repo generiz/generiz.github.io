@@ -5,6 +5,10 @@
   loader.src = "./create-v6.js";
   document.head.appendChild(loader);
 
+  const deleteLoader = document.createElement("script");
+  deleteLoader.src = "./delete-v7.js";
+  document.head.appendChild(deleteLoader);
+
   const $ = (s) => document.querySelector(s);
 
   function selectedCreateType() {
