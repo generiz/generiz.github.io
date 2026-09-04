@@ -1,13 +1,15 @@
 (() => {
   "use strict";
 
-  const loader = document.createElement("script");
-  loader.src = "./create-v6.js";
-  document.head.appendChild(loader);
+  function loadScript(src) {
+    const script = document.createElement("script");
+    script.src = src;
+    document.head.appendChild(script);
+  }
 
-  const deleteLoader = document.createElement("script");
-  deleteLoader.src = "./delete-v7.js";
-  document.head.appendChild(deleteLoader);
+  loadScript("./create-v6.js?v=8");
+  loadScript("./delete-v7.js?v=8");
+  loadScript("./workspace-v8.js?v=8");
 
   const $ = (s) => document.querySelector(s);
 
@@ -90,5 +92,6 @@
     syncWorkspaceType();
   }
 
-  document.addEventListener("DOMContentLoaded", init, { once: true });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+  else init();
 })();
