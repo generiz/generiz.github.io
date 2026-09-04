@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./collab.css">
   <script defer src="./collab-ui.js"></script>
+  <script defer src="./create-v5.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -56,15 +57,14 @@
     <section class="workspace-grid">
       <aside class="panel directives-panel">
         <div class="panel-head"><span class="panel-number">01</span><div><h3>Tarea</h3></div></div>
+        <input id="classDateInput" class="hidden" type="date" aria-hidden="true">
         <div class="field-grid">
           <label>Materia<input id="subjectInput" maxlength="160"></label>
           <label>Título<input id="titleInput" maxlength="240"></label>
           <label>Profesor/a<input id="professorInput" maxlength="160"></label>
-          <label>Fecha<input id="classDateInput" type="date"></label>
           <label>Entrega<input id="dueDateInput" type="datetime-local"></label>
-          <label>Fin del proyecto<input id="projectEndInput" type="datetime-local"></label>
           <label>Tipo<select id="workTypeInput"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
-          <label class="admin-only-field">Cupo<input id="maxMembersInput" type="number" min="1" max="30" value="6"></label>
+          <label id="workspaceCapacityWrap" class="admin-only-field">Cupo<input id="maxMembersInput" type="number" min="2" max="30" value="6"></label>
         </div>
 
         <div class="member-editor admin-only-field">
@@ -107,20 +107,34 @@
     </form>
   </dialog>
 
-  <dialog id="createDialog">
-    <form id="createForm" class="dialog-card wide-dialog">
-      <div class="dialog-head"><div><h2>Nueva tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <div class="two-col"><label>Materia<input name="subject" required></label><label>Título<input name="title" required></label></div>
-      <div class="two-col"><label>Profesor/a<input name="professor"></label><label>Fecha<input name="class_date" type="date"></label></div>
-      <div class="two-col"><label>Entrega<input name="due_date" type="datetime-local"></label><label>Fin del proyecto<input name="project_end_at" type="datetime-local"></label></div>
-      <div class="two-col">
-        <label>Tipo<select name="work_type" id="createWorkType"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
-        <label>Cupo de integrantes<input name="max_members" id="createMaxMembers" type="number" min="1" max="30" value="6" required></label>
+  <dialog id="createDialog" class="create-task-dialog">
+    <form id="createForm" class="dialog-card create-dialog-card">
+      <div class="dialog-head"><div><div class="eyebrow">UCOM</div><h2>Nueva tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+
+      <div class="create-main-grid">
+        <label>Materia<input name="subject" required autocomplete="off"></label>
+        <label>Título<input name="title" required autocomplete="off"></label>
+        <label>Profesor/a<input name="professor" autocomplete="off"></label>
+        <label>Entrega<input id="createDueDate" name="due_date" type="datetime-local" required></label>
       </div>
-      <div class="access-grid">
-        <label>Acceso vence
+
+      <input id="createClassDate" name="class_date" type="hidden">
+      <textarea name="members" class="hidden" aria-hidden="true"></textarea>
+
+      <div class="create-section">
+        <span class="create-label">Tipo</span>
+        <div class="type-picker">
+          <label class="type-card"><input type="radio" name="work_type" value="group" checked><span><strong>Grupal</strong></span></label>
+          <label class="type-card"><input type="radio" name="work_type" value="individual"><span><strong>Individual</strong></span></label>
+        </div>
+        <select id="createWorkType" class="hidden" aria-hidden="true" tabindex="-1"><option value="group">Grupal</option><option value="individual">Individual</option></select>
+      </div>
+
+      <div class="create-bottom-grid">
+        <label id="createCapacityWrap">Cupo de integrantes<input name="max_members" id="createMaxMembers" type="number" min="2" max="30" value="6"></label>
+        <label>Acceso
           <select name="access_mode" id="createAccessMode">
-            <option value="project_end" selected>Fin del proyecto</option>
+            <option value="project_end" selected>Hasta la entrega</option>
             <option value="custom">Fecha y hora</option>
             <option value="6h">6 horas</option>
             <option value="24h">24 horas</option>
@@ -129,8 +143,9 @@
         </label>
         <label id="createAccessCustomWrap" class="hidden">Expira<input name="access_expires_at" type="datetime-local"></label>
       </div>
-      <textarea name="members" class="hidden" aria-hidden="true"></textarea>
-      <button class="primary" type="submit">Crear</button>
+
+      <div id="createError" class="form-error hidden" role="alert"></div>
+      <div class="create-actions"><button class="primary create-submit" type="submit">Crear tarea</button></div>
     </form>
   </dialog>
 
@@ -167,7 +182,7 @@
         <div class="access-grid">
           <label>Vence
             <select name="access_mode" id="rotateAccessMode">
-              <option value="project_end" selected>Fin del proyecto</option>
+              <option value="project_end" selected>Hasta la entrega</option>
               <option value="custom">Fecha y hora</option>
               <option value="6h">6 horas</option>
               <option value="24h">24 horas</option>
