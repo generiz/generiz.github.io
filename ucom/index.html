@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'">
+  <title>UCOM Workspace</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <main id="landing" class="landing">
+    <section class="landing-shell">
+      <header class="brandbar">
+        <div class="brandmark">U</div>
+        <div>
+          <div class="eyebrow">UCOM · entorno académico</div>
+          <h1>Workspace</h1>
+        </div>
+      </header>
+
+      <div class="hero">
+        <div>
+          <span class="status-pill">HTML first</span>
+          <h2>De consigna a entrega,<br>sin pelear con un DOC.</h2>
+          <p>Proyectos individuales o grupales, edición controlada, historial y salida HTML lista para presentar.</p>
+        </div>
+        <button id="newProjectBtn" class="primary large">Nuevo proyecto</button>
+      </div>
+
+      <section class="recent-card">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Este navegador</span>
+            <h3>Proyectos recientes</h3>
+          </div>
+          <button id="openSharedBtn" class="ghost">Abrir enlace compartido</button>
+        </div>
+        <div id="recentProjects" class="recent-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <main id="workspace" class="workspace hidden">
+    <header class="workspace-top">
+      <div class="workspace-brand">
+        <button id="backBtn" class="icon-btn" aria-label="Volver">←</button>
+        <div>
+          <div class="eyebrow">UCOM Workspace</div>
+          <strong id="workspaceTitle">Proyecto</strong>
+        </div>
+      </div>
+
+      <div class="workspace-actions">
+        <span id="accessBadge" class="status-pill">Propietario</span>
+        <span id="saveState" class="save-state">Guardado</span>
+        <button id="historyBtn" class="ghost">Historial</button>
+        <button id="shareBtn" class="ghost owner-only">Compartir</button>
+        <button id="exportBtn" class="ghost">Exportar HTML</button>
+        <button id="saveBtn" class="primary">Guardar</button>
+      </div>
+    </header>
+
+    <section class="workspace-grid">
+      <aside class="panel directives-panel">
+        <div class="panel-head">
+          <span class="panel-number">01</span>
+          <div>
+            <span class="eyebrow">Contexto</span>
+            <h3>Consigna</h3>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <label>
+            Materia
+            <input id="subjectInput" maxlength="160" placeholder="Ej. Matemáticas I">
+          </label>
+          <label>
+            Título
+            <input id="titleInput" maxlength="240" placeholder="Actividad / Trabajo">
+          </label>
+          <label>
+            Profesor/a
+            <input id="professorInput" maxlength="160" placeholder="Nombre">
+          </label>
+          <label>
+            Fecha
+            <input id="classDateInput" type="date">
+          </label>
+          <label>
+            Entrega
+            <input id="dueDateInput" type="datetime-local">
+          </label>
+          <label>
+            Tipo
+            <select id="workTypeInput">
+              <option value="group">Grupal</option>
+              <option value="individual">Individual</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Integrantes
+          <textarea id="membersInput" class="short-area" placeholder="Uno por línea"></textarea>
+        </label>
+
+        <label class="grow-label">
+          Directivas / consigna
+          <textarea id="directivesInput" class="grow-area" placeholder="Pegá aquí las instrucciones del trabajo…"></textarea>
+        </label>
+      </aside>
+
+      <section class="panel content-panel">
+        <div class="panel-head">
+          <span class="panel-number">02</span>
+          <div>
+            <span class="eyebrow">Fuente</span>
+            <h3>Contenido</h3>
+          </div>
+          <div class="syntax-hint"># título · ## sección · - lista · | tabla | · $$ fórmula $$</div>
+        </div>
+        <textarea id="contentInput" class="content-editor" spellcheck="true" placeholder="# Título&#10;&#10;Escribí el contenido de la entrega…"></textarea>
+      </section>
+
+      <section class="panel preview-panel">
+        <div class="panel-head preview-head">
+          <span class="panel-number">03</span>
+          <div>
+            <span class="eyebrow">Resultado</span>
+            <h3>Vista HTML</h3>
+          </div>
+          <select id="templateInput" class="template-select" aria-label="Plantilla">
+            <option value="ucom">UCOM institucional</option>
+            <option value="minimal">Minimal</option>
+            <option value="visual">Visual</option>
+          </select>
+        </div>
+
+        <div class="preview-scroll">
+          <article id="previewPaper" class="paper theme-ucom"></article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="createDialog">
+    <form id="createForm" method="dialog" class="dialog-card">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Nuevo proyecto</span>
+          <h2>Datos base</h2>
+        </div>
+        <button type="button" class="icon-btn dialog-close">×</button>
+      </div>
+
+      <label>Materia<input name="subject" required placeholder="Ej. Negocios y Sociedad"></label>
+      <label>Título<input name="title" required placeholder="Nombre del trabajo"></label>
+      <label>Profesor/a<input name="professor" placeholder="Nombre"></label>
+
+      <div class="two-col">
+        <label>Fecha<input name="class_date" type="date"></label>
+        <label>Entrega<input name="due_date" type="datetime-local"></label>
+      </div>
+
+      <label>Tipo
+        <select name="work_type">
+          <option value="group">Grupal</option>
+          <option value="individual">Individual</option>
+        </select>
+      </label>
+
+      <label>Integrantes<textarea name="members" class="short-area" placeholder="Uno por línea"></textarea></label>
+
+      <button class="primary" type="submit">Crear y abrir</button>
+    </form>
+  </dialog>
+
+  <dialog id="sharedDialog">
+    <form id="sharedForm" method="dialog" class="dialog-card">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Acceso compartido</span>
+          <h2>Entrar al proyecto</h2>
+        </div>
+        <button type="button" class="icon-btn dialog-close">×</button>
+      </div>
+      <p class="muted">Pegá el enlace recibido o completá los identificadores.</p>
+      <label>Enlace<input name="share_url" placeholder="https://nicolaspintos.com/ucom/#/p/.../s/..."></label>
+      <div class="two-col">
+        <label>Proyecto<input name="project_id"></label>
+        <label>Acceso<input name="share_id"></label>
+      </div>
+      <label>Tu nombre<input name="name" autocomplete="name"></label>
+      <label>Contraseña<input name="password" type="password" autocomplete="current-password"></label>
+      <button class="primary" type="submit">Entrar</button>
+    </form>
+  </dialog>
+
+  <dialog id="shareDialog">
+    <div class="dialog-card wide-dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Colaboración</span>
+          <h2>Compartir proyecto</h2>
+        </div>
+        <button type="button" class="icon-btn dialog-close">×</button>
+      </div>
+
+      <form id="shareForm" class="share-create">
+        <div class="two-col">
+          <label>Permiso
+            <select name="permission">
+              <option value="edit">Puede editar</option>
+              <option value="read">Solo lectura</option>
+            </select>
+          </label>
+          <label>Vigencia
+            <select name="expiry">
+              <option value="1h">1 hora</option>
+              <option value="6h">6 horas</option>
+              <option value="24h" selected>24 horas</option>
+              <option value="deadline">Hasta la entrega</option>
+              <option value="never">Hasta revocar</option>
+            </select>
+          </label>
+        </div>
+        <label>Contraseña
+          <div class="input-action">
+            <input name="password" minlength="6" required autocomplete="new-password">
+            <button id="generatePasswordBtn" type="button" class="ghost">Generar</button>
+          </div>
+        </label>
+        <button class="primary" type="submit">Crear acceso</button>
+      </form>
+
+      <div id="newShareResult" class="share-result hidden"></div>
+
+      <div class="section-head compact">
+        <div>
+          <span class="eyebrow">Accesos</span>
+          <h3>Activos y anteriores</h3>
+        </div>
+      </div>
+      <div id="shareList" class="share-list"></div>
+    </div>
+  </dialog>
+
+  <dialog id="historyDialog">
+    <div class="dialog-card wide-dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Versionado</span>
+          <h2>Historial</h2>
+        </div>
+        <button type="button" class="icon-btn dialog-close">×</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </div>
+  </dialog>
+
+  <dialog id="versionDialog">
+    <div class="dialog-card wide-dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Versión</span>
+          <h2 id="versionTitle">Detalle</h2>
+        </div>
+        <button type="button" class="icon-btn dialog-close">×</button>
+      </div>
+      <pre id="versionContent" class="version-content"></pre>
+      <button id="restoreVersionBtn" class="primary owner-only">Restaurar esta versión</button>
+    </div>
+  </dialog>
+
+  <dialog id="ownerKeyDialog">
+    <div class="dialog-card">
+      <div class="dialog-head">
+        <div>
+          <span class="eyebrow">Clave de propietario</span>
+          <h2>Guardala</h2>
+        </div>
+      </div>
+      <p class="muted">Se guardó en este navegador. Esta clave no viaja en el enlace del proyecto y el servidor no puede recuperarla en texto plano.</p>
+      <div class="secret-box">
+        <code id="ownerKeyText"></code>
+        <button id="copyOwnerKeyBtn" class="ghost">Copiar</button>
+      </div>
+      <button id="ownerKeyDoneBtn" class="primary">Entendido</button>
+    </div>
+  </dialog>
+</body>
+</html>
