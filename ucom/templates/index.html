@@ -14,13 +14,10 @@
     <a class="back" href="../">← Volver al proyecto</a>
   </header>
 
-  <section class="hero">
-    <div><div class="eyebrow">Formato visual</div><h2>Elegí cómo querés presentar esta tarea.</h2><p>Primero elegís la estructura. Después decidís si respeta la identidad UCOM, toma los colores del tema o usa una paleta propia.</p></div>
-    <div class="hero-note">Cada opción se genera como HTML A4 real. No cambia el contenido: cambia cómo se organiza, jerarquiza y presenta.</div>
-  </section>
+  <section class="hero"><div><div class="eyebrow">Formato visual</div><h2>Diseño de entrega</h2></div></section>
   <div class="spectrum"></div>
 
-  <div class="section-head"><div><div class="eyebrow">01 · Estructura</div><h3>Plantillas</h3></div><p>Seleccioná una para ver la vista previa completa.</p></div>
+  <div class="section-head"><div><div class="eyebrow">01 · Estructura</div><h3>Plantillas</h3></div></div>
   <section class="template-grid" id="templateGrid">
     <button class="template-card active" data-template="institutional">
       <span class="selected-dot">✓</span>
@@ -31,7 +28,7 @@
         <div class="mini-fields"><div class="mini-row"><b style="--a:var(--u-purple)">Materia</b><span>Nombre de la materia</span></div><div class="mini-row"><b style="--a:var(--u-green)">Profesor/a</b><span>Nombre del profesor/a</span></div><div class="mini-row"><b style="--a:var(--u-yellow)">Fecha</b><span>dd / mm / aaaa</span></div><div class="mini-row"><b style="--a:var(--u-orange)">Integrantes</b><span>Nombre · Nombre · Nombre</span></div></div>
         <div class="m-footer">UCOM · Universidad Comunera</div>
       </div></div>
-      <div class="card-copy"><h4>Institucional académica</h4><p>Formal, clara y reconocible. Ideal para entregas generales y trabajos grupales.</p><div class="tags"><span class="tag">A4</span><span class="tag">UCOM</span><span class="tag">Trabajo práctico</span></div></div>
+      <div class="card-copy"><h4>Institucional académica</h4><div class="tags"><span class="tag">A4</span><span class="tag">UCOM</span><span class="tag">Trabajo práctico</span></div></div>
     </button>
 
     <button class="template-card" data-template="monograph">
@@ -41,7 +38,7 @@
         <div class="m-title">Título de la<br>Monografía</div><div class="m-sub">Subtítulo del trabajo · opcional</div>
         <div class="mini-fields"><div class="mini-row"><b style="--a:var(--u-purple)">Materia</b><span>Nombre de la materia</span></div><div class="mini-row"><b style="--a:var(--u-green)">Profesor/a</b><span>Nombre del profesor/a</span></div><div class="mini-row"><b style="--a:var(--u-yellow)">Fecha</b><span>dd / mm / aaaa</span></div></div><div class="dark-foot"></div><div class="m-footer">UCOM · Universidad Comunera</div>
       </div></div>
-      <div class="card-copy"><h4>Monografía premium</h4><p>Más editorial, con aire y jerarquía. Para investigaciones, ensayos y trabajos extensos.</p><div class="tags"><span class="tag">A4</span><span class="tag">Editorial</span><span class="tag">Investigación</span></div></div>
+      <div class="card-copy"><h4>Monografía premium</h4><div class="tags"><span class="tag">A4</span><span class="tag">Editorial</span><span class="tag">Investigación</span></div></div>
     </button>
 
     <button class="template-card" data-template="activity">
@@ -51,7 +48,7 @@
         <div class="mini-topbox"><div><b style="color:var(--u-purple)">Materia</b><br>Nombre de la materia</div><div><b style="color:var(--u-yellow)">Fecha</b><br>dd / mm / aaaa</div><div><b style="color:var(--u-green)">Profesor/a</b><br>Nombre</div><div><b style="color:var(--u-orange)">Integrantes</b><br>Nombres</div></div>
         <div class="consigna">Consigna general de la actividad.</div><div class="exs"><div class="ex" style="--x:var(--u-green)"><span class="n">1</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div><div class="ex" style="--x:var(--u-yellow)"><span class="n">2</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div><div class="ex" style="--x:var(--u-blue)"><span class="n">3</span><span class="lines">Desarrollo<i></i><i></i><i></i></span><span class="ans">Respuesta</span></div></div><div class="m-footer">UCOM · Página 1</div>
       </div></div>
-      <div class="card-copy"><h4>Actividades / ejercicios</h4><p>Compacta y funcional. Pensada para Matemáticas, ejercicios, preguntas y respuestas.</p><div class="tags"><span class="tag">A4</span><span class="tag">Ejercicios</span><span class="tag">Matemáticas</span></div></div>
+      <div class="card-copy"><h4>Actividades / ejercicios</h4><div class="tags"><span class="tag">A4</span><span class="tag">Ejercicios</span><span class="tag">Matemáticas</span></div></div>
     </button>
   </section>
 
@@ -69,13 +66,13 @@
 
       <div class="section-head" style="margin-top:24px"><div><div class="eyebrow">03 · Detalles</div><h3 style="font-size:18px">Elementos del documento</h3></div></div>
       <div class="option-grid">
-        <div class="option"><div><strong>Logo UCOM</strong><span>Marca institucional</span></div><label class="switch"><input id="logoToggle" type="checkbox" checked><i></i></label></div>
-        <div class="option"><div><strong>Franja de color</strong><span>Acento superior</span></div><label class="switch"><input id="stripeToggle" type="checkbox" checked><i></i></label></div>
-        <div class="option"><div><strong>Integrantes</strong><span>Bloque de autores</span></div><label class="switch"><input id="membersToggle" type="checkbox" checked><i></i></label></div>
-        <div class="option"><div><strong>Pie de página</strong><span>UCOM + numeración</span></div><label class="switch"><input id="footerToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Logo UCOM</strong></div><label class="switch"><input id="logoToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Franja de color</strong></div><label class="switch"><input id="stripeToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Integrantes</strong></div><label class="switch"><input id="membersToggle" type="checkbox" checked><i></i></label></div>
+        <div class="option"><div><strong>Pie de página</strong></div><label class="switch"><input id="footerToggle" type="checkbox" checked><i></i></label></div>
       </div>
 
-      <div class="actions"><span class="save-note" id="saveNote">Los cambios se ven a la derecha.</span><button class="btn" id="resetBtn">Restablecer</button><button class="btn primary" id="applyBtn">Aplicar a esta tarea</button></div>
+      <div class="actions"><span class="save-note" id="saveNote"></span><button class="btn" id="resetBtn">Restablecer</button><button class="btn primary" id="applyBtn">Aplicar a esta tarea</button></div>
     </div>
 
     <div class="preview-panel">
