@@ -1,6 +1,10 @@
 (() => {
   "use strict";
 
+  const loader = document.createElement("script");
+  loader.src = "./create-v6.js";
+  document.head.appendChild(loader);
+
   const $ = (s) => document.querySelector(s);
 
   function selectedCreateType() {
@@ -12,25 +16,13 @@
     const hidden = $("#createWorkType");
     const max = $("#createMaxMembers");
     const wrap = $("#createCapacityWrap");
-
-    if (hidden) {
-      hidden.value = type;
-      hidden.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-
+    if (hidden) { hidden.value = type; hidden.dispatchEvent(new Event("change", { bubbles: true })); }
     if (type === "individual") {
-      if (max) {
-        max.value = "1";
-        max.disabled = true;
-      }
+      if (max) { max.value = "1"; max.disabled = true; }
       wrap?.classList.add("hidden");
     } else {
       wrap?.classList.remove("hidden");
-      if (max) {
-        max.disabled = false;
-        max.min = "2";
-        if (Number(max.value) < 2) max.value = "6";
-      }
+      if (max) { max.disabled = false; max.min = "2"; if (Number(max.value) < 2) max.value = "6"; }
     }
   }
 
@@ -58,10 +50,7 @@
       if (max) max.value = "1";
     } else {
       wrap?.classList.remove("hidden");
-      if (max) {
-        max.min = "2";
-        if (Number(max.value) < 2) max.value = "6";
-      }
+      if (max) { max.min = "2"; if (Number(max.value) < 2) max.value = "6"; }
     }
   }
 
@@ -84,31 +73,14 @@
   }
 
   function init() {
-    document.querySelectorAll('#createForm input[name="work_type"]').forEach(radio => {
-      radio.addEventListener("change", syncCreateType);
-    });
-
+    document.querySelectorAll('#createForm input[name="work_type"]').forEach(radio => radio.addEventListener("change", syncCreateType));
     $("#createDueDate")?.addEventListener("input", syncCreateDate);
     $("#dueDateInput")?.addEventListener("input", syncWorkspaceDate);
     $("#workTypeInput")?.addEventListener("change", syncWorkspaceType);
-
-    $("#createForm")?.addEventListener("submit", () => {
-      clearCreateError();
-      syncCreateType();
-      syncCreateDate();
-    }, true);
-
-    $("#createForm")?.addEventListener("reset", () => {
-      setTimeout(() => {
-        clearCreateError();
-        syncCreateType();
-        syncCreateDate();
-      }, 0);
-    });
-
+    $("#createForm")?.addEventListener("submit", () => { clearCreateError(); syncCreateType(); syncCreateDate(); }, true);
+    $("#createForm")?.addEventListener("reset", () => setTimeout(() => { clearCreateError(); syncCreateType(); syncCreateDate(); }, 0));
     const toast = $("#toast");
     if (toast) new MutationObserver(mirrorToastError).observe(toast, { childList: true, attributes: true, subtree: true });
-
     syncCreateType();
     syncCreateDate();
     syncWorkspaceType();
