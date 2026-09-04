@@ -4,6 +4,7 @@
   const API = "https://ucom-api.ufotech.com.py";
   const ADMIN_KEY = "ucom.admin.session.v2";
   const $ = (s) => document.querySelector(s);
+  let observer = null;
 
   function toast(message, error = false) {
     const el = $("#toast");
@@ -24,10 +25,13 @@
       const open = item.querySelector(".project-open[data-id]");
       if (!open) return;
 
-      const actions = document.createElement("div");
-      actions.className = "workspace-actions";
-      open.replaceWith(actions);
-      actions.append(open);
+      let actions = open.parentElement?.classList.contains("workspace-actions") ? open.parentElement : null;
+      if (!actions) {
+        actions = document.createElement("div");
+        actions.className = "workspace-actions";
+        open.replaceWith(actions);
+        actions.append(open);
+      }
 
       const del = document.createElement("button");
       del.type = "button";
@@ -74,9 +78,11 @@
 
   function init() {
     const list = $("#projectList");
-    if (!list) return;
+    if (!list || list.dataset.deleteV7 === "1") return;
+    list.dataset.deleteV7 = "1";
 
-    new MutationObserver(enhanceProjectList).observe(list, { childList: true, subtree: true });
+    observer = new MutationObserver(enhanceProjectList);
+    observer.observe(list, { childList: true, subtree: true });
     enhanceProjectList();
 
     list.addEventListener("click", event => {
@@ -88,5 +94,6 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", init, { once: true });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+  else init();
 })();
