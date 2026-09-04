@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex,nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py; img-src 'self' data: blob: https:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'">
   <title>UCOM Workspace</title>
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./collab.css">
@@ -21,7 +21,6 @@
         <div class="brandmark">U</div>
         <div><div class="eyebrow">UCOM</div><h1>Workspace</h1></div>
       </header>
-
       <div class="hero compact-hero">
         <div><span id="adminState" class="status-pill">Admin desconectado</span><h2>Tareas UCOM</h2></div>
         <div class="hero-actions">
@@ -30,7 +29,6 @@
           <button id="openTaskBtn" class="ghost large">Entrar</button>
         </div>
       </div>
-
       <section class="recent-card">
         <div class="section-head"><div><h3>Tareas</h3></div><button id="adminLogoutBtn" class="ghost hidden">Cerrar sesión</button></div>
         <div id="projectList" class="recent-list"></div>
@@ -48,7 +46,7 @@
         <span id="accessBadge" class="status-pill">Acceso</span>
         <span id="saveState" class="save-state">Guardado</span>
         <button id="historyBtn" class="ghost">Historial</button>
-        <button id="accessBtn" class="ghost admin-only">Contraseña</button>
+        <button id="accessBtn" class="ghost admin-only">Compartir</button>
         <a class="ghost design-link" href="./templates/">Diseño</a>
         <button id="exportBtn" class="ghost">HTML</button>
         <button id="saveBtn" class="primary">Guardar</button>
@@ -66,10 +64,11 @@
           <label>Entrega<input id="dueDateInput" type="datetime-local"></label>
           <label>Fin del proyecto<input id="projectEndInput" type="datetime-local"></label>
           <label>Tipo<select id="workTypeInput"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
+          <label class="admin-only-field">Cupo<input id="maxMembersInput" type="number" min="1" max="30" value="6"></label>
         </div>
 
         <div class="member-editor admin-only-field">
-          <div class="member-editor-head"><label id="memberEditorLabel">Integrantes</label></div>
+          <div class="member-editor-head"><label id="memberEditorLabel">Integrantes</label><span id="capacityState" class="capacity-state"></span></div>
           <div class="member-add"><input id="memberInput" maxlength="120" placeholder="Nombre y apellido"><button id="addMemberBtn" class="ghost" type="button">Agregar</button></div>
           <div id="membersList" class="member-list"></div>
           <textarea id="membersInput" class="hidden" aria-hidden="true"></textarea>
@@ -102,7 +101,7 @@
   <dialog id="adminDialog">
     <form id="adminForm" class="dialog-card">
       <div class="dialog-head"><div><h2>Administrador</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <p id="adminHint" class="hidden"></p>
+      <p id="adminHint" class="admin-login-state"></p>
       <label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label>
       <button class="primary" type="submit">Entrar</button>
     </form>
@@ -114,17 +113,12 @@
       <div class="two-col"><label>Materia<input name="subject" required></label><label>Título<input name="title" required></label></div>
       <div class="two-col"><label>Profesor/a<input name="professor"></label><label>Fecha<input name="class_date" type="date"></label></div>
       <div class="two-col"><label>Entrega<input name="due_date" type="datetime-local"></label><label>Fin del proyecto<input name="project_end_at" type="datetime-local"></label></div>
-      <label>Tipo<select name="work_type" id="createWorkType"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
-
-      <div class="member-editor create-members">
-        <div class="member-editor-head"><label id="createMemberLabel">Integrantes</label></div>
-        <div class="member-add"><input id="createMemberInput" maxlength="120" placeholder="Nombre y apellido"><button id="addCreateMemberBtn" class="ghost" type="button">Agregar</button></div>
-        <div id="createMembersList" class="member-list"></div>
-        <textarea name="members" id="createMembersHidden" class="hidden" aria-hidden="true"></textarea>
+      <div class="two-col">
+        <label>Tipo<select name="work_type" id="createWorkType"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
+        <label>Cupo de integrantes<input name="max_members" id="createMaxMembers" type="number" min="1" max="30" value="6" required></label>
       </div>
-
       <div class="access-grid">
-        <label>Contraseña vence
+        <label>Acceso vence
           <select name="access_mode" id="createAccessMode">
             <option value="project_end" selected>Fin del proyecto</option>
             <option value="custom">Fecha y hora</option>
@@ -135,7 +129,16 @@
         </label>
         <label id="createAccessCustomWrap" class="hidden">Expira<input name="access_expires_at" type="datetime-local"></label>
       </div>
+      <textarea name="members" class="hidden" aria-hidden="true"></textarea>
       <button class="primary" type="submit">Crear</button>
+    </form>
+  </dialog>
+
+  <dialog id="joinDialog">
+    <form id="joinForm" class="dialog-card">
+      <div class="dialog-head"><div><h2>Ingresar a la tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+      <label>Nombre y apellido<input name="name" maxlength="120" autocomplete="name" required autofocus></label>
+      <button class="primary" type="submit">Ingresar</button>
     </form>
   </dialog>
 
@@ -150,12 +153,15 @@
   </dialog>
 
   <dialog id="accessDialog">
-    <div class="dialog-card wide-dialog">
-      <div class="dialog-head"><div><h2>Contraseña de integrantes</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+    <div class="dialog-card share-dialog">
+      <div class="dialog-head"><div><h2>Compartir tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
       <div id="accessInfo" class="access-line"></div>
       <div id="accessSecret" class="share-result hidden">
-        <div class="secret-box"><code id="accessPassword"></code><button id="copyPasswordBtn" class="ghost" type="button">Copiar</button></div>
-        <div class="secret-box"><code id="accessLink"></code><button id="copyLinkBtn" class="ghost" type="button">Copiar enlace</button></div>
+        <div id="shareQrWrap" class="share-qr hidden"><img id="shareQrImg" alt="QR de acceso"><span>QR</span></div>
+        <div class="share-fields">
+          <div class="secret-box"><code id="accessLink"></code><button id="copyLinkBtn" class="ghost" type="button">Copiar enlace</button></div>
+          <div id="passwordSecretRow" class="secret-box"><code id="accessPassword"></code><button id="copyPasswordBtn" class="ghost" type="button">Copiar contraseña</button></div>
+        </div>
       </div>
       <form id="rotateAccessForm">
         <div class="access-grid">
@@ -170,7 +176,7 @@
           </label>
           <label id="rotateAccessCustomWrap" class="hidden">Expira<input name="access_expires_at" type="datetime-local"></label>
         </div>
-        <div class="dialog-actions"><button class="primary" type="submit">Nueva contraseña</button><button id="revokeAccessBtn" class="ghost" type="button">Revocar</button></div>
+        <div class="dialog-actions"><button class="primary" type="submit">Regenerar acceso</button><button id="revokeAccessBtn" class="ghost" type="button">Revocar</button></div>
       </form>
     </div>
   </dialog>
