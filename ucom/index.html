@@ -8,6 +8,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'">
   <title>UCOM Workspace</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./collab.css">
+  <script defer src="./collab-ui.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -17,36 +19,21 @@
     <section class="landing-shell">
       <header class="brandbar">
         <div class="brandmark">U</div>
-        <div>
-          <div class="eyebrow">UCOM · entorno académico</div>
-          <h1>Workspace</h1>
-        </div>
+        <div><div class="eyebrow">UCOM</div><h1>Workspace</h1></div>
       </header>
 
-      <div class="hero">
-        <div>
-          <span id="adminState" class="status-pill">Admin desconectado</span>
-          <h2>Una tarea.<br>Un espacio de trabajo.</h2>
-          <p>El administrador crea la tarea y genera una contraseña temporal. Los integrantes entran con su nombre y esa contraseña.</p>
-        </div>
-        <div>
+      <div class="hero compact-hero">
+        <div><span id="adminState" class="status-pill">Admin desconectado</span><h2>Tareas UCOM</h2></div>
+        <div class="hero-actions">
           <button id="adminLoginBtn" class="ghost large">Administrador</button>
           <button id="newProjectBtn" class="primary large">Nueva tarea</button>
-          <button id="openTaskBtn" class="ghost large">Entrar a una tarea</button>
+          <button id="openTaskBtn" class="ghost large">Entrar</button>
         </div>
       </div>
 
       <section class="recent-card">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Administración</span>
-            <h3>Tareas</h3>
-          </div>
-          <button id="adminLogoutBtn" class="ghost hidden">Cerrar sesión admin</button>
-        </div>
-        <div id="projectList" class="recent-list">
-          <div class="empty-state">Iniciá sesión como administrador para ver y crear tareas.</div>
-        </div>
+        <div class="section-head"><div><h3>Tareas</h3></div><button id="adminLogoutBtn" class="ghost hidden">Cerrar sesión</button></div>
+        <div id="projectList" class="recent-list"></div>
       </section>
     </section>
   </main>
@@ -55,140 +42,140 @@
     <header class="workspace-top">
       <div class="workspace-brand">
         <button id="backBtn" class="icon-btn" aria-label="Volver">←</button>
-        <div>
-          <div class="eyebrow">UCOM Workspace</div>
-          <strong id="workspaceTitle">Tarea</strong>
-        </div>
+        <div><div class="eyebrow">UCOM Workspace</div><strong id="workspaceTitle">Tarea</strong></div>
       </div>
       <div class="workspace-actions">
         <span id="accessBadge" class="status-pill">Acceso</span>
         <span id="saveState" class="save-state">Guardado</span>
         <button id="historyBtn" class="ghost">Historial</button>
-        <button id="accessBtn" class="ghost admin-only">Acceso integrantes</button>
-        <button id="exportBtn" class="ghost">Exportar HTML</button>
+        <button id="accessBtn" class="ghost admin-only">Contraseña</button>
+        <a class="ghost design-link" href="./templates/">Diseño</a>
+        <button id="exportBtn" class="ghost">HTML</button>
         <button id="saveBtn" class="primary">Guardar</button>
       </div>
     </header>
 
     <section class="workspace-grid">
       <aside class="panel directives-panel">
-        <div class="panel-head">
-          <span class="panel-number">01</span>
-          <div><span class="eyebrow">Contexto</span><h3>Consigna</h3></div>
-        </div>
+        <div class="panel-head"><span class="panel-number">01</span><div><h3>Tarea</h3></div></div>
         <div class="field-grid">
           <label>Materia<input id="subjectInput" maxlength="160"></label>
           <label>Título<input id="titleInput" maxlength="240"></label>
           <label>Profesor/a<input id="professorInput" maxlength="160"></label>
           <label>Fecha<input id="classDateInput" type="date"></label>
           <label>Entrega<input id="dueDateInput" type="datetime-local"></label>
+          <label>Fin del proyecto<input id="projectEndInput" type="datetime-local"></label>
           <label>Tipo<select id="workTypeInput"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
         </div>
-        <label>Integrantes<textarea id="membersInput" class="short-area" placeholder="Uno por línea"></textarea></label>
-        <label class="grow-label">Directivas / consigna<textarea id="directivesInput" class="grow-area"></textarea></label>
+
+        <div class="member-editor admin-only-field">
+          <div class="member-editor-head"><label id="memberEditorLabel">Integrantes</label></div>
+          <div class="member-add"><input id="memberInput" maxlength="120" placeholder="Nombre y apellido"><button id="addMemberBtn" class="ghost" type="button">Agregar</button></div>
+          <div id="membersList" class="member-list"></div>
+          <textarea id="membersInput" class="hidden" aria-hidden="true"></textarea>
+        </div>
+
+        <label class="grow-label">Consigna<textarea id="directivesInput" class="grow-area"></textarea></label>
       </aside>
 
       <section class="panel content-panel">
-        <div class="panel-head">
-          <span class="panel-number">02</span>
-          <div><span class="eyebrow">Fuente</span><h3>Contenido</h3></div>
-          <div class="syntax-hint"># título · ## sección · - lista · | tabla | · $$ fórmula $$</div>
-        </div>
-        <textarea id="contentInput" class="content-editor" spellcheck="true" placeholder="# Título&#10;&#10;Escribí el contenido de la entrega…"></textarea>
+        <div class="panel-head"><span class="panel-number">02</span><div><h3>Contenido</h3></div></div>
+        <textarea id="contentInput" class="content-editor" spellcheck="true"></textarea>
       </section>
 
       <section class="panel preview-panel">
         <div class="panel-head preview-head">
-          <span class="panel-number">03</span>
-          <div><span class="eyebrow">Resultado</span><h3>Vista HTML</h3></div>
-          <select id="templateInput" class="template-select" aria-label="Plantilla">
-            <option value="ucom">UCOM institucional</option>
-            <option value="minimal">Minimal</option>
-            <option value="visual">Visual</option>
-          </select>
+          <span class="panel-number">03</span><div><h3>Vista</h3></div>
+          <select id="templateInput" class="template-select" aria-label="Plantilla"><option value="ucom">UCOM</option><option value="minimal">Minimal</option><option value="visual">Visual</option></select>
         </div>
         <div class="preview-scroll"><article id="previewPaper" class="paper theme-ucom"></article></div>
       </section>
+    </section>
+
+    <section class="chat-panel">
+      <div class="chat-head"><div><span class="panel-number">04</span><h3>Chat general</h3></div><button id="refreshChatBtn" class="ghost" type="button">Actualizar</button></div>
+      <div id="chatMessages" class="chat-messages"></div>
+      <form id="chatForm" class="chat-compose"><textarea id="chatInput" maxlength="2000" rows="2" placeholder="Mensaje"></textarea><button class="primary" type="submit">Enviar</button></form>
     </section>
   </main>
 
   <dialog id="adminDialog">
     <form id="adminForm" class="dialog-card">
-      <div class="dialog-head"><div><span class="eyebrow">Administración</span><h2>Entrar</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <p id="adminHint" class="muted">Usá la contraseña de administrador.</p>
+      <div class="dialog-head"><div><h2>Administrador</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+      <p id="adminHint" class="hidden"></p>
       <label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label>
       <button class="primary" type="submit">Entrar</button>
     </form>
   </dialog>
 
   <dialog id="createDialog">
-    <form id="createForm" class="dialog-card">
-      <div class="dialog-head"><div><span class="eyebrow">Nueva tarea</span><h2>Datos base</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <label>Materia<input name="subject" required placeholder="Ej. Matemáticas I"></label>
-      <label>Título<input name="title" required placeholder="Nombre de la tarea"></label>
-      <label>Profesor/a<input name="professor"></label>
-      <div class="two-col"><label>Fecha<input name="class_date" type="date"></label><label>Entrega<input name="due_date" type="datetime-local"></label></div>
-      <label>Tipo<select name="work_type"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
-      <label>Integrantes<textarea name="members" class="short-area" placeholder="Uno por línea"></textarea></label>
-      <label>Vigencia de la contraseña temporal
-        <select name="access_mode">
-          <option value="deadline" selected>Hasta la entrega</option>
-          <option value="6h">6 horas</option>
-          <option value="24h">24 horas</option>
-          <option value="72h">72 horas</option>
-        </select>
-      </label>
-      <button class="primary" type="submit">Crear tarea</button>
+    <form id="createForm" class="dialog-card wide-dialog">
+      <div class="dialog-head"><div><h2>Nueva tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+      <div class="two-col"><label>Materia<input name="subject" required></label><label>Título<input name="title" required></label></div>
+      <div class="two-col"><label>Profesor/a<input name="professor"></label><label>Fecha<input name="class_date" type="date"></label></div>
+      <div class="two-col"><label>Entrega<input name="due_date" type="datetime-local"></label><label>Fin del proyecto<input name="project_end_at" type="datetime-local"></label></div>
+      <label>Tipo<select name="work_type" id="createWorkType"><option value="group">Grupal</option><option value="individual">Individual</option></select></label>
+
+      <div class="member-editor create-members">
+        <div class="member-editor-head"><label id="createMemberLabel">Integrantes</label></div>
+        <div class="member-add"><input id="createMemberInput" maxlength="120" placeholder="Nombre y apellido"><button id="addCreateMemberBtn" class="ghost" type="button">Agregar</button></div>
+        <div id="createMembersList" class="member-list"></div>
+        <textarea name="members" id="createMembersHidden" class="hidden" aria-hidden="true"></textarea>
+      </div>
+
+      <div class="access-grid">
+        <label>Contraseña vence
+          <select name="access_mode" id="createAccessMode">
+            <option value="project_end" selected>Fin del proyecto</option>
+            <option value="custom">Fecha y hora</option>
+            <option value="6h">6 horas</option>
+            <option value="24h">24 horas</option>
+            <option value="72h">72 horas</option>
+          </select>
+        </label>
+        <label id="createAccessCustomWrap" class="hidden">Expira<input name="access_expires_at" type="datetime-local"></label>
+      </div>
+      <button class="primary" type="submit">Crear</button>
     </form>
   </dialog>
 
   <dialog id="memberDialog">
     <form id="memberForm" class="dialog-card">
-      <div class="dialog-head"><div><span class="eyebrow">Integrantes</span><h2>Entrar a la tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <label>Código de tarea<input name="project_id" required></label>
-      <label>Tu nombre<input name="name" autocomplete="name" required></label>
-      <label>Contraseña temporal<input name="password" type="password" autocomplete="current-password" required></label>
+      <div class="dialog-head"><div><h2>Entrar</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+      <label>Código<input name="project_id" required></label>
+      <label>Nombre<input name="name" autocomplete="name" required></label>
+      <label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label>
       <button class="primary" type="submit">Entrar</button>
     </form>
   </dialog>
 
   <dialog id="accessDialog">
     <div class="dialog-card wide-dialog">
-      <div class="dialog-head"><div><span class="eyebrow">Integrantes</span><h2>Acceso temporal</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <p id="accessInfo" class="muted"></p>
+      <div class="dialog-head"><div><h2>Contraseña de integrantes</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
+      <div id="accessInfo" class="access-line"></div>
       <div id="accessSecret" class="share-result hidden">
-        <p class="muted">Esta contraseña sólo se muestra ahora. Compartila con los integrantes.</p>
         <div class="secret-box"><code id="accessPassword"></code><button id="copyPasswordBtn" class="ghost" type="button">Copiar</button></div>
         <div class="secret-box"><code id="accessLink"></code><button id="copyLinkBtn" class="ghost" type="button">Copiar enlace</button></div>
       </div>
       <form id="rotateAccessForm">
-        <label>Nueva vigencia
-          <select name="access_mode">
-            <option value="deadline" selected>Hasta la entrega</option>
-            <option value="6h">6 horas</option>
-            <option value="24h">24 horas</option>
-            <option value="72h">72 horas</option>
-          </select>
-        </label>
-        <button class="primary" type="submit">Generar nueva contraseña</button>
-        <button id="revokeAccessBtn" class="ghost" type="button">Revocar acceso</button>
+        <div class="access-grid">
+          <label>Vence
+            <select name="access_mode" id="rotateAccessMode">
+              <option value="project_end" selected>Fin del proyecto</option>
+              <option value="custom">Fecha y hora</option>
+              <option value="6h">6 horas</option>
+              <option value="24h">24 horas</option>
+              <option value="72h">72 horas</option>
+            </select>
+          </label>
+          <label id="rotateAccessCustomWrap" class="hidden">Expira<input name="access_expires_at" type="datetime-local"></label>
+        </div>
+        <div class="dialog-actions"><button class="primary" type="submit">Nueva contraseña</button><button id="revokeAccessBtn" class="ghost" type="button">Revocar</button></div>
       </form>
     </div>
   </dialog>
 
-  <dialog id="historyDialog">
-    <div class="dialog-card wide-dialog">
-      <div class="dialog-head"><div><span class="eyebrow">Versionado</span><h2>Historial</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <div id="historyList" class="history-list"></div>
-    </div>
-  </dialog>
-
-  <dialog id="versionDialog">
-    <div class="dialog-card wide-dialog">
-      <div class="dialog-head"><div><span class="eyebrow">Versión</span><h2 id="versionTitle">Detalle</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
-      <pre id="versionContent" class="version-content"></pre>
-      <button id="restoreVersionBtn" class="primary admin-only">Restaurar esta versión</button>
-    </div>
-  </dialog>
+  <dialog id="historyDialog"><div class="dialog-card wide-dialog"><div class="dialog-head"><div><h2>Historial</h2></div><button type="button" class="icon-btn dialog-close">×</button></div><div id="historyList" class="history-list"></div></div></dialog>
+  <dialog id="versionDialog"><div class="dialog-card wide-dialog"><div class="dialog-head"><div><h2 id="versionTitle">Versión</h2></div><button type="button" class="icon-btn dialog-close">×</button></div><pre id="versionContent" class="version-content"></pre><button id="restoreVersionBtn" class="primary admin-only">Restaurar</button></div></dialog>
 </body>
 </html>
