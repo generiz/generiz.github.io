@@ -293,6 +293,7 @@
     $("#projectEndInput")?.addEventListener("input", markDirty);
     $("#createAccessMode")?.addEventListener("change", () => toggleCustom("#createAccessMode", "#createAccessCustomWrap"));
     $("#rotateAccessMode")?.addEventListener("change", () => toggleCustom("#rotateAccessMode", "#rotateAccessCustomWrap"));
+    $("#createForm")?.addEventListener("reset", () => setTimeout(() => { createMembers = []; syncCreateHidden(); renderCreateMembers(); }, 0));
     $("#chatForm")?.addEventListener("submit", sendChat);
     $("#refreshChatBtn")?.addEventListener("click", () => loadChat(false));
     toggleCustom("#createAccessMode", "#createAccessCustomWrap");
@@ -310,6 +311,7 @@
         if ($("#projectEndInput").value !== expected && !$("#saveState")?.classList.contains("dirty")) $("#projectEndInput").value = expected;
       }
       cleanAccessCopy();
+      document.querySelectorAll(".empty-state").forEach(node => node.remove());
     }, 450);
     setInterval(() => loadChat(false), 3000);
     window.addEventListener("hashchange", () => { lastProjectId = ""; lastChatId = 0; setTimeout(() => loadChat(true), 600); });
