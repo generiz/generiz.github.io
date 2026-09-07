@@ -1,0 +1,26 @@
+name: UCOM frontend smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ucom/**"
+      - ".github/workflows/ucom-smoke.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check realtime JavaScript
+        run: node --check ucom/realtime-v21.js
+      - name: Check active frontend wiring
+        run: |
+          grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
+          grep -q 'type="module" src="./realtime-v21.js?v=21"' ucom/index.html
+          ! grep -q 'script defer src="./blocks-v15.js' ucom/index.html
