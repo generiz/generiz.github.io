@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex,nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py; img-src 'self' data: blob: https:; style-src 'self'; script-src 'self'; base-uri 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.jsdelivr.net; base-uri 'none'; object-src 'none'">
   <title>UCOM Workspace</title>
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./collab.css">
-  <script defer src="./collab-ui.js"></script>
-  <script defer src="./create-v5.js"></script>
-  <script defer src="./app.js"></script>
+  <link rel="stylesheet" href="./styles.css?v=9">
+  <link rel="stylesheet" href="./collab.css?v=9">
+  <script defer src="./collab-ui.js?v=9"></script>
+  <script defer src="./create-v5.js?v=9"></script>
+  <script defer src="./app.js?v=9"></script>
+  <script defer src="./mathjax-config.js?v=9"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+  <script defer src="./workspace-v9.js?v=9"></script>
 </head>
 <body>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -85,7 +88,12 @@
       <section class="panel preview-panel">
         <div class="panel-head preview-head">
           <span class="panel-number">03</span><div><h3>Vista</h3></div>
-          <select id="templateInput" class="template-select" aria-label="Plantilla"><option value="ucom">UCOM</option><option value="minimal">Minimal</option><option value="visual">Visual</option></select>
+          <select id="templateInput" class="template-select" aria-label="Plantilla">
+            <option value="ucom">Institucional</option>
+            <option value="minimal">Monografía</option>
+            <option value="visual">Actividades</option>
+            <option value="math">Matemáticas</option>
+          </select>
         </div>
         <div class="preview-scroll"><article id="previewPaper" class="paper theme-ucom"></article></div>
       </section>
