@@ -139,14 +139,17 @@
     type.setAttribute("aria-label", "Tipo");
     TYPES.forEach(([value, label]) => {
       const option = document.createElement("option");
-      option.value = value; option.textContent = label; option.selected = value === block.type;
+      option.value = value;
+      option.textContent = label;
+      option.selected = value === block.type;
       type.appendChild(option);
     });
     type.addEventListener("change", () => {
       const oldDefault = defaultTitle(block.type);
       block.type = type.value;
       if (!block.title || block.title === oldDefault) block.title = defaultTitle(block.type);
-      renderEditor(); changed(true);
+      renderEditor();
+      changed(true);
     });
 
     const title = document.createElement("input");
@@ -154,7 +157,11 @@
     title.value = block.title || "";
     title.maxLength = 180;
     title.placeholder = defaultTitle(block.type);
-    title.addEventListener("input", () => { block.title = title.value; changed(false); renderPreview(); });
+    title.addEventListener("input", () => {
+      block.title = title.value;
+      changed(false);
+      renderPreview();
+    });
 
     const actions = document.createElement("div");
     actions.className = "block-actions-v15";
@@ -182,8 +189,8 @@
     foot.className = "block-foot-v15";
     const picker = document.createElement("div");
     picker.className = "accent-picker-v15";
-    picker.append(accentButton("auto", "Auto", block, index));
-    Object.keys(ACCENTS).forEach(name => picker.append(accentButton(name, name, block, index)));
+    picker.append(accentButton("auto", "Auto", block));
+    Object.keys(ACCENTS).forEach(name => picker.append(accentButton(name, name, block)));
     foot.append(picker);
 
     card.append(head, body, foot);
@@ -201,7 +208,7 @@
     return button;
   }
 
-  function accentButton(name, label, block, index) {
+  function accentButton(name, label, block) {
     const button = document.createElement("button");
     button.type = "button";
     button.title = label;
@@ -211,7 +218,9 @@
     else button.style.setProperty("--dot", ACCENTS[name]);
     button.addEventListener("click", () => {
       block.accent = name;
-      renderEditor(); changed(true); renderPreview();
+      renderEditor();
+      changed(true);
+      renderPreview();
     });
     return button;
   }
@@ -226,7 +235,9 @@
     if (target < 0 || target >= blocks.length) return;
     const [item] = blocks.splice(index, 1);
     blocks.splice(target, 0, item);
-    renderEditor(); changed(true); renderPreview();
+    renderEditor();
+    changed(true);
+    renderPreview();
   }
 
   function remove(index) {
@@ -234,12 +245,15 @@
     if (!block) return;
     if ((block.body || "").trim() && !confirm(`¿Eliminar ${block.title || defaultTitle(block.type)}?`)) return;
     blocks.splice(index, 1);
-    renderEditor(); changed(true); renderPreview();
+    renderEditor();
+    changed(true);
+    renderPreview();
   }
 
   function changed(structural) {
     syncLegacy(true);
     setBlockState(structural ? "Cambios pendientes" : "Sin guardar", "");
+    setTimeout(renderPreview, 0);
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => saveNow(), structural ? 500 : 1400);
   }
@@ -247,12 +261,18 @@
   function syncLegacy(markDirty = false) {
     const directives = $("#directivesInput");
     const content = $("#contentInput");
-    const consigna = blocks.filter(b => b.type === "consigna").map(b => [b.title, b.body].filter(Boolean).join("\n")).join("\n\n");
-    const rest = blocks.filter(b => b.type !== "consigna").map(b => {
-      const title = b.title || defaultTitle(b.type);
-      if (b.type === "formula") return `## ${title}\n$$\n${b.body}\n$$`;
-      return `## ${title}\n${b.body}`;
-    }).join("\n\n");
+    const consigna = blocks
+      .filter(b => b.type === "consigna")
+      .map(b => [b.title, b.body].filter(Boolean).join("\n"))
+      .join("\n\n");
+    const rest = blocks
+      .filter(b => b.type !== "consigna")
+      .map(b => {
+        const title = b.title || defaultTitle(b.type);
+        if (b.type === "formula") return `## ${title}\n$$\n${b.body}\n$$`;
+        return `## ${title}\n${b.body}`;
+      })
+      .join("\n\n");
     if (directives) directives.value = consigna;
     if (content) content.value = rest;
     if (markDirty && content) content.dispatchEvent(new Event("input", { bubbles: true }));
@@ -261,7 +281,11 @@
   async function load(force = false) {
     installEditor();
     const id = projectId();
-    if (!id) { currentProject = ""; loaded = false; return; }
+    if (!id) {
+      currentProject = "";
+      loaded = false;
+      return;
+    }
     const authToken = token(id);
     if (!authToken) return;
     if (!force && loaded && currentProject === id) return;
@@ -277,7 +301,7 @@
       syncLegacy(false);
       renderPreview();
       setBlockState(data.legacy && blocks.length ? "Contenido anterior listo" : "", "");
-    } catch (error) {
+    } catch {
       setBlockState("No se pudo cargar", "error");
     }
   }
@@ -287,20 +311,28 @@
     const id = projectId();
     const authToken = token(id);
     if (!loaded || !id || !authToken) return;
-    if (saving) { pendingSave = true; return; }
+    if (saving) {
+      pendingSave = true;
+      return;
+    }
     saving = true;
     pendingSave = false;
     setBlockState("Guardando…", "saving");
     syncLegacy(false);
     try {
-      const data = await xhr("PUT", `/api/projects/${encodeURIComponent(id)}/blocks-v15`, authToken, { blocks, expected_revision: revision });
+      const data = await xhr("PUT", `/api/projects/${encodeURIComponent(id)}/blocks-v15`, authToken, {
+        blocks,
+        expected_revision: revision,
+      });
       revision = Number(data.revision || revision + 1);
       setBlockState("Guardado", "");
     } catch (error) {
       if (error.status === 409 && Array.isArray(error.data?.blocks)) {
         blocks = error.data.blocks;
         revision = Number(error.data.revision || revision);
-        renderEditor(); syncLegacy(false); renderPreview();
+        renderEditor();
+        syncLegacy(false);
+        renderPreview();
         toast("Otra persona guardó cambios. Recargué la última versión.", true);
       } else {
         setBlockState("Error al guardar", "error");
@@ -320,7 +352,9 @@
   }
 
   function accentColor(block, index) {
-    return block.accent && block.accent !== "auto" ? (ACCENTS[block.accent] || AUTO_COLORS[index % AUTO_COLORS.length]) : AUTO_COLORS[index % AUTO_COLORS.length];
+    return block.accent && block.accent !== "auto"
+      ? (ACCENTS[block.accent] || AUTO_COLORS[index % AUTO_COLORS.length])
+      : AUTO_COLORS[index % AUTO_COLORS.length];
   }
 
   function renderPreview() {
@@ -344,16 +378,17 @@
       section.append(label);
 
       if ((block.title || "").trim()) {
-        const h = document.createElement("h3");
-        h.textContent = block.title;
-        section.append(h);
+        const heading = document.createElement("h3");
+        heading.textContent = block.title;
+        section.append(heading);
       }
 
       const body = document.createElement("div");
       body.className = "doc-block-body-v15";
       const raw = block.body || "";
-      if (block.type === "formula" && raw.trim() && !/[\\$]/.test(raw.trim().slice(0, 2))) body.textContent = `\\[${raw}\\]`;
-      else body.textContent = raw;
+      const trimmed = raw.trim();
+      const alreadyDelimited = /^(\\\[|\\\(|\$\$|\$)/.test(trimmed);
+      body.textContent = block.type === "formula" && trimmed && !alreadyDelimited ? `\\[${raw}\\]` : raw;
       section.append(body);
       wrapper.append(section);
     });
@@ -363,7 +398,10 @@
     else root.append(wrapper);
 
     if (window.MathJax?.typesetPromise) {
-      try { window.MathJax.typesetClear?.([wrapper]); window.MathJax.typesetPromise([wrapper]).catch(() => {}); } catch {}
+      try {
+        window.MathJax.typesetClear?.([wrapper]);
+        window.MathJax.typesetPromise([wrapper]).catch(() => {});
+      } catch {}
     }
   }
 
@@ -375,10 +413,12 @@
   function init() {
     installEditor();
     document.addEventListener("input", event => {
-      if (["subjectInput","titleInput","professorInput","dueDateInput","membersInput","templateInput"].includes(event.target?.id)) syncAfterCoreRender();
+      if (["subjectInput", "titleInput", "professorInput", "dueDateInput", "membersInput", "templateInput", "contentInput", "directivesInput"].includes(event.target?.id)) {
+        syncAfterCoreRender();
+      }
     });
     document.addEventListener("change", event => {
-      if (["workTypeInput","templateInput"].includes(event.target?.id)) syncAfterCoreRender();
+      if (["workTypeInput", "templateInput"].includes(event.target?.id)) syncAfterCoreRender();
     });
     window.addEventListener("hashchange", () => setTimeout(() => load(true), 350));
     setTimeout(() => load(true), 650);
