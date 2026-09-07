@@ -1,0 +1,30 @@
+#accessDialog{width:min(780px,calc(100vw - 28px));overflow:hidden}
+#accessDialog .share-dialog{width:100%;max-width:none}
+.class-join-state-v17{margin:8px 0 0;padding:9px 11px;border:1px solid rgba(70,184,216,.22);border-radius:10px;background:rgba(70,184,216,.07);color:var(--accent-2);font-size:.76rem;font-weight:700}
+.class-join-state-v17.error{border-color:rgba(255,120,111,.28);background:rgba(255,120,111,.08);color:#ffaaa4}
+
+@media(max-width:760px){
+  #accessDialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px);border-radius:18px;margin:auto;overflow:hidden}
+  #accessDialog .share-dialog{width:100%;max-height:calc(100dvh - 12px);overflow-y:auto;overscroll-behavior:contain;padding:16px;gap:11px}
+  #accessDialog .dialog-head{position:sticky;top:-16px;z-index:3;margin:-16px -16px 2px;padding:16px;background:#0b1a2a;border-bottom:1px solid var(--line)}
+  #accessDialog .dialog-head h2{font-size:1.2rem}
+  #accessDialog .share-main-v11{grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:start}
+  #accessDialog .share-qr-v11{width:92px;height:92px;border-radius:12px}
+  #accessDialog .share-qr-v11 svg{width:82px;height:82px}
+  #accessDialog .share-link-v11{gap:7px}
+  #accessDialog .share-link-v11 code{white-space:normal;overflow-wrap:anywhere;max-height:58px;overflow:auto;padding:9px;font-size:.66rem}
+  #accessDialog .share-link-v11 .ghost{width:100%;padding:8px 10px}
+  #accessDialog .share-policy-v11{grid-template-columns:1fr;margin-top:2px;gap:8px}
+  #accessDialog .code-toggle-v11{min-height:38px}
+  #accessDialog .share-code-v11{padding:2px 0;flex-wrap:wrap}
+  #accessDialog .share-code-value-v11{font-size:1.1rem}
+  #accessDialog .share-actions-v11{margin-top:2px}
+  #accessDialog .share-actions-v11 .primary{width:100%}
+  #accessDialog .participants-v11{margin-top:4px;padding-top:10px}
+  #accessDialog .participants-list-v11{max-height:min(170px,24dvh)}
+
+  #classJoinDialog{width:calc(100vw - 20px);max-height:calc(100dvh - 20px);overflow:auto}
+  #classJoinDialog .class-join-card-v11{padding:18px;gap:12px}
+  #classJoinDialog .google-button-v11{width:100%;overflow:hidden}
+  #classJoinDialog .google-button-v11>div,#classJoinDialog .google-button-v11 iframe{max-width:100%!important}
+}
