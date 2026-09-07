@@ -118,3 +118,12 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
   else init();
 })();
+
+(() => {
+  if (document.querySelector('script[data-google-login-fix-v16]')) return;
+  const script = document.createElement("script");
+  script.src = "./google-login-fix-v16.js?v=16";
+  script.defer = true;
+  script.dataset.googleLoginFixV16 = "1";
+  document.head.appendChild(script);
+})();
