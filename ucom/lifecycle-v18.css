@@ -1,0 +1,13 @@
+#exportBtn,#exportDocV13{display:none!important}
+.task-finalized-v18 #exportBtn,.task-finalized-v18 #exportDocV13{display:inline-flex!important}
+#finalizeTaskV18,#reopenTaskV18{white-space:nowrap}
+.task-finalized-v18 #saveBtn,.task-finalized-v18 .design-link,.task-finalized-v18 #accessBtn,.task-finalized-v18 #templateInput,.task-finalized-v18 .template-picker-v9,.task-finalized-v18 .math-toolbar-v9,.task-finalized-v18 #workspaceFieldsV13{display:none!important}
+.task-finalized-v18 .directives-panel input,.task-finalized-v18 .directives-panel textarea,.task-finalized-v18 .directives-panel select,.task-finalized-v18 .content-panel input,.task-finalized-v18 .content-panel textarea,.task-finalized-v18 .content-panel select,.task-finalized-v18 .content-panel button{pointer-events:none;opacity:.72}
+.task-finalized-v18 .blocks-toolbar-v15{display:none!important}
+.task-finalized-v18 .block-actions-v15,.task-finalized-v18 .block-foot-v15{display:none!important}
+.task-finalized-v18 .chat-compose{display:none!important}
+.lifecycle-badge-v18{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:999px;font-size:.72rem;font-weight:800;color:var(--muted)}
+.task-finalized-v18 .lifecycle-badge-v18{color:#9fe4bd;border-color:rgba(123,215,166,.28);background:rgba(123,215,166,.07)}
+.live-indicator-v18{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted)}
+.live-indicator-v18:before{content:"";width:7px;height:7px;border-radius:50%;background:#7bd7a6;box-shadow:0 0 0 3px rgba(123,215,166,.1)}
+@media(max-width:760px){#finalizeTaskV18,#reopenTaskV18{flex:1}.lifecycle-badge-v18{order:-1}}
