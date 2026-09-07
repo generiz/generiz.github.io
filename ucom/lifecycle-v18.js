@@ -123,16 +123,28 @@
     } finally { loading = false; }
   }
 
+  async function flushEditing() {
+    const api = window.UCOMBlocksV15;
+    if (api?.getState?.().dirty) {
+      const ok = await api.saveNow();
+      if (!ok && api.getState?.().dirty) throw new Error("Todavía hay cambios sin sincronizar");
+    }
+  }
+
   async function finalizeTask() {
     const id = projectId();
     const authToken = adminToken();
     if (!id || !authToken) return;
     if (!confirm("¿Finalizar esta tarea? Se cerrará la edición para todos y se habilitarán PDF y DOC.")) return;
+    const button = $("#finalizeTaskV18");
+    if (button) { button.disabled = true; button.textContent = "Finalizando…"; }
     try {
+      await flushEditing();
       const data = await xhr("POST", `/api/projects/${encodeURIComponent(id)}/finalize-v18`, authToken, {});
       applyState(data);
       toast("Tarea finalizada");
     } catch (error) { toast(error.message || "No se pudo finalizar", true); }
+    finally { if (button) { button.disabled = false; button.textContent = "Finalizar tarea"; } }
   }
 
   async function reopenTask() {
@@ -151,6 +163,7 @@
   function init() {
     ensureControls();
     window.addEventListener("hashchange", () => setTimeout(() => load(true), 180));
+    window.addEventListener("ucom:finalized-write-v18", () => load(true));
     const badge = $("#accessBadge");
     if (badge) new MutationObserver(() => { if (projectId()) load(true); }).observe(badge,{childList:true,subtree:true});
     setTimeout(() => load(true), 650);
