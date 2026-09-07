@@ -17,14 +17,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Check realtime JavaScript
-        run: |
-          node --check ucom/realtime-v21.js
-          node --check ucom/document-edit-v22.js
+      - name: Check direct paper JavaScript
+        run: node --check ucom/direct-canvas-v23.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
-          grep -q 'type="module" src="./realtime-v21.js?v=22"' ucom/index.html
-          grep -q 'type="module" src="./document-edit-v22.js?v=22"' ucom/index.html
-          grep -q 'document-edit-v22.css?v=22' ucom/index.html
+          grep -q 'type="module" src="./direct-canvas-v23.js?v=23"' ucom/index.html
+          grep -q 'direct-canvas-v23.css?v=23' ucom/index.html
+          ! grep -q 'type="module" src="./realtime-v21.js' ucom/index.html
+          ! grep -q 'type="module" src="./document-edit-v22.js' ucom/index.html
           ! grep -q 'script defer src="./blocks-v15.js' ucom/index.html
