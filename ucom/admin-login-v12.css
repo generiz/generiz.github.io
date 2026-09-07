@@ -1,0 +1,5 @@
+#adminHint.admin-login-state{min-height:20px;margin:0;padding:0;font-size:.78rem;line-height:1.4;color:var(--muted)}
+#adminHint[data-state="loading"]{color:var(--accent-2)}
+#adminHint[data-state="success"]{color:var(--success);font-weight:750}
+#adminHint[data-state="error"]{color:#ff9a92;font-weight:750}
+#adminForm button[type="submit"]:disabled{opacity:.65;cursor:wait;transform:none}
