@@ -1,0 +1,76 @@
+@import url("./workspace-v8.css?v=9");
+
+/* V9: densidad de editor */
+.workspace-top{height:60px;padding:0 12px;gap:10px}
+.workspace-top .ghost,.workspace-top .primary{padding:7px 10px;border-radius:9px;font-size:.76rem}
+.workspace-top .status-pill{min-height:24px;padding:0 8px;font-size:.66rem}
+.workspace-top .save-state{font-size:.68rem;min-width:62px}
+.workspace-grid{min-height:calc(100vh - 60px);grid-template-columns:minmax(250px,.72fr) minmax(300px,.94fr) minmax(360px,1.28fr)}
+.panel-head{min-height:52px;padding:10px 12px;gap:9px}
+.panel-head h3{font-size:.86rem}.panel-number{font-size:.68rem}
+.field-grid{padding-top:10px;margin:0 10px 9px;gap:7px}
+.directives-panel>label{margin:0 10px 9px}
+label{gap:4px;font-size:.67rem}
+input,textarea,select{border-radius:8px;padding:7px 8px;font-size:.78rem}
+.grow-area{min-height:120px}
+.member-editor{gap:7px!important;margin:0 10px 9px!important}
+.member-add{gap:6px}.member-chip{padding:5px 7px;font-size:.7rem}.member-list{gap:5px;min-height:28px}
+.content-editor{min-height:460px;padding:15px 16px;font-size:.82rem;line-height:1.52}
+.preview-scroll{padding:14px}
+
+/* selector compacto */
+.workspace-template-picker{margin-left:auto;display:grid;grid-template-columns:repeat(4,minmax(78px,1fr));gap:6px;min-width:0;width:min(560px,100%)}
+.workspace-template-option{border-radius:9px;padding:6px 8px;grid-template-columns:18px 1fr;gap:6px;min-height:38px}
+.template-mini{width:16px;height:22px;border-radius:2px}.template-mini::before{left:2px;right:2px;top:3px;height:1px}.template-mini::after{left:3px;right:3px;top:7px;box-shadow:0 3px 0 #d6d9dc,0 6px 0 #d6d9dc,0 9px 0 #d6d9dc}
+.workspace-template-copy strong{font-size:.66rem}.workspace-template-copy span{display:none}
+.workspace-template-option[data-template="math"] .template-mini::after{content:"ƒx";height:auto;background:none;box-shadow:none;top:8px;left:0;right:0;text-align:center;color:#43358b;font:700 7px Georgia,serif}
+
+/* A4 proporcional y menos inflado */
+.paper{width:min(100%,720px)!important;min-height:0!important;aspect-ratio:210/297;padding:clamp(34px,5.7vw,62px) clamp(28px,5vw,56px) clamp(38px,5.7vw,64px)!important}
+.paper::after{right:clamp(24px,4vw,46px);top:22px;font-size:.82rem}
+.paper .doc-kicker{font-size:.58rem!important}
+.paper .doc-title{font-size:clamp(1.45rem,3.3vw,2.1rem)!important;margin:8px 0 18px!important}
+.paper .doc-meta{gap:8px 14px!important;padding:11px 0 12px!important;margin-bottom:20px!important}
+.paper .doc-meta span{font-size:.54rem!important}.paper .doc-meta strong{font-size:.72rem!important}
+.paper .doc-directives{margin-bottom:20px!important;padding:11px 13px!important;font-size:.74rem!important}
+.paper .doc-body{font-size:.82rem!important;line-height:1.55!important}
+.paper .doc-body h1{font-size:1.42rem!important}.paper .doc-body h2{font-size:1.12rem!important}.paper .doc-body h3{font-size:.95rem!important}
+.paper .doc-body p{margin-bottom:.72rem!important}.paper .doc-footer{margin-top:34px!important;font-size:.58rem!important}
+.paper.theme-minimal{padding:clamp(42px,7vw,74px) clamp(34px,6vw,68px) 58px!important}.paper.theme-minimal .doc-title{font-size:clamp(1.65rem,3.7vw,2.45rem)!important}
+.paper.theme-visual{padding:clamp(34px,5.5vw,58px) clamp(28px,4.8vw,52px) 56px!important}.paper.theme-visual .doc-title{font-size:clamp(1.4rem,3vw,1.95rem)!important}
+
+/* Matemáticas */
+.paper.theme-math{background:#fff!important;color:#25292d!important;padding-top:58px!important}
+.paper.theme-math::before{height:5px}
+.paper.theme-math::after{content:"UCOM · MATEMÁTICAS";font-size:.68rem;letter-spacing:.05em}
+.paper.theme-math .doc-title{font-family:Arial,sans-serif!important;font-weight:800!important;letter-spacing:-.025em!important;max-width:88%}
+.paper.theme-math .doc-meta{grid-template-columns:1fr 1fr 1.2fr!important;background:#f8f9fb!important;border:1px solid #e5e7eb!important;border-radius:8px!important;padding:10px 12px!important}
+.paper.theme-math .doc-directives{background:#f5f2fb!important;border-left:3px solid var(--u-purple)!important;border-radius:7px!important}
+.paper.theme-math .doc-body{counter-reset:mathstep}
+.paper.theme-math .doc-body h2{counter-increment:mathstep;display:grid;grid-template-columns:25px 1fr;gap:8px;align-items:center;margin-top:1.1rem!important;padding:0 0 7px!important;border-bottom:1px solid #e6e8eb!important}
+.paper.theme-math .doc-body h2::before{content:counter(mathstep);width:23px;height:23px;border-radius:7px;display:grid;place-items:center;background:var(--u-purple);color:#fff;font:800 .65rem Arial,sans-serif}
+.paper.theme-math .math-block{margin:.85rem 0!important;padding:13px 15px!important;background:#fbfbfd!important;border:1px solid #e3e5e9!important;border-radius:8px!important;font-style:normal!important;overflow-x:auto}
+.paper.theme-math .math-inline{display:inline-block;vertical-align:middle;margin:0 .12em}
+.paper.theme-math mjx-container{margin:0!important}.paper.theme-math svg{max-width:100%;height:auto}
+
+.math-toolbar{display:none;align-items:center;gap:5px;padding:7px 9px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.025);overflow-x:auto}
+.math-toolbar.active{display:flex}
+.math-tool{flex:0 0 auto;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--text);border-radius:7px;min-width:34px;height:30px;padding:0 8px;font:700 .72rem Georgia,serif}
+.math-tool:hover{background:rgba(91,197,242,.1);border-color:rgba(91,197,242,.32)}
+.math-tool.wide{font-family:inherit;font-size:.66rem}
+
+/* Chat discreto */
+.chat-panel.chat-dock{right:14px;bottom:14px;width:min(320px,calc(100vw - 28px));height:min(430px,calc(100vh - 92px));min-height:320px;border-radius:14px!important}
+.chat-panel.chat-dock .chat-head{min-height:48px;padding:8px 10px!important}
+.chat-panel.chat-dock .chat-head h3{font-size:.78rem}.chat-panel.chat-dock .chat-head .panel-number{font-size:.62rem}
+.chat-panel.chat-dock .chat-actor{font-size:.6rem;max-width:145px}
+.chat-panel.chat-dock .chat-messages{padding:10px!important;gap:6px!important}
+.chat-panel.chat-dock .chat-message{max-width:86%!important;padding:7px 9px!important;border-radius:10px!important;font-size:.76rem}
+.chat-panel.chat-dock .chat-meta{font-size:.61rem;margin-bottom:2px}.chat-panel.chat-dock .chat-body{line-height:1.35}
+.chat-panel.chat-dock .chat-compose{padding:7px!important;gap:6px!important}.chat-panel.chat-dock .chat-compose textarea{min-height:40px!important;max-height:92px;font-size:.75rem;padding:7px 8px}.chat-panel.chat-dock .chat-compose .primary{padding:7px 10px;font-size:.72rem}
+.chat-panel.chat-dock #refreshChatBtn{padding:5px 7px;font-size:.64rem}.chat-toggle{padding:5px 7px;border-radius:7px}
+.chat-panel.chat-dock.chat-collapsed{height:48px!important;min-height:48px!important}
+
+@media(min-width:1500px){.workspace-grid{margin-right:332px}.workspace-top{padding-right:344px}}
+@media(max-width:1120px){.workspace-template-picker{grid-template-columns:repeat(2,1fr);width:100%;margin-top:6px}.preview-head{flex-wrap:wrap}}
+@media(max-width:760px){.workspace-top{height:auto;min-height:58px;padding:8px}.workspace-grid{grid-template-columns:1fr}.workspace-template-picker{grid-template-columns:repeat(2,1fr)}.paper{aspect-ratio:auto!important}.chat-panel.chat-dock{left:8px;right:8px;bottom:8px;width:auto;height:min(56vh,430px)}.chat-panel.chat-dock.chat-collapsed{left:auto;width:210px}.content-editor{min-height:360px}}
