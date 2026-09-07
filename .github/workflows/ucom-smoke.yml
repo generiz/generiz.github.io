@@ -18,12 +18,16 @@ jobs:
         with:
           node-version: "22"
       - name: Check direct paper JavaScript
-        run: node --check ucom/direct-canvas-v23.js
+        run: |
+          node --check ucom/direct-canvas-v23.js
+          node --check ucom/paper-style-v24.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
           grep -q 'type="module" src="./direct-canvas-v23.js?v=23"' ucom/index.html
           grep -q 'direct-canvas-v23.css?v=23' ucom/index.html
+          grep -q 'type="module" src="./paper-style-v24.js?v=24"' ucom/index.html
+          grep -q 'paper-style-v24.css?v=24' ucom/index.html
           ! grep -q 'type="module" src="./realtime-v21.js' ucom/index.html
           ! grep -q 'type="module" src="./document-edit-v22.js' ucom/index.html
           ! grep -q 'script defer src="./blocks-v15.js' ucom/index.html
