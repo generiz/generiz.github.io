@@ -203,6 +203,12 @@ function syncDocumentParticipants() {
   const value = row?.querySelector("strong");
   if (!value) return;
   const admin = isAdmin();
+  const signature = `${admin ? "admin" : "read"}|${participants.map(item => `${item.id}:${item.name}`).join("|")}`;
+  const rendered = value.querySelectorAll(".doc-participant-v22").length;
+  const alreadyCorrect = value.dataset.participantSignatureV22 === signature &&
+    ((participants.length === 0 && value.textContent.trim() === "—") || rendered === participants.length);
+  if (alreadyCorrect) return;
+
   const fragment = document.createDocumentFragment();
   if (!participants.length) {
     fragment.append(document.createTextNode("—"));
@@ -226,6 +232,7 @@ function syncDocumentParticipants() {
       if (index < participants.length - 1) fragment.append(document.createTextNode(", "));
     });
   }
+  value.dataset.participantSignatureV22 = signature;
   value.replaceChildren(fragment);
 }
 
