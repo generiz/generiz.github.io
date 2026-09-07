@@ -124,6 +124,11 @@
   }
 
   async function flushEditing() {
+    if (window.UCOMRealtimeV21?.flush) {
+      const ok = await window.UCOMRealtimeV21.flush();
+      if (!ok) throw new Error("Todavía hay cambios sin sincronizar");
+      return;
+    }
     const api = window.UCOMBlocksV15;
     if (api?.getState?.().dirty) {
       const ok = await api.saveNow();
@@ -172,21 +177,4 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});
   else init();
-})();
-
-(() => {
-  if (!document.querySelector('link[data-block-labels-v19]')) {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "./block-labels-v19.css?v=19";
-    link.dataset.blockLabelsV19 = "1";
-    document.head.appendChild(link);
-  }
-  if (!document.querySelector('script[data-block-labels-v19]')) {
-    const script = document.createElement("script");
-    script.src = "./block-labels-v19.js?v=19";
-    script.defer = true;
-    script.dataset.blockLabelsV19 = "1";
-    document.head.appendChild(script);
-  }
 })();
