@@ -8,8 +8,8 @@
     document.head.appendChild(script);
   }
 
-  loadScript("./create-v6.js?v=9");
-  loadScript("./delete-v7.js?v=9");
+  loadScript("./delete-v7.js?v=10");
+  loadScript("./class-access-v10.js?v=10");
 
   const $ = (s) => document.querySelector(s);
 
@@ -28,7 +28,7 @@
       wrap?.classList.add("hidden");
     } else {
       wrap?.classList.remove("hidden");
-      if (max) { max.disabled = false; max.min = "2"; if (Number(max.value) < 2) max.value = "6"; }
+      if (max) { max.disabled = false; max.min = "2"; if (Number(max.value) < 2) max.value = "4"; }
     }
   }
 
@@ -56,7 +56,7 @@
       if (max) max.value = "1";
     } else {
       wrap?.classList.remove("hidden");
-      if (max) { max.min = "2"; if (Number(max.value) < 2) max.value = "6"; }
+      if (max) { max.min = "2"; if (Number(max.value) < 2) max.value = "4"; }
     }
   }
 
