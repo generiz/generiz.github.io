@@ -22,6 +22,7 @@
     blue: "#35aada",
     orange: "#f54c27",
   };
+  const FIELDS = ["type", "title", "body", "accent"];
   const $ = (s, root = document) => root.querySelector(s);
   let currentProject = "";
   let blocks = [];
@@ -30,6 +31,12 @@
   let saving = false;
   let pendingSave = false;
   let loaded = false;
+  let polling = false;
+  let structuralDirty = false;
+  let editGeneration = 0;
+  let dirtyFields = new Map();
+  let deletedIds = new Set();
+  let pendingStructureRender = false;
 
   const projectId = () => {
     const m = location.hash.match(/^#\/p\/([^/]+)\/?$/);
@@ -73,6 +80,20 @@
   function newBlock(type = "desarrollo") {
     return { id: id(), type, title: defaultTitle(type), body: "", accent: "auto" };
   }
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+  function fieldSet(blockId) {
+    if (!dirtyFields.has(blockId)) dirtyFields.set(blockId, new Set());
+    return dirtyFields.get(blockId);
+  }
+  function isDirty(blockId, field) {
+    const set = dirtyFields.get(blockId);
+    return !!set && (set.has("*") || set.has(field));
+  }
+  function markDirty(blockId, field="*", structural=false) {
+    if (blockId) fieldSet(blockId).add(field);
+    if (structural) structuralDirty = true;
+    editGeneration += 1;
+  }
 
   function installEditor() {
     const panel = $(".content-panel");
@@ -91,6 +112,7 @@
           </select>
           <button id="addBlockV15" class="ghost" type="button">+ Agregar</button>
           <span id="blocksSaveV15" class="blocks-save-v15"></span>
+          <span class="live-indicator-v18">En vivo</span>
         </div>
         <span id="blocksCountV15" class="blocks-count-v15"></span>
       </div>
@@ -99,11 +121,21 @@
 
     $("#addBlockV15")?.addEventListener("click", () => {
       const type = $("#blockTypeAddV15")?.value || "desarrollo";
-      blocks.push(newBlock(type));
+      const block = newBlock(type);
+      blocks.push(block);
+      markDirty(block.id, "*", true);
       renderEditor();
       changed(true);
-      const last = $("#blocksListV15 .block-card-v15:last-child .block-body-v15");
-      last?.focus();
+      $("#blocksListV15 .block-card-v15:last-child .block-body-v15")?.focus();
+    });
+
+    $("#blocksListV15")?.addEventListener("focusout", () => {
+      setTimeout(() => {
+        if (pendingStructureRender && !$("#blocksListV15")?.contains(document.activeElement)) {
+          pendingStructureRender = false;
+          renderEditor();
+        }
+      }, 0);
     });
 
     $("#saveBtn")?.addEventListener("click", () => saveNow(), true);
@@ -147,7 +179,11 @@
     type.addEventListener("change", () => {
       const oldDefault = defaultTitle(block.type);
       block.type = type.value;
-      if (!block.title || block.title === oldDefault) block.title = defaultTitle(block.type);
+      if (!block.title || block.title === oldDefault) {
+        block.title = defaultTitle(block.type);
+        markDirty(block.id, "title");
+      }
+      markDirty(block.id, "type");
       renderEditor();
       changed(true);
     });
@@ -159,6 +195,7 @@
     title.placeholder = defaultTitle(block.type);
     title.addEventListener("input", () => {
       block.title = title.value;
+      markDirty(block.id, "title");
       changed(false);
       renderPreview();
     });
@@ -179,6 +216,7 @@
     body.placeholder = block.type === "formula" ? "Ej.: \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}" : "Escribí aquí…";
     body.addEventListener("input", () => {
       block.body = body.value;
+      markDirty(block.id, "body");
       autoHeight(body);
       changed(false);
       renderPreview();
@@ -211,6 +249,7 @@
   function accentButton(name, label, block) {
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.accent = name;
     button.title = label;
     button.className = name === "auto" ? "accent-dot-v15 accent-auto-v15" : "accent-dot-v15";
     if (block.accent === name) button.classList.add("active");
@@ -218,6 +257,7 @@
     else button.style.setProperty("--dot", ACCENTS[name]);
     button.addEventListener("click", () => {
       block.accent = name;
+      markDirty(block.id, "accent");
       renderEditor();
       changed(true);
       renderPreview();
@@ -235,6 +275,7 @@
     if (target < 0 || target >= blocks.length) return;
     const [item] = blocks.splice(index, 1);
     blocks.splice(target, 0, item);
+    markDirty(item.id, "*", true);
     renderEditor();
     changed(true);
     renderPreview();
@@ -244,35 +285,34 @@
     const block = blocks[index];
     if (!block) return;
     if ((block.body || "").trim() && !confirm(`¿Eliminar ${block.title || defaultTitle(block.type)}?`)) return;
+    deletedIds.add(block.id);
+    dirtyFields.delete(block.id);
     blocks.splice(index, 1);
+    structuralDirty = true;
+    editGeneration += 1;
     renderEditor();
     changed(true);
     renderPreview();
   }
 
   function changed(structural) {
-    syncLegacy(true);
-    setBlockState(structural ? "Cambios pendientes" : "Sin guardar", "");
+    syncLegacy(false);
+    setBlockState(structural ? "Sincronizando…" : "Escribiendo…", "saving");
+    setTopState("Sin guardar", "dirty");
     setTimeout(renderPreview, 0);
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => saveNow(), structural ? 500 : 1400);
+    saveTimer = setTimeout(() => saveNow(), structural ? 220 : 320);
   }
 
   function syncLegacy(markDirty = false) {
     const directives = $("#directivesInput");
     const content = $("#contentInput");
-    const consigna = blocks
-      .filter(b => b.type === "consigna")
-      .map(b => [b.title, b.body].filter(Boolean).join("\n"))
-      .join("\n\n");
-    const rest = blocks
-      .filter(b => b.type !== "consigna")
-      .map(b => {
-        const title = b.title || defaultTitle(b.type);
-        if (b.type === "formula") return `## ${title}\n$$\n${b.body}\n$$`;
-        return `## ${title}\n${b.body}`;
-      })
-      .join("\n\n");
+    const consigna = blocks.filter(b => b.type === "consigna").map(b => [b.title, b.body].filter(Boolean).join("\n")).join("\n\n");
+    const rest = blocks.filter(b => b.type !== "consigna").map(b => {
+      const title = b.title || defaultTitle(b.type);
+      if (b.type === "formula") return `## ${title}\n$$\n${b.body}\n$$`;
+      return `## ${title}\n${b.body}`;
+    }).join("\n\n");
     if (directives) directives.value = consigna;
     if (content) content.value = rest;
     if (markDirty && content) content.dispatchEvent(new Event("input", { bubbles: true }));
@@ -281,11 +321,7 @@
   async function load(force = false) {
     installEditor();
     const id = projectId();
-    if (!id) {
-      currentProject = "";
-      loaded = false;
-      return;
-    }
+    if (!id) { currentProject = ""; loaded = false; return; }
     const authToken = token(id);
     if (!authToken) return;
     if (!force && loaded && currentProject === id) return;
@@ -296,52 +332,153 @@
       if (projectId() !== id) return;
       blocks = Array.isArray(data.blocks) ? data.blocks : [];
       revision = Number(data.revision || 0);
+      dirtyFields.clear();
+      deletedIds.clear();
+      structuralDirty = false;
       loaded = true;
       renderEditor();
       syncLegacy(false);
       renderPreview();
-      setBlockState(data.legacy && blocks.length ? "Contenido anterior listo" : "", "");
+      setBlockState(data.legacy && blocks.length ? "Contenido anterior listo" : "En vivo", "");
     } catch {
       setBlockState("No se pudo cargar", "error");
     }
+  }
+
+  function mergeBlock(local, remote) {
+    if (!local) return clone(remote);
+    const merged = clone(remote);
+    for (const field of FIELDS) if (isDirty(local.id, field)) merged[field] = local[field];
+    return merged;
+  }
+
+  function mergeRemote(remoteBlocks, remoteRevision) {
+    const remote = Array.isArray(remoteBlocks) ? remoteBlocks : [];
+    const localMap = new Map(blocks.map(item => [item.id, item]));
+    const remoteMap = new Map(remote.map(item => [item.id, item]));
+    let next = [];
+
+    if (structuralDirty) {
+      next = blocks.map(local => remoteMap.has(local.id) ? mergeBlock(local, remoteMap.get(local.id)) : local);
+      for (const item of remote) {
+        if (!localMap.has(item.id) && !deletedIds.has(item.id)) next.push(clone(item));
+      }
+    } else {
+      next = remote.filter(item => !deletedIds.has(item.id)).map(item => localMap.has(item.id) ? mergeBlock(localMap.get(item.id), item) : clone(item));
+      for (const local of blocks) {
+        if (!remoteMap.has(local.id) && dirtyFields.has(local.id)) next.push(local);
+      }
+    }
+    blocks = next;
+    revision = Number(remoteRevision || revision);
+  }
+
+  function patchEditorFromState() {
+    const list = $("#blocksListV15");
+    if (!list) return;
+    const cards = [...list.querySelectorAll(".block-card-v15")];
+    const domIds = cards.map(card => card.dataset.id);
+    const ids = blocks.map(block => block.id);
+    const sameStructure = domIds.length === ids.length && domIds.every((value, index) => value === ids[index]);
+    if (!sameStructure) {
+      if (list.contains(document.activeElement)) {
+        pendingStructureRender = true;
+        return;
+      }
+      renderEditor();
+      return;
+    }
+
+    blocks.forEach((block, index) => {
+      const card = cards[index];
+      if (!card) return;
+      card.style.setProperty("--block-accent", accentColor(block, index));
+      const type = card.querySelector("select");
+      const title = card.querySelector(".block-title-v15");
+      const body = card.querySelector(".block-body-v15");
+      if (type && document.activeElement !== type && !isDirty(block.id, "type")) type.value = block.type;
+      if (title && document.activeElement !== title && !isDirty(block.id, "title") && title.value !== (block.title || "")) title.value = block.title || "";
+      if (body && document.activeElement !== body && !isDirty(block.id, "body") && body.value !== (block.body || "")) {
+        body.value = block.body || "";
+        autoHeight(body);
+      }
+      card.querySelectorAll("[data-accent]").forEach(button => button.classList.toggle("active", button.dataset.accent === block.accent));
+    });
+    const count = $("#blocksCountV15");
+    if (count) count.textContent = `${blocks.length} ${blocks.length === 1 ? "bloque" : "bloques"}`;
   }
 
   async function saveNow() {
     clearTimeout(saveTimer);
     const id = projectId();
     const authToken = token(id);
-    if (!loaded || !id || !authToken) return;
-    if (saving) {
-      pendingSave = true;
-      return;
-    }
+    if (!loaded || !id || !authToken) return false;
+    if (saving) { pendingSave = true; return false; }
     saving = true;
     pendingSave = false;
-    setBlockState("Guardando…", "saving");
+    const startGeneration = editGeneration;
+    const outgoing = clone(blocks);
+    setBlockState("Sincronizando…", "saving");
     syncLegacy(false);
     try {
-      const data = await xhr("PUT", `/api/projects/${encodeURIComponent(id)}/blocks-v15`, authToken, {
-        blocks,
-        expected_revision: revision,
-      });
+      const data = await xhr("PUT", `/api/projects/${encodeURIComponent(id)}/blocks-v15`, authToken, { blocks: outgoing, expected_revision: revision });
       revision = Number(data.revision || revision + 1);
-      setBlockState("Guardado", "");
+      if (editGeneration === startGeneration) {
+        dirtyFields.clear();
+        deletedIds.clear();
+        structuralDirty = false;
+        setBlockState("En vivo", "");
+        setTopState("Guardado", "saved");
+      } else {
+        pendingSave = true;
+      }
+      return true;
     } catch (error) {
       if (error.status === 409 && Array.isArray(error.data?.blocks)) {
-        blocks = error.data.blocks;
-        revision = Number(error.data.revision || revision);
-        renderEditor();
+        mergeRemote(error.data.blocks, error.data.revision);
         syncLegacy(false);
+        patchEditorFromState();
         renderPreview();
-        toast("Otra persona guardó cambios. Recargué la última versión.", true);
+        pendingSave = true;
+        setBlockState("Combinando cambios…", "saving");
+      } else if (error.status === 423) {
+        setBlockState("Tarea finalizada", "error");
+        window.dispatchEvent(new CustomEvent("ucom:finalized-write-v18"));
       } else {
-        setBlockState("Error al guardar", "error");
+        setBlockState("Error al sincronizar", "error");
         toast(error.message || "No se pudo guardar el contenido", true);
       }
+      return false;
     } finally {
       saving = false;
-      if (pendingSave) saveNow();
+      if (pendingSave) setTimeout(() => saveNow(), 40);
     }
+  }
+
+  async function pollRemote() {
+    const id = projectId();
+    const authToken = token(id);
+    if (!loaded || !id || !authToken || polling) return;
+    polling = true;
+    try {
+      const data = await xhr("GET", `/api/projects/${encodeURIComponent(id)}/blocks-v15`, authToken);
+      const remoteRevision = Number(data.revision || 0);
+      if (remoteRevision > revision && Array.isArray(data.blocks)) {
+        mergeRemote(data.blocks, remoteRevision);
+        syncLegacy(false);
+        patchEditorFromState();
+        renderPreview();
+        if (!dirtyFields.size && !structuralDirty) setBlockState("En vivo", "");
+      }
+    } catch {}
+    finally { polling = false; }
+  }
+
+  function setTopState(text, cls="") {
+    const el = $("#saveState");
+    if (!el || el.textContent === "Edición cerrada") return;
+    el.textContent = text;
+    el.className = `save-state${cls ? ` ${cls}` : ""}`;
   }
 
   function setBlockState(text, cls) {
@@ -352,9 +489,7 @@
   }
 
   function accentColor(block, index) {
-    return block.accent && block.accent !== "auto"
-      ? (ACCENTS[block.accent] || AUTO_COLORS[index % AUTO_COLORS.length])
-      : AUTO_COLORS[index % AUTO_COLORS.length];
+    return block.accent && block.accent !== "auto" ? (ACCENTS[block.accent] || AUTO_COLORS[index % AUTO_COLORS.length]) : AUTO_COLORS[index % AUTO_COLORS.length];
   }
 
   function renderPreview() {
@@ -371,18 +506,15 @@
       const section = document.createElement("section");
       section.className = `doc-block-v15 type-${block.type}`;
       section.style.setProperty("--block-accent", accentColor(block, index));
-
       const label = document.createElement("span");
       label.className = "doc-block-label-v15";
       label.textContent = LABELS[block.type] || "Contenido";
       section.append(label);
-
       if ((block.title || "").trim()) {
         const heading = document.createElement("h3");
         heading.textContent = block.title;
         section.append(heading);
       }
-
       const body = document.createElement("div");
       body.className = "doc-block-body-v15";
       const raw = block.body || "";
@@ -392,40 +524,38 @@
       section.append(body);
       wrapper.append(section);
     });
-
     const footer = root.querySelector(".doc-footer");
-    if (footer) root.insertBefore(wrapper, footer);
-    else root.append(wrapper);
-
+    if (footer) root.insertBefore(wrapper, footer); else root.append(wrapper);
     if (window.MathJax?.typesetPromise) {
-      try {
-        window.MathJax.typesetClear?.([wrapper]);
-        window.MathJax.typesetPromise([wrapper]).catch(() => {});
-      } catch {}
+      try { window.MathJax.typesetClear?.([wrapper]); window.MathJax.typesetPromise([wrapper]).catch(() => {}); } catch {}
     }
   }
 
-  function syncAfterCoreRender() {
-    if (!loaded) return;
-    setTimeout(renderPreview, 0);
-  }
+  function syncAfterCoreRender() { if (loaded) setTimeout(renderPreview, 0); }
+
+  window.UCOMBlocksV15 = {
+    saveNow,
+    getState: () => ({ blocks: clone(blocks), revision, dirty: dirtyFields.size > 0 || structuralDirty }),
+  };
 
   function init() {
     installEditor();
     document.addEventListener("input", event => {
-      if (["subjectInput", "titleInput", "professorInput", "dueDateInput", "membersInput", "templateInput", "contentInput", "directivesInput"].includes(event.target?.id)) {
-        syncAfterCoreRender();
-      }
+      if (["subjectInput", "titleInput", "professorInput", "dueDateInput", "membersInput", "templateInput", "contentInput", "directivesInput"].includes(event.target?.id)) syncAfterCoreRender();
     });
     document.addEventListener("change", event => {
       if (["workTypeInput", "templateInput"].includes(event.target?.id)) syncAfterCoreRender();
     });
     window.addEventListener("hashchange", () => setTimeout(() => load(true), 350));
+    window.addEventListener("ucom:lifecycle-v18", event => {
+      if (event.detail?.finalized) { clearTimeout(saveTimer); setBlockState("Finalizada", ""); }
+    });
     setTimeout(() => load(true), 650);
     setInterval(() => {
       const id = projectId();
       if (id && (!loaded || id !== currentProject)) load(true);
     }, 2500);
+    setInterval(pollRemote, 500);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
