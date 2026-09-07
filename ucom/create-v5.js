@@ -1,16 +1,6 @@
 (() => {
   "use strict";
 
-  function loadScript(src) {
-    const script = document.createElement("script");
-    script.src = src;
-    script.async = false;
-    document.head.appendChild(script);
-  }
-
-  loadScript("./delete-v7.js?v=10");
-  loadScript("./class-access-v10.js?v=10");
-
   const $ = (s) => document.querySelector(s);
 
   function selectedCreateType() {
@@ -22,13 +12,20 @@
     const hidden = $("#createWorkType");
     const max = $("#createMaxMembers");
     const wrap = $("#createCapacityWrap");
-    if (hidden) { hidden.value = type; hidden.dispatchEvent(new Event("change", { bubbles: true })); }
+    if (hidden) {
+      hidden.value = type;
+      hidden.dispatchEvent(new Event("change", { bubbles: true }));
+    }
     if (type === "individual") {
       if (max) { max.value = "1"; max.disabled = true; }
       wrap?.classList.add("hidden");
     } else {
       wrap?.classList.remove("hidden");
-      if (max) { max.disabled = false; max.min = "2"; if (Number(max.value) < 2) max.value = "4"; }
+      if (max) {
+        max.disabled = false;
+        max.min = "2";
+        if (Number(max.value) < 2) max.value = "4";
+      }
     }
   }
 
@@ -56,7 +53,10 @@
       if (max) max.value = "1";
     } else {
       wrap?.classList.remove("hidden");
-      if (max) { max.min = "2"; if (Number(max.value) < 2) max.value = "4"; }
+      if (max) {
+        max.min = "2";
+        if (Number(max.value) < 2) max.value = "4";
+      }
     }
   }
 
