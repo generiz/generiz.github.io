@@ -1,6 +1,25 @@
 (() => {
   "use strict";
 
+  function loadAdminLoginPatch() {
+    if (!document.querySelector('link[data-admin-login-v12]')) {
+      const style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = "./admin-login-v12.css?v=12";
+      style.dataset.adminLoginV12 = "1";
+      document.head.appendChild(style);
+    }
+    if (!document.querySelector('script[data-admin-login-v12]')) {
+      const script = document.createElement("script");
+      script.src = "./admin-login-v12.js?v=12";
+      script.async = false;
+      script.dataset.adminLoginV12 = "1";
+      document.head.appendChild(script);
+    }
+  }
+
+  loadAdminLoginPatch();
+
   const $ = (s) => document.querySelector(s);
 
   function selectedCreateType() {
