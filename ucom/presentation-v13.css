@@ -1,0 +1,38 @@
+.field-visibility-v13{margin:4px 16px 12px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.field-visibility-v13 .field-visibility-title{display:block;margin-bottom:8px;color:var(--muted);font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.field-visibility-options-v13{display:flex;gap:12px;flex-wrap:wrap}
+.field-visibility-options-v13 label{display:flex;align-items:center;gap:6px;font-size:.73rem;color:var(--text);font-weight:700}
+.field-visibility-options-v13 input{width:14px;height:14px;margin:0;padding:0;accent-color:var(--accent)}
+.create-fields-v13{grid-column:1/-1;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.create-fields-v13 .field-visibility-title{display:block;margin-bottom:8px;color:var(--muted);font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.create-fields-v13 .field-visibility-options-v13{gap:16px}
+.export-doc-v13{white-space:nowrap}
+.paper.design-v13{--design-primary:#43358b;--design-secondary:#5bc5f2;position:relative;border-top:0!important;overflow:hidden}
+.paper.design-v13::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:var(--design-primary)}
+.paper.design-v13.has-spectrum-v13::before{background:linear-gradient(90deg,#f54c27 0 17%,#ffce32 17% 34%,#00a75d 34% 51%,#5bc5f2 51% 68%,#43358b 68% 84%,var(--design-primary) 84%)}
+.doc-brand-v13{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:4px 0 34px;padding-top:4px}
+.doc-brand-v13 strong{font-size:1.12rem;letter-spacing:-.04em;color:var(--design-primary)}
+.doc-brand-v13 span{font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:#7b8792}
+.paper.design-institutional-v13 .doc-title{font-size:2.35rem;color:var(--design-primary);margin-top:10px}
+.paper.design-institutional-v13 .doc-meta{border:0;padding:0;gap:10px;margin:28px 0 30px}
+.paper.design-institutional-v13 .doc-meta>div{padding:11px 13px;border-left:3px solid var(--design-secondary);background:#f7f8fb;border-radius:0 8px 8px 0}
+.paper.design-institutional-v13 .doc-directives{border-left:4px solid var(--design-primary);background:#f5f6fa}
+.paper.design-monograph-v13{padding-top:72px;background:linear-gradient(180deg,#fff 0,#fff 86%,#16191d 86%,#16191d 100%)}
+.paper.design-monograph-v13::before{height:5px;background:var(--design-primary)}
+.paper.design-monograph-v13 .doc-brand-v13{margin-bottom:54px}
+.paper.design-monograph-v13 .doc-kicker{color:var(--design-primary)}
+.paper.design-monograph-v13 .doc-title{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:2.6rem;line-height:1.02;max-width:88%;color:#1a1d21;margin:14px 0 34px}
+.paper.design-monograph-v13 .doc-meta{display:block;border:0;border-left:1px solid #d9dadd;padding:4px 0 4px 20px;margin-bottom:42px}
+.paper.design-monograph-v13 .doc-meta>div{display:grid;grid-template-columns:110px 1fr;align-items:baseline;margin:7px 0}
+.paper.design-monograph-v13 .doc-meta>div span{color:var(--design-primary)}
+.paper.design-monograph-v13 .doc-directives{background:transparent;border:1px solid #dedfe3}
+.paper.design-monograph-v13 .doc-footer{color:#d5d8dc;border-color:#444;margin-top:80px;position:relative;z-index:2}
+.paper.design-activity-v13 .doc-title{font-size:2.1rem;color:#17202b;margin-bottom:20px}
+.paper.design-activity-v13 .doc-meta{grid-template-columns:repeat(2,minmax(0,1fr));border:0;padding:0;gap:8px;margin:22px 0}
+.paper.design-activity-v13 .doc-meta>div{padding:12px;border-radius:10px;background:#f5f7fa;border-top:3px solid var(--design-primary)}
+.paper.design-activity-v13 .doc-meta>div:nth-child(even){border-top-color:var(--design-secondary)}
+.paper.design-activity-v13 .doc-directives{background:var(--design-primary);color:#fff;border-radius:10px}
+.paper.design-activity-v13 .doc-body h1,.paper.design-activity-v13 .doc-body h2{color:var(--design-primary)}
+.paper.design-v13.no-footer-v13 .doc-footer{display:none!important}
+@media(max-width:720px){.field-visibility-options-v13{gap:9px}.paper.design-monograph-v13 .doc-meta>div{grid-template-columns:90px 1fr}}
+@media print{body>*:not(#workspace){display:none!important}.workspace-top,.directives-panel,.content-panel,.chat-panel,.preview-head{display:none!important}.workspace-grid{display:block!important}.preview-panel{display:block!important}.preview-scroll{padding:0!important;background:#fff!important}.paper{box-shadow:none!important;margin:0!important;width:210mm!important;min-height:297mm!important}}
