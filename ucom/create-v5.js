@@ -18,7 +18,32 @@
     }
   }
 
+  function loadPresentationV13() {
+    if (!document.querySelector('link[data-presentation-v13]')) {
+      const style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = "./presentation-v13.css?v=13";
+      style.dataset.presentationV13 = "1";
+      document.head.appendChild(style);
+    }
+    if (!document.querySelector('script[data-create-priority-v13]')) {
+      const script = document.createElement("script");
+      script.src = "./create-priority-v13.js?v=13";
+      script.async = false;
+      script.dataset.createPriorityV13 = "1";
+      document.head.appendChild(script);
+    }
+    if (!document.querySelector('script[data-presentation-v13]')) {
+      const script = document.createElement("script");
+      script.src = "./presentation-v13.js?v=13";
+      script.async = false;
+      script.dataset.presentationV13 = "1";
+      document.head.appendChild(script);
+    }
+  }
+
   loadAdminLoginPatch();
+  loadPresentationV13();
 
   const $ = (s) => document.querySelector(s);
 
