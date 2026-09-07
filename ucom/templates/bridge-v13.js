@@ -66,6 +66,8 @@
   function install() {
     const back = $(".back");
     if (back && projectId) back.href = `../#/p/${encodeURIComponent(projectId)}`;
+    const status = $(".preview-head .status");
+    if (status) status.textContent = "A4 · PDF / DOC";
 
     const apply = $("#applyBtn");
     apply?.addEventListener("click", () => setTimeout(applyToTask, 0));
