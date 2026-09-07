@@ -1,0 +1,44 @@
+.realtime-v21-active #saveBtn{display:none!important}
+.realtime-v21-active .blocks-save-v15,.realtime-v21-active .live-indicator-v18{display:none!important}
+.realtime-editor-v21{overflow:auto}
+.realtime-toolbar-v21{position:sticky;top:0;z-index:3;background:#081725;padding:0 0 8px}
+.realtime-status-v21{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:0 8px;border:1px solid rgba(115,145,166,.2);border-radius:999px;color:#87a1b3;font-size:10px;font-weight:750;white-space:nowrap}
+.realtime-status-v21 i{width:7px;height:7px;border-radius:50%;background:#e5b64a;box-shadow:0 0 0 3px rgba(229,182,74,.08)}
+.realtime-status-v21[data-state="connected"]{color:#8fe4b0;border-color:rgba(59,214,113,.22)}
+.realtime-status-v21[data-state="connected"] i{background:#3bd671;box-shadow:0 0 0 3px rgba(59,214,113,.1)}
+.realtime-status-v21[data-state="disconnected"] i{background:#df6570;box-shadow:0 0 0 3px rgba(223,101,112,.09)}
+.realtime-card-v21{transition:border-color .15s ease,box-shadow .15s ease}
+.realtime-card-v21:focus-within{border-color:rgba(91,197,242,.32);box-shadow:0 0 0 2px rgba(91,197,242,.035)}
+.realtime-foot-v21{justify-content:space-between!important;align-items:center;gap:8px;flex-wrap:wrap}
+.block-presence-v21{display:flex;align-items:center;gap:4px;flex:1;min-width:0}
+.editing-badge-v21{display:inline-flex;align-items:center;min-height:20px;padding:0 7px;border-radius:999px;background:rgba(91,197,242,.08);border:1px solid rgba(91,197,242,.2);color:#8bdcf4;font-size:9px;font-weight:700;white-space:nowrap}
+.editing-badge-v21:before{content:"";width:5px;height:5px;margin-right:5px;border-radius:50%;background:#4fd388}
+
+.participants-list-v21{display:grid!important;gap:6px!important;min-height:0!important}
+.participant-row-v21{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:7px 8px;border:1px solid rgba(111,145,167,.18);border-radius:10px;background:rgba(255,255,255,.024)}
+.presence-dot-v21{display:block;width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.presence-dot-v21.online{background:#3bd671;box-shadow:0 0 0 3px rgba(59,214,113,.09)}
+.presence-dot-v21.offline{background:#de626d;box-shadow:0 0 0 3px rgba(222,98,109,.07)}
+.participant-main-v21{min-width:0;display:grid;gap:2px}
+.participant-name-v21{height:25px!important;min-width:0!important;padding:0 6px!important;border:1px solid transparent!important;border-radius:6px!important;background:transparent!important;color:#e5f0f6!important;font-size:11px!important;font-weight:700!important;text-overflow:ellipsis}
+.participant-name-v21:not([readonly]):hover{border-color:rgba(112,145,168,.18)!important;background:rgba(255,255,255,.025)!important}
+.participant-name-v21:not([readonly]):focus{border-color:rgba(70,184,216,.45)!important;background:rgba(255,255,255,.035)!important;box-shadow:0 0 0 2px rgba(70,184,216,.05)!important}
+.participant-main-v21 small{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#728da0;font-size:9px}
+.participant-status-v21{color:#7891a2;font-size:9px;white-space:nowrap}
+.participant-row-v21:has(.presence-dot-v21.online) .participant-status-v21{color:#75d99b}
+.participant-remove-v21{width:24px;height:24px;padding:0;border:1px solid rgba(112,145,168,.16);border-radius:6px;background:transparent;color:#8199aa;font-size:13px;line-height:1;cursor:pointer}
+.participant-remove-v21:hover{color:#ff9696;border-color:rgba(239,92,92,.35);background:rgba(239,92,92,.05)}
+
+.realtime-v21-active .member-editor{gap:7px}
+.realtime-v21-active .member-add{margin-top:2px}
+.realtime-v21-active .member-add input{height:31px;font-size:11px}
+.realtime-v21-active .member-add button{height:31px;padding:0 11px;font-size:11px}
+
+@media(max-width:900px){
+  .participant-row-v21{grid-template-columns:10px minmax(0,1fr) auto}
+  .participant-status-v21{display:none}
+  .participant-remove-v21{grid-column:3}
+  .block-presence-v21{flex-basis:100%;order:2}
+  .realtime-foot-v21 .block-label-wrap-v19{order:1}
+  .realtime-foot-v21 .accent-picker-v15{order:3;margin-left:auto}
+}
