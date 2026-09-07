@@ -4,12 +4,12 @@
   function loadScript(src) {
     const script = document.createElement("script");
     script.src = src;
+    script.async = false;
     document.head.appendChild(script);
   }
 
-  loadScript("./create-v6.js?v=8");
-  loadScript("./delete-v7.js?v=8");
-  loadScript("./workspace-v8.js?v=8");
+  loadScript("./create-v6.js?v=9");
+  loadScript("./delete-v7.js?v=9");
 
   const $ = (s) => document.querySelector(s);
 
