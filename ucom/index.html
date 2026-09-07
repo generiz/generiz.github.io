@@ -5,18 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex,nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.jsdelivr.net; base-uri 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py https://cdn.jsdelivr.net https://accounts.google.com; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.jsdelivr.net https://accounts.google.com; frame-src https://accounts.google.com; base-uri 'none'; object-src 'none'">
   <title>UCOM Workspace</title>
-  <link rel="stylesheet" href="./styles.css?v=10">
-  <link rel="stylesheet" href="./collab.css?v=10">
-  <script defer src="./collab-ui.js?v=10"></script>
-  <script defer src="./create-v5.js?v=10"></script>
-  <script defer src="./class-access-v10.js?v=10"></script>
-  <script defer src="./delete-v7.js?v=10"></script>
-  <script defer src="./app.js?v=10"></script>
-  <script defer src="./mathjax-config.js?v=10"></script>
+  <link rel="stylesheet" href="./styles.css?v=11">
+  <link rel="stylesheet" href="./collab.css?v=11">
+  <link rel="stylesheet" href="./google-access-v11.css?v=11">
+  <script defer src="./collab-ui.js?v=11"></script>
+  <script defer src="./create-v5.js?v=11"></script>
+  <script defer src="./google-access-v11.js?v=11"></script>
+  <script defer src="./delete-v7.js?v=11"></script>
+  <script defer src="./app.js?v=11"></script>
+  <script defer src="./mathjax-config.js?v=11"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
-  <script defer src="./workspace-v9.js?v=10"></script>
+  <script defer src="./workspace-v9.js?v=11"></script>
 </head>
 <body>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -162,7 +163,7 @@
       <div class="dialog-head"><div><h2>Entrar a la tarea</h2></div><button type="button" class="icon-btn dialog-close">×</button></div>
       <label id="memberProjectLabel">Tarea<input name="project_id" required></label>
       <label>Código de acceso<input name="password" type="password" inputmode="numeric" autocomplete="one-time-code" placeholder="0000" required></label>
-      <label>Nombre y apellido<input name="name" autocomplete="name" placeholder="Si el acceso no tiene nombre"></label>
+      <label>Nombre y apellido<input name="name" autocomplete="name" required></label>
       <button class="primary" type="submit">Entrar</button>
     </form>
   </dialog>
