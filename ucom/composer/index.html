@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://ucom-api.ufotech.com.py wss://ucom-api.ufotech.com.py https://cdn.jsdelivr.net; img-src 'self' blob: data: https://ucom-api.ufotech.com.py; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'">
+  <title>UCOM Composer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@12.3.3/dist/gridstack.min.css">
+  <link rel="stylesheet" href="./styles.css?v=31">
+  <script type="module" src="./app.js?v=31"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="top-left">
+      <a id="backLink" class="icon-button" href="../" aria-label="Volver">←</a>
+      <div class="brand-mark">U</div>
+      <div class="brand-copy"><span>UCOM COMPOSER</span><strong id="taskTitle">Documento</strong></div>
+    </div>
+    <div class="top-center">
+      <div id="presenceStrip" class="presence-strip"></div>
+    </div>
+    <div class="top-actions">
+      <span id="lifecycleBadge" class="state-badge">Abierta</span>
+      <span id="saveBadge" class="save-badge">Cargando…</span>
+      <button id="printBtn" class="top-button" type="button">PDF / imprimir</button>
+    </div>
+  </header>
+
+  <main class="composer-shell">
+    <aside class="pages-rail">
+      <div class="rail-head">
+        <strong>Páginas</strong>
+        <button id="addPageBtn" class="square-button" type="button" aria-label="Agregar página">＋</button>
+      </div>
+      <div id="pageList" class="page-list"></div>
+    </aside>
+
+    <section class="work-area">
+      <div class="page-toolbar">
+        <div>
+          <span id="pageKindLabel" class="toolbar-eyebrow">PÁGINA</span>
+          <strong id="pageNameLabel">Página 1</strong>
+        </div>
+        <div class="page-toolbar-actions">
+          <button id="duplicatePageBtn" class="quiet-button" type="button">Duplicar</button>
+          <button id="deletePageBtn" class="quiet-button danger" type="button">Eliminar</button>
+        </div>
+      </div>
+      <div id="stage" class="stage">
+        <article id="paper" class="composer-paper theme-ucom-spectrum" data-page-number="1">
+          <div id="pageChrome" class="page-chrome"></div>
+          <div id="grid" class="grid-stack"></div>
+          <div class="paper-footer"><span id="footerSubject"></span><span id="footerPage"></span></div>
+        </article>
+      </div>
+    </section>
+
+    <aside class="inspector">
+      <div class="inspector-tabs">
+        <button class="inspector-tab active" data-tab="library" type="button">Elementos</button>
+        <button class="inspector-tab" data-tab="style" type="button">Diseño</button>
+      </div>
+
+      <section id="libraryPanel" class="inspector-panel active">
+        <div class="panel-kicker">Agregar</div>
+        <div id="componentLibrary" class="component-library"></div>
+        <div class="inspector-separator"></div>
+        <button id="templatePageBtn" class="big-action" type="button"><span>＋</span><div><strong>Página prediseñada</strong><small>Portada, matriz, proceso, dashboard…</small></div></button>
+      </section>
+
+      <section id="stylePanel" class="inspector-panel">
+        <div id="documentControls">
+          <div class="panel-kicker">Documento</div>
+          <label class="control-label">Dirección visual
+            <select id="themeSelect">
+              <option value="ucom-spectrum">UCOM Spectrum</option>
+              <option value="editorial">Editorial</option>
+              <option value="minimal">Minimal</option>
+              <option value="campus">Campus</option>
+              <option value="modern">Modern</option>
+              <option value="notebook">Notebook</option>
+              <option value="mono">Mono</option>
+              <option value="classic">Clásico</option>
+            </select>
+          </label>
+          <div class="inspector-separator"></div>
+          <div class="panel-kicker">Página actual</div>
+          <label class="control-label">Nombre<input id="pageNameInput" maxlength="160"></label>
+          <label class="control-label">Fondo<input id="pageBackgroundInput" type="color" value="#ffffff"></label>
+        </div>
+        <div id="componentControls" class="component-controls hidden">
+          <div class="panel-kicker">Elemento seleccionado</div>
+          <div class="selection-title"><strong id="selectedTypeLabel">Texto</strong><span id="selectedEditorState"></span></div>
+          <label class="control-label">Tipo<select id="componentTypeSelect"></select></label>
+          <div class="control-grid">
+            <label class="control-label">Ancho<input id="componentWidth" type="number" min="1" max="12"></label>
+            <label class="control-label">Alto<input id="componentHeight" type="number" min="1" max="28"></label>
+          </div>
+          <label class="control-label">Variante<select id="componentVariantSelect"></select></label>
+          <label class="control-label">Acento<select id="componentAccentSelect">
+            <option value="teal">Turquesa</option><option value="green">Verde</option><option value="orange">Naranja</option><option value="red">Rojo</option><option value="blue">Azul</option><option value="purple">Violeta</option><option value="ink">Negro</option>
+          </select></label>
+          <div class="inspector-separator"></div>
+          <div class="component-actions">
+            <button id="duplicateComponentBtn" class="quiet-button" type="button">Duplicar</button>
+            <button id="deleteComponentBtn" class="quiet-button danger" type="button">Eliminar</button>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <dialog id="pageTemplateDialog" class="template-dialog">
+    <div class="template-shell">
+      <header><div><span>BIBLIOTECA</span><h2>Nueva página</h2></div><button id="closeTemplateDialog" class="icon-button" type="button">×</button></header>
+      <div id="pageTemplateGrid" class="template-grid"></div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="printRoot" class="print-root" aria-hidden="true"></div>
+</body>
+</html>
