@@ -18,11 +18,17 @@ jobs:
         with:
           node-version: "22"
       - name: Check consolidated editor JavaScript
-        run: node --check ucom/direct-canvas-v27.js
+        run: |
+          node --check ucom/direct-canvas-v27.js
+          node --check ucom/ai-local-v28.js
+          node --check ucom/realtime-diagnostics-v28.js
+          node --check ucom/lifecycle-v18.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
           grep -q 'type="module" src="./direct-canvas-v27.js?v=27"' ucom/index.html
+          grep -q 'ai-local-v28.js?v=28' ucom/lifecycle-v18.js
+          grep -q 'realtime-diagnostics-v28.js?v=28' ucom/lifecycle-v18.js
           grep -q 'direct-canvas-v23.css?v=27' ucom/index.html
           grep -q 'paper-style-v24.css?v=27' ucom/index.html
           grep -q 'images-v25.css?v=27' ucom/index.html
