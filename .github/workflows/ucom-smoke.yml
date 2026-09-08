@@ -24,6 +24,18 @@ jobs:
           node --check ucom/realtime-diagnostics-v28.js
           node --check ucom/design-studio-v30.js
           node --check ucom/lifecycle-v18.js
+          node --check ucom/composer-launch-v31.js
+          node --check ucom/composer/app.js
+      - name: Check Composer wiring
+        run: |
+          grep -q 'composer-launch-v31.js?v=31' ucom/index.html
+          grep -q 'gridstack@12.3.3' ucom/composer/index.html
+          grep -q 'app.js?v=31' ucom/composer/index.html
+          grep -q 'composer-v31/ops' ucom/composer/app.js
+          grep -q 'composer-v31/presence' ucom/composer/app.js
+          grep -q 'editorial-opening' ucom/composer/app.js
+          grep -q 'dashboard' ucom/composer/app.js
+          grep -q 'Evidencia visual' ucom/composer/app.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
@@ -31,8 +43,7 @@ jobs:
           grep -q 'src="./ai-local-v28.js?v=30"' ucom/index.html
           grep -q 'src="./realtime-diagnostics-v28.js?v=30"' ucom/index.html
           grep -q 'src="./design-studio-v30.js?v=30"' ucom/index.html
-          grep -q 'design-studio-v29.css?v=30' ucom/index.html
-          grep -q 'direct-canvas-v23.css?v=30' ucom/index.html
+          grep -q 'IA retirada de UCOM Workspace' ucom/ai-local-v28.js
           ! grep -q 'ai-local-v28.js?v=28' ucom/lifecycle-v18.js
           ! grep -q 'realtime-diagnostics-v28.js?v=28' ucom/lifecycle-v18.js
           ! grep -q 'src="./design-studio-v29.js' ucom/index.html
