@@ -178,13 +178,3 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});
   else init();
 })();
-
-(() => {
-  for (const src of ["./ai-local-v28.js?v=28", "./realtime-diagnostics-v28.js?v=28"]) {
-    if (document.querySelector(`script[src="${src}"]`)) continue;
-    const script = document.createElement("script");
-    script.src = src;
-    script.defer = true;
-    document.head.appendChild(script);
-  }
-})();
