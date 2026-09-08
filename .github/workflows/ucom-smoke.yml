@@ -17,26 +17,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Check consolidated editor JavaScript
+      - name: Check editor JavaScript
         run: |
           node --check ucom/direct-canvas-v27.js
           node --check ucom/ai-local-v28.js
           node --check ucom/realtime-diagnostics-v28.js
+          node --check ucom/design-studio-v29.js
           node --check ucom/lifecycle-v18.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
-          grep -q 'type="module" src="./direct-canvas-v27.js?v=27"' ucom/index.html
-          grep -q 'ai-local-v28.js?v=28' ucom/lifecycle-v18.js
-          grep -q 'realtime-diagnostics-v28.js?v=28' ucom/lifecycle-v18.js
-          grep -q 'direct-canvas-v23.css?v=27' ucom/index.html
-          grep -q 'paper-style-v24.css?v=27' ucom/index.html
-          grep -q 'images-v25.css?v=27' ucom/index.html
-          grep -q 'ai-layout-v26.css?v=27' ucom/index.html
+          grep -q 'type="module" src="./direct-canvas-v27.js?v=29"' ucom/index.html
+          grep -q 'src="./ai-local-v28.js?v=29"' ucom/index.html
+          grep -q 'src="./realtime-diagnostics-v28.js?v=29"' ucom/index.html
+          grep -q 'src="./design-studio-v29.js?v=29"' ucom/index.html
+          grep -q 'design-studio-v29.css?v=29' ucom/index.html
+          grep -q 'direct-canvas-v23.css?v=29' ucom/index.html
+          ! grep -q 'ai-local-v28.js?v=28' ucom/lifecycle-v18.js
+          ! grep -q 'realtime-diagnostics-v28.js?v=28' ucom/lifecycle-v18.js
           ! grep -q 'type="module" src="./direct-canvas-v23.js' ucom/index.html
           ! grep -q 'type="module" src="./paper-style-v24.js' ucom/index.html
           ! grep -q 'type="module" src="./images-v25.js' ucom/index.html
           ! grep -q 'type="module" src="./ai-layout-v26.js' ucom/index.html
-          ! grep -q 'type="module" src="./realtime-v21.js' ucom/index.html
-          ! grep -q 'type="module" src="./document-edit-v22.js' ucom/index.html
           ! grep -q 'script defer src="./blocks-v15.js' ucom/index.html
