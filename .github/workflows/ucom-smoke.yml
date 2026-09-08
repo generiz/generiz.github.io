@@ -22,19 +22,20 @@ jobs:
           node --check ucom/direct-canvas-v27.js
           node --check ucom/ai-local-v28.js
           node --check ucom/realtime-diagnostics-v28.js
-          node --check ucom/design-studio-v29.js
+          node --check ucom/design-studio-v30.js
           node --check ucom/lifecycle-v18.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
-          grep -q 'type="module" src="./direct-canvas-v27.js?v=29"' ucom/index.html
-          grep -q 'src="./ai-local-v28.js?v=29"' ucom/index.html
-          grep -q 'src="./realtime-diagnostics-v28.js?v=29"' ucom/index.html
-          grep -q 'src="./design-studio-v29.js?v=29"' ucom/index.html
-          grep -q 'design-studio-v29.css?v=29' ucom/index.html
-          grep -q 'direct-canvas-v23.css?v=29' ucom/index.html
+          grep -q 'type="module" src="./direct-canvas-v27.js?v=30"' ucom/index.html
+          grep -q 'src="./ai-local-v28.js?v=30"' ucom/index.html
+          grep -q 'src="./realtime-diagnostics-v28.js?v=30"' ucom/index.html
+          grep -q 'src="./design-studio-v30.js?v=30"' ucom/index.html
+          grep -q 'design-studio-v29.css?v=30' ucom/index.html
+          grep -q 'direct-canvas-v23.css?v=30' ucom/index.html
           ! grep -q 'ai-local-v28.js?v=28' ucom/lifecycle-v18.js
           ! grep -q 'realtime-diagnostics-v28.js?v=28' ucom/lifecycle-v18.js
+          ! grep -q 'src="./design-studio-v29.js' ucom/index.html
           ! grep -q 'type="module" src="./direct-canvas-v23.js' ucom/index.html
           ! grep -q 'type="module" src="./paper-style-v24.js' ucom/index.html
           ! grep -q 'type="module" src="./images-v25.js' ucom/index.html
