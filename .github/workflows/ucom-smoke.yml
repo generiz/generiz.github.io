@@ -17,23 +17,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Check direct paper JavaScript
-        run: |
-          node --check ucom/direct-canvas-v23.js
-          node --check ucom/paper-style-v24.js
-          node --check ucom/images-v25.js
-          node --check ucom/ai-layout-v26.js
+      - name: Check consolidated editor JavaScript
+        run: node --check ucom/direct-canvas-v27.js
       - name: Check active frontend wiring
         run: |
           grep -q 'wss://ucom-api.ufotech.com.py' ucom/index.html
-          grep -q 'type="module" src="./direct-canvas-v23.js?v=26"' ucom/index.html
-          grep -q 'direct-canvas-v23.css?v=26' ucom/index.html
-          grep -q 'type="module" src="./paper-style-v24.js?v=26"' ucom/index.html
-          grep -q 'paper-style-v24.css?v=26' ucom/index.html
-          grep -q 'type="module" src="./images-v25.js?v=26"' ucom/index.html
-          grep -q 'images-v25.css?v=26' ucom/index.html
-          grep -q 'type="module" src="./ai-layout-v26.js?v=26"' ucom/index.html
-          grep -q 'ai-layout-v26.css?v=26' ucom/index.html
+          grep -q 'type="module" src="./direct-canvas-v27.js?v=27"' ucom/index.html
+          grep -q 'direct-canvas-v23.css?v=27' ucom/index.html
+          grep -q 'paper-style-v24.css?v=27' ucom/index.html
+          grep -q 'images-v25.css?v=27' ucom/index.html
+          grep -q 'ai-layout-v26.css?v=27' ucom/index.html
+          ! grep -q 'type="module" src="./direct-canvas-v23.js' ucom/index.html
+          ! grep -q 'type="module" src="./paper-style-v24.js' ucom/index.html
+          ! grep -q 'type="module" src="./images-v25.js' ucom/index.html
+          ! grep -q 'type="module" src="./ai-layout-v26.js' ucom/index.html
           ! grep -q 'type="module" src="./realtime-v21.js' ucom/index.html
           ! grep -q 'type="module" src="./document-edit-v22.js' ucom/index.html
           ! grep -q 'script defer src="./blocks-v15.js' ucom/index.html
