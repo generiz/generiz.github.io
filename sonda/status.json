@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "state_status": "waiting",
+  "started_at": "",
+  "updated_at": "",
+  "health": "waiting",
+  "health_label": "Esperando publicación del servidor",
+  "progress": {
+    "total": 0,
+    "terminal": 0,
+    "contacted": 0,
+    "discovered": 0,
+    "percent": 0.0,
+    "contacted_percent": 0.0
+  },
+  "counts": {},
+  "current": null,
+  "tasks": []
+}
