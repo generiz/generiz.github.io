@@ -20,7 +20,7 @@
     <div>
       <div class="eyebrow">Nicolás Pintos · Operations</div>
       <h1>DNIT Probe Monitor</h1>
-      <div class="sub">Progreso de descubrimiento read-only de formularios Marangatu. El servidor publica únicamente estado técnico saneado; no se exponen RUC, credenciales, logs ni valores fiscales.</div>
+      <div class="sub">Progreso de descubrimiento read-only de formularios Marangatu. Esta vista recibe únicamente estado técnico saneado; no se exponen RUC, credenciales, logs ni valores fiscales.</div>
       <a class="back" href="/">← volver a nicolaspintos.com</a>
     </div>
     <div class="live"><span id="dot" class="dot"></span><strong id="health">Conectando…</strong></div>
@@ -48,15 +48,12 @@
     <section class="card wide">
       <div class="hero-row"><div><div class="label">Recorrido</div><div class="small">Verde completo · Celeste activo · Azul/Violeta no aplica a este RUC · Amarillo reintento · Rojo atención</div></div><div class="small" id="updated">—</div></div>
       <div class="table"><table><thead><tr><th>Formulario</th><th>Obligación</th><th>Nombre</th><th>Período</th><th>Estado</th><th>Intentos</th></tr></thead><tbody id="rows"><tr><td colspan="6" class="empty">Cargando estado…</td></tr></tbody></table></div>
-      <div class="foot"><span>La vista consulta cada 5 s · el servidor publica sólo cuando cambia el estado</span><span>Fuente saneada · sin datos fiscales</span></div>
+      <div class="foot"><span>Estado vivo · actualización cada 5 segundos</span><span>Puente ufotech → PMC · fuente saneada</span></div>
     </section>
   </main>
 </div>
 <script>
-const SOURCES=[
-  'https://raw.githubusercontent.com/generiz/generiz.github.io/main/sonda/status.json',
-  './status.json'
-];
+const SOURCES=['https://ufotech.com.py/_nicolas/sonda-status'];
 const tone={green:'green',cyan:'cyan',amber:'amber',red:'red',blue:'blue',violet:'violet',slate:'slate'};
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function ageFromIso(value){if(!value)return null;const t=Date.parse(value);if(Number.isNaN(t))return null;return Math.max(0,Math.floor((Date.now()-t)/1000));}
@@ -71,17 +68,17 @@ function render(d){
   document.getElementById('pct').textContent=`${percent.toFixed(1)}%`;document.getElementById('bar').style.width=`${Math.min(100,percent)}%`;
   document.getElementById('resolved').textContent=`${p.terminal||0} de ${p.total||0} entradas con estado final`;
   document.getElementById('state').textContent=(d.state_status||'esperando').replaceAll('_',' ');
-  document.getElementById('lastUpdate').textContent=d.updated_at?`Último movimiento ${age(stateAge)}`:'Esperando primera publicación del servidor';
+  document.getElementById('lastUpdate').textContent=d.updated_at?`Último movimiento ${age(stateAge)}`:'Esperando estado de la sonda';
   document.getElementById('total').textContent=p.total||0;document.getElementById('contacted').textContent=p.contacted||0;document.getElementById('contactedPct').textContent=`${Number(p.contacted_percent||0).toFixed(1)}% del catálogo`;document.getElementById('discovered').textContent=p.discovered||0;
   const c=d.counts||{};document.getElementById('pending').textContent=(c.pending||0)+(c.retry_pending||0)+(c.running||0);
   const chips=document.getElementById('chips');chips.innerHTML='';Object.entries(c).forEach(([k,v])=>{const x=document.createElement('span');x.className='chip';x.innerHTML=`<strong>${Number(v)||0}</strong> ${escapeHtml(k.replaceAll('_',' '))}`;chips.appendChild(x)});
   const cur=d.current;document.getElementById('current').textContent=cur?`F${cur.form} · ${cur.name}`:(health==='complete'?'Recorrido terminado':'Sin tarea activa');document.getElementById('currentMeta').textContent=cur?`Período ${cur.period||'—'} · intento ${cur.attempts||0}`:'—';
   document.getElementById('updated').textContent=d.updated_at?`Estado ${age(stateAge)}`:'Sin estado aún';
-  const rows=document.getElementById('rows');rows.innerHTML='';(d.tasks||[]).forEach(x=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="form">F${escapeHtml(x.form||'—')}</td><td>${escapeHtml(x.obligation||'—')}</td><td>${escapeHtml(x.name||'—')}</td><td>${escapeHtml(x.period||'—')}</td><td><span class="status ${tone[x.tone]||'slate'}">${escapeHtml(x.status_label||x.status||'—')}</span></td><td>${Number(x.attempts)||0}</td>`;rows.appendChild(tr)});if(!(d.tasks||[]).length)rows.innerHTML='<tr><td colspan="6" class="empty">Esperando que el servidor publique el primer estado.</td></tr>';
+  const rows=document.getElementById('rows');rows.innerHTML='';(d.tasks||[]).forEach(x=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="form">F${escapeHtml(x.form||'—')}</td><td>${escapeHtml(x.obligation||'—')}</td><td>${escapeHtml(x.name||'—')}</td><td>${escapeHtml(x.period||'—')}</td><td><span class="status ${tone[x.tone]||'slate'}">${escapeHtml(x.status_label||x.status||'—')}</span></td><td>${Number(x.attempts)||0}</td>`;rows.appendChild(tr)});if(!(d.tasks||[]).length)rows.innerHTML='<tr><td colspan="6" class="empty">La sonda todavía no generó estado.</td></tr>';
   const eb=document.getElementById('errorBox');if(['offline','stale','safety_stop'].includes(health)){eb.style.display='block';eb.textContent=healthLabel}else eb.style.display='none';
 }
 async function readSource(url){const join=url.includes('?')?'&':'?';const r=await fetch(`${url}${join}t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()}
-async function refresh(){let lastError=null;for(const src of SOURCES){try{render(await readSource(src));return}catch(e){lastError=e}}document.getElementById('dot').className='dot error';document.getElementById('health').textContent='Fuente sin respuesta';const eb=document.getElementById('errorBox');eb.style.display='block';eb.textContent='No se pudo leer el status.json publicado por el servidor.';console.warn(lastError)}
+async function refresh(){let lastError=null;for(const src of SOURCES){try{render(await readSource(src));return}catch(e){lastError=e}}document.getElementById('dot').className='dot error';document.getElementById('health').textContent='Fuente sin respuesta';const eb=document.getElementById('errorBox');eb.style.display='block';eb.textContent='No se pudo leer el puente vivo del servidor.';console.warn(lastError)}
 refresh();setInterval(refresh,5000);
 </script>
 </body>
