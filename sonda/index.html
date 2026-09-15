@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Sonda DNIT · Nicolás Pintos</title>
+  <style>
+    :root{--bg:#070b10;--panel:#0d141c;--panel2:#111b25;--line:#1d2b38;--text:#f5f7fa;--muted:#8e9aaa;--green:#43d17c;--cyan:#38c9ff;--amber:#f0b84b;--red:#ff6270;--blue:#6a91ff;--violet:#ac7cff;--slate:#728293}
+    *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--text);background:radial-gradient(circle at 20% -10%,#13283a 0,transparent 32%),var(--bg);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit}.shell{max-width:1420px;margin:auto;padding:28px 20px 52px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(30px,5vw,54px);letter-spacing:-.05em;line-height:1;margin:8px 0 10px}.sub{color:var(--muted);max-width:720px;font-size:15px}.back{display:inline-block;margin-top:12px;color:#c7d2dc;text-decoration:none}.live{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:#0b131bcc;padding:9px 12px;border-radius:999px;white-space:nowrap}.dot{width:9px;height:9px;border-radius:50%;background:var(--slate)}.dot.running{background:var(--green);box-shadow:0 0 18px #43d17c88}.dot.complete{background:var(--blue)}.dot.stale{background:var(--amber)}.dot.safety_stop,.dot.offline,.dot.error{background:var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:linear-gradient(180deg,#0f1822e8,#0a1118e8);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 20px 54px #0003}.hero{grid-column:span 8}.state{grid-column:span 4}.metric{grid-column:span 3}.wide{grid-column:span 12}.label{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}.hero-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}.pct{font-size:64px;font-weight:900;letter-spacing:-.07em;line-height:.9}.big{font-size:34px;font-weight:850;letter-spacing:-.04em;margin-top:5px}.small{font-size:12px;color:var(--muted)}.barbox{height:16px;border:1px solid #172431;border-radius:999px;background:#080e13;overflow:hidden;margin:18px 0 11px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:999px;transition:width .5s ease}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:999px;padding:6px 9px;background:#09121a;color:#b7c2cd;font-size:12px}.chip strong{color:white}.current{margin-top:16px;padding:14px;border-radius:14px;border:1px solid #1b2c39;background:#08121a}.current-name{font-size:18px;font-weight:800;margin-top:3px}.status{display:inline-flex;padding:5px 9px;border-radius:999px;border:1px solid currentColor;background:#fff1;font-size:11px;font-weight:800}.green{color:var(--green)}.cyan{color:var(--cyan)}.amber{color:var(--amber)}.red{color:var(--red)}.blue{color:var(--blue)}.violet{color:var(--violet)}.slate{color:var(--slate)}
+    .table{overflow:auto;border:1px solid var(--line);border-radius:14px;margin-top:14px}table{border-collapse:collapse;width:100%;min-width:820px}th,td{padding:11px 12px;text-align:left;border-bottom:1px solid #192633}th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8d9bac;background:#0c151e;position:sticky;top:0}tr:last-child td{border-bottom:0}td.form{font-weight:850}.empty{padding:26px;text-align:center;color:var(--muted)}.errorbox{display:none;margin-top:14px;padding:13px;border:1px solid #58232a;border-radius:12px;background:#2b1015;color:#ff9da5}.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;color:#728091;font-size:11px}
+    @media(max-width:900px){.hero,.state,.metric{grid-column:span 12}.top{flex-direction:column}.pct{font-size:48px}.shell{padding:20px 13px 42px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Nicolás Pintos · Operations</div>
+      <h1>DNIT Probe Monitor</h1>
+      <div class="sub">Progreso de descubrimiento read-only de formularios Marangatu. Esta vista muestra únicamente estado técnico saneado; no expone RUC, credenciales ni valores fiscales.</div>
+      <a class="back" href="/">← volver a nicolaspintos.com</a>
+    </div>
+    <div class="live"><span id="dot" class="dot"></span><strong id="health">Conectando…</strong></div>
+  </header>
+
+  <main class="grid">
+    <section class="card hero">
+      <div class="hero-row"><div><div class="label">Progreso resuelto</div><div class="small" id="resolved">Esperando datos</div></div><div class="pct" id="pct">0%</div></div>
+      <div class="barbox"><div class="bar" id="bar"></div></div>
+      <div class="chips" id="chips"></div>
+      <div class="current"><div class="label">Analizando ahora</div><div class="current-name" id="current">—</div><div class="small" id="currentMeta">—</div></div>
+    </section>
+
+    <section class="card state">
+      <div class="label">Estado general</div><div class="big" id="state">—</div>
+      <div style="margin-top:14px" class="small" id="lastUpdate">Sin actualización</div>
+      <div class="errorbox" id="errorBox"></div>
+    </section>
+
+    <section class="card metric"><div class="label">Catálogo</div><div class="big" id="total">0</div><div class="small">entradas</div></section>
+    <section class="card metric"><div class="label">Consultados</div><div class="big" id="contacted">0</div><div class="small" id="contactedPct">0%</div></section>
+    <section class="card metric"><div class="label">Descubiertos</div><div class="big" id="discovered">0</div><div class="small">contratos leídos</div></section>
+    <section class="card metric"><div class="label">Pendientes</div><div class="big" id="pending">0</div><div class="small">incluye reintentos</div></section>
+
+    <section class="card wide">
+      <div class="hero-row"><div><div class="label">Recorrido</div><div class="small">Verde completo · Celeste activo · Azul/Violeta no aplica a este RUC · Amarillo reintento · Rojo atención</div></div><div class="small" id="updated">—</div></div>
+      <div class="table"><table><thead><tr><th>Formulario</th><th>Obligación</th><th>Nombre</th><th>Período</th><th>Estado</th><th>Intentos</th></tr></thead><tbody id="rows"><tr><td colspan="6" class="empty">Cargando estado…</td></tr></tbody></table></div>
+      <div class="foot"><span>Actualización automática cada 5 segundos</span><span>Fuente saneada · sin datos fiscales</span></div>
+    </section>
+  </main>
+</div>
+<script>
+const API='https://ec.com.py/nicolas-pintos/sonda/public-api';
+const tone={green:'green',cyan:'cyan',amber:'amber',red:'red',blue:'blue',violet:'violet',slate:'slate'};
+function age(s){if(s==null)return 'sin dato';if(s<60)return `hace ${s}s`;if(s<3600)return `hace ${Math.floor(s/60)} min`;return `hace ${Math.floor(s/3600)} h`;}
+function render(d){
+  document.getElementById('dot').className=`dot ${d.health||''}`;
+  document.getElementById('health').textContent=d.health_label||'Sin estado';
+  const p=d.progress||{}; const percent=Number(p.percent||0);
+  document.getElementById('pct').textContent=`${percent.toFixed(1)}%`; document.getElementById('bar').style.width=`${Math.min(100,percent)}%`;
+  document.getElementById('resolved').textContent=`${p.terminal||0} de ${p.total||0} entradas con estado final`;
+  document.getElementById('state').textContent=(d.state_status||'esperando').replaceAll('_',' ');
+  document.getElementById('lastUpdate').textContent=`Último movimiento ${age(d.update_age_seconds)}`;
+  document.getElementById('total').textContent=p.total||0; document.getElementById('contacted').textContent=p.contacted||0; document.getElementById('contactedPct').textContent=`${Number(p.contacted_percent||0).toFixed(1)}% del catálogo`; document.getElementById('discovered').textContent=p.discovered||0;
+  const c=d.counts||{}; document.getElementById('pending').textContent=(c.pending||0)+(c.retry_pending||0)+(c.running||0);
+  const chips=document.getElementById('chips'); chips.innerHTML=''; Object.entries(c).forEach(([k,v])=>{const x=document.createElement('span');x.className='chip';x.innerHTML=`<strong>${v}</strong> ${k.replaceAll('_',' ')}`;chips.appendChild(x)});
+  const cur=d.current; document.getElementById('current').textContent=cur?`F${cur.form} · ${cur.name}`:(d.health==='complete'?'Recorrido terminado':'Sin tarea activa'); document.getElementById('currentMeta').textContent=cur?`Período ${cur.period||'—'} · intento ${cur.attempts||0}`:'—';
+  document.getElementById('updated').textContent=d.updated_at?`Estado ${age(d.update_age_seconds)}`:'Sin estado aún';
+  const rows=document.getElementById('rows'); rows.innerHTML=''; (d.tasks||[]).forEach(x=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="form">F${x.form||'—'}</td><td>${x.obligation||'—'}</td><td>${x.name||'—'}</td><td>${x.period||'—'}</td><td><span class="status ${tone[x.tone]||'slate'}">${x.status_label||x.status}</span></td><td>${x.attempts||0}</td>`;rows.appendChild(tr)}); if(!(d.tasks||[]).length) rows.innerHTML='<tr><td colspan="6" class="empty">La sonda todavía no generó estado.</td></tr>';
+  const eb=document.getElementById('errorBox'); if(['offline','stale','safety_stop'].includes(d.health)){eb.style.display='block';eb.textContent=d.health_label}else eb.style.display='none';
+}
+async function refresh(){try{const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);render(await r.json())}catch(e){document.getElementById('dot').className='dot error';document.getElementById('health').textContent='Fuente sin respuesta';const eb=document.getElementById('errorBox');eb.style.display='block';eb.textContent='No se pudo leer el estado vivo de la sonda.';}}
+refresh();setInterval(refresh,5000);
+</script>
+</body>
+</html>
