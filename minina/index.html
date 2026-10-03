@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f8ecef" />
+  <title>Minina Nails & Co · Propuesta Digital</title>
+  <meta name="description" content="Propuesta digital para Minina Nails & Co: reservas, clientas, caja, profesionales y crecimiento en un solo lugar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --paper:#fffaf8;
+      --blush:#f4dce2;
+      --blush-2:#edcbd4;
+      --rose:#b97487;
+      --rose-dark:#8f5063;
+      --gold:#c89a55;
+      --gold-soft:#e6c690;
+      --ink:#372d2f;
+      --muted:#76696d;
+      --white:#fff;
+      --line:rgba(84,61,68,.11);
+      --shadow:0 22px 70px rgba(85,52,62,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:-3;
+      background:
+        radial-gradient(circle at 14% 16%, rgba(244,220,226,.9), transparent 28%),
+        radial-gradient(circle at 88% 72%, rgba(230,198,144,.18), transparent 26%),
+        linear-gradient(180deg,#fffaf8,#fffdfc);
+    }
+    .topbar{
+      position:fixed; inset:0 0 auto 0;
+      height:72px; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(18px,4vw,56px);
+      background:linear-gradient(180deg,rgba(255,250,248,.94),rgba(255,250,248,.68),transparent);
+      backdrop-filter:blur(12px);
+      pointer-events:none;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      letter-spacing:.13em; text-transform:uppercase;
+      font-size:11px; font-weight:700;
+    }
+    .mark{
+      width:30px;height:30px;border-radius:50%;
+      border:1px solid rgba(200,154,85,.65);
+      display:grid;place-items:center;
+      font-family:"Cormorant Garamond",serif;
+      font-size:17px;color:var(--gold);
+      background:rgba(255,255,255,.58);
+    }
+    .by{font-size:11px;color:var(--muted);letter-spacing:.08em}
+    .deck{
+      height:100dvh;
+      overflow-y:auto;
+      scroll-snap-type:y mandatory;
+      scrollbar-width:none;
+    }
+    .deck::-webkit-scrollbar{display:none}
+    .slide{
+      min-height:100dvh;
+      scroll-snap-align:start;
+      display:grid;
+      align-items:center;
+      position:relative;
+      padding:96px clamp(20px,6vw,92px) 54px;
+      overflow:hidden;
+    }
+    .inner{width:min(1180px,100%);margin:auto}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      text-transform:uppercase;letter-spacing:.16em;
+      font-size:11px;font-weight:700;color:var(--rose-dark);
+      margin-bottom:18px;
+    }
+    .eyebrow:before{content:"";width:28px;height:1px;background:var(--gold)}
+    h1,h2,h3{font-family:"Cormorant Garamond",serif;margin:0}
+    h1{font-size:clamp(58px,10vw,132px);line-height:.78;letter-spacing:-.045em}
+    h2{font-size:clamp(42px,6.2vw,82px);line-height:.92;letter-spacing:-.035em;max-width:900px}
+    h3{font-size:28px;line-height:1}
+    .lead{
+      font-size:clamp(17px,2vw,23px);
+      line-height:1.5;color:var(--muted);
+      max-width:760px;margin:24px 0 0;
+    }
+    .hero-grid{
+      display:grid;grid-template-columns:1.2fr .8fr;
+      gap:44px;align-items:center;
+    }
+    .hero-word{
+      position:relative;
+      color:var(--rose-dark);
+      text-shadow:0 1px 0 rgba(255,255,255,.7);
+    }
+    .hero-word .gold{color:var(--gold)}
+    .subline{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(24px,3vw,40px);
+      margin:22px 0 0;color:var(--ink);
+    }
+    .hero-card{
+      position:relative;
+      border-radius:34px;
+      padding:28px;
+      min-height:500px;
+      background:linear-gradient(150deg,rgba(255,255,255,.84),rgba(244,220,226,.62));
+      border:1px solid rgba(255,255,255,.9);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:""; position:absolute; width:280px;height:280px;border-radius:50%;
+      background:radial-gradient(circle,var(--gold-soft),transparent 70%);
+      opacity:.22;right:-70px;top:-60px;
+    }
+    .mini-logo{
+      position:absolute;right:30px;top:26px;
+      font-family:"Cormorant Garamond",serif;font-size:34px;font-style:italic;color:var(--rose-dark)
+    }
+    .phone{
+      position:absolute;left:50%;top:50%;
+      transform:translate(-50%,-45%) rotate(-2.6deg);
+      width:min(290px,78%);
+      background:#171315;
+      border-radius:38px;
+      padding:10px;
+      box-shadow:0 30px 80px rgba(48,31,37,.26);
+    }
+    .screen{
+      border-radius:30px;background:#fffaf8;overflow:hidden;padding:18px 16px 16px;
+      min-height:420px;
+    }
+    .status{display:flex;justify-content:space-between;font-size:9px;color:#76696d}
+    .hello{font-family:"Cormorant Garamond",serif;font-size:25px;margin-top:24px}
+    .screen small{font-size:10px;color:var(--muted)}
+    .service-chips{display:flex;gap:7px;overflow:hidden;margin:18px 0}
+    .chip{white-space:nowrap;padding:8px 10px;border-radius:999px;background:var(--blush);font-size:9px}
+    .chip.gold{background:#f7eedf;color:#825d27}
+    .slot{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+    .slot strong{font-size:10px}.slot span{font-size:9px;color:var(--muted)}
+    .cta{
+      display:inline-flex;align-items:center;gap:8px;
+      border:0;border-radius:999px;padding:13px 18px;margin-top:8px;
+      background:var(--ink);color:white;font-size:10px;font-weight:700;
+    }
+    .spark{position:absolute;color:var(--gold);font-size:24px}
+    .spark.s1{left:28px;top:70px}.spark.s2{right:45px;bottom:60px}.spark.s3{left:54px;bottom:130px}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+    .badge{padding:10px 14px;border-radius:999px;border:1px solid rgba(200,154,85,.38);background:rgba(255,255,255,.55);font-size:12px}
+    .two{
+      display:grid;grid-template-columns:.85fr 1.15fr;gap:50px;align-items:center
+    }
+    .mock{
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.95);
+      border-radius:30px;padding:22px;
+      box-shadow:var(--shadow);
+    }
+    .mock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .mock-title{font-weight:700}.pill{font-size:11px;padding:8px 10px;border-radius:999px;background:#f9eef1;color:var(--rose-dark)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+    .stat{padding:16px;border-radius:18px;background:#fbf7f6;border:1px solid var(--line)}
+    .stat b{display:block;font-size:24px;font-family:"Cormorant Garamond",serif}
+    .stat small{color:var(--muted)}
+    .appt{
+      display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:12px;
+      padding:14px 0;border-top:1px solid var(--line)
+    }
+    .appt time{font-weight:700;font-size:13px}
+    .appt .who b{display:block;font-size:13px}.appt .who span{font-size:11px;color:var(--muted)}
+    .ok{font-size:10px;padding:6px 8px;border-radius:999px;background:#edf7ef;color:#4f7958}
+    .wait{font-size:10px;padding:6px 8px;border-radius:999px;background:#fff3e2;color:#8c682f}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+    .step{
+      min-height:220px;border-radius:28px;padding:24px;
+      background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);
+      box-shadow:0 16px 45px rgba(83,55,63,.08);
+    }
+    .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--blush);color:var(--rose-dark);font-weight:700;font-size:12px;margin-bottom:34px}
+    .step p{font-size:13px;color:var(--muted);line-height:1.5}
+    .profile{
+      display:grid;grid-template-columns:200px 1fr;gap:24px;
+      background:rgba(255,255,255,.82);border-radius:30px;padding:26px;border:1px solid white;box-shadow:var(--shadow)
+    }
+    .avatar{
+      aspect-ratio:1;border-radius:26px;
+      background:
+        radial-gradient(circle at 48% 30%,#f6dce3 0 15%,transparent 16%),
+        radial-gradient(circle at 48% 44%,#d89bab 0 25%,transparent 26%),
+        linear-gradient(145deg,#f5e0e5,#fdf8f6);
+      display:grid;place-items:end center;padding:16px;color:var(--rose-dark);font-family:"Cormorant Garamond",serif;font-size:28px
+    }
+    .profile h3{font-size:34px;margin-bottom:5px}.muted{color:var(--muted)}
+    .kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+    .kv div{padding:14px;border-radius:16px;background:#fbf7f6}
+    .kv b{display:block;font-family:"Cormorant Garamond",serif;font-size:24px}.kv span{font-size:10px;color:var(--muted)}
+    .history{display:flex;gap:9px;flex-wrap:wrap}
+    .history span{font-size:10px;padding:8px 10px;border-radius:999px;background:#f6e8ec}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:38px}
+    .kpi{
+      border-radius:26px;padding:24px;min-height:160px;
+      background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.95);
+      box-shadow:0 14px 40px rgba(81,52,61,.07)
+    }
+    .kpi strong{display:block;font-family:"Cormorant Garamond",serif;font-size:39px;color:var(--rose-dark)}
+    .kpi span{font-size:12px;color:var(--muted)}
+    .chart{
+      margin-top:24px;height:220px;border-radius:28px;padding:24px;
+      background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.5));
+      border:1px solid rgba(255,255,255,.95);position:relative;overflow:hidden
+    }
+    .bars{height:150px;display:flex;align-items:end;gap:12px}
+    .bar{flex:1;border-radius:10px 10px 3px 3px;background:linear-gradient(180deg,var(--rose),var(--blush-2));opacity:.88}
+    .messages{display:grid;gap:14px;margin-top:28px}
+    .msg{max-width:590px;padding:16px 18px;border-radius:22px;background:white;box-shadow:0 10px 30px rgba(74,49,56,.08);font-size:13px;line-height:1.55;border:1px solid rgba(255,255,255,.9)}
+    .msg:nth-child(2){margin-left:12%}.msg:nth-child(3){margin-left:24%}
+    .msg b{color:var(--rose-dark)}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:34px}
+    .feature{padding:22px;border-radius:24px;background:rgba(255,255,255,.72);border:1px solid white;min-height:130px}
+    .feature .icon{font-size:21px;margin-bottom:18px}.feature b{display:block;margin-bottom:6px}.feature span{font-size:12px;line-height:1.45;color:var(--muted)}
+    .final{
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 30%,rgba(244,220,226,.95),transparent 35%),
+        radial-gradient(circle at 60% 68%,rgba(230,198,144,.22),transparent 28%);
+    }
+    .final h2{margin:auto;max-width:930px}
+    .final .lead{margin:24px auto}
+    .contact{display:inline-flex;gap:14px;align-items:center;padding:14px 18px;border-radius:999px;background:var(--ink);color:white;margin-top:20px;font-size:12px;font-weight:700}
+    .smallnote{font-size:10px;color:var(--muted);margin-top:14px}
+    .dots{
+      position:fixed;z-index:60;right:22px;top:50%;transform:translateY(-50%);
+      display:grid;gap:9px
+    }
+    .dot{width:7px;height:7px;border-radius:50%;background:rgba(55,45,47,.18);transition:.25s}
+    .dot.on{height:22px;border-radius:10px;background:var(--rose)}
+    .hint{
+      position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+      z-index:60;font-size:10px;color:rgba(55,45,47,.45);letter-spacing:.05em
+    }
+    .ghost{
+      position:absolute;font-family:"Cormorant Garamond",serif;
+      font-size:clamp(120px,22vw,340px);line-height:.8;
+      color:rgba(185,116,135,.045);right:-20px;bottom:-30px;pointer-events:none
+    }
+    @media(max-width:900px){
+      .hero-grid,.two{grid-template-columns:1fr}
+      .hero-card{min-height:370px}.phone{width:230px}.screen{min-height:330px}.hero-card .mini-logo{font-size:26px}
+      .steps{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:1fr 1fr}
+      .profile{grid-template-columns:130px 1fr}
+      .slide{align-items:start;padding-top:108px}
+    }
+    @media(max-width:600px){
+      .topbar{height:62px}.by{display:none}
+      .slide{padding:84px 18px 42px;min-height:100dvh}
+      h1{font-size:64px}.subline{font-size:27px}
+      h2{font-size:46px}
+      .lead{font-size:16px}
+      .hero-card{margin-top:6px;min-height:360px}
+      .badges{gap:7px}.badge{font-size:10px;padding:8px 10px}
+      .steps{grid-template-columns:1fr 1fr;gap:10px}.step{min-height:170px;padding:17px}.num{margin-bottom:18px}
+      .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}
+      .appt{grid-template-columns:50px 1fr}.appt>:last-child{display:none}
+      .profile{grid-template-columns:1fr}.avatar{max-height:130px;aspect-ratio:2.2}
+      .kv{grid-template-columns:1fr 1fr}.kv div:last-child{grid-column:1/-1}
+      .kpis{grid-template-columns:1fr 1fr;gap:9px}.kpi{min-height:125px;padding:18px}.kpi strong{font-size:31px}
+      .chart{height:170px}.bars{height:105px}
+      .feature-grid{grid-template-columns:1fr 1fr;gap:9px}.feature{padding:16px;min-height:120px}
+      .messages .msg{font-size:12px}.msg:nth-child(2),.msg:nth-child(3){margin-left:0}
+      .dots{right:8px}.hint{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="mark">M</span> Minina Nails & Co</div>
+    <div class="by">Propuesta digital · ufotech</div>
+  </header>
+
+  <main class="deck" id="deck">
+    <section class="slide" id="s1">
+      <div class="inner hero-grid">
+        <div>
+          <div class="eyebrow">Propuesta digital</div>
+          <h1 class="hero-word">Minina<span class="gold">.</span></h1>
+          <div class="subline">La experiencia del salón, también en digital.</div>
+          <p class="lead">Reservas, clientas, profesionales, caja y crecimiento en un solo lugar. Simple para el equipo. Hermoso para la clienta.</p>
+          <div class="badges">
+            <span class="badge">Uñas</span><span class="badge">Pies</span><span class="badge">Pestañas</span><span class="badge">Cejas</span><span class="badge">Capilar</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="mini-logo">Minina</div>
+          <div class="spark s1">✦</div><div class="spark s2">✧</div><div class="spark s3">✦</div>
+          <div class="phone">
+            <div class="screen">
+              <div class="status"><span>09:41</span><span>● ● ●</span></div>
+              <div class="hello">Hola, Valentina ✨</div>
+              <small>¿Qué te gustaría hacerte hoy?</small>
+              <div class="service-chips"><span class="chip">Soft Gel</span><span class="chip gold">Pedicura</span><span class="chip">Pestañas</span></div>
+              <div class="slot"><div><strong>Hoy</strong><br><span>15:30</span></div><div><strong>Soft Gel</strong><br><span>con Mica</span></div><b>›</b></div>
+              <div class="slot"><div><strong>Mañana</strong><br><span>10:00</span></div><div><strong>Kapping</strong><br><span>con Lu</span></div><b>›</b></div>
+              <div class="slot"><div><strong>Sáb 05</strong><br><span>11:30</span></div><div><strong>Pedicura</strong><br><span>con Mica</span></div><b>›</b></div>
+              <button class="cta">Reservar turno <span>→</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ghost">M</div>
+    </section>
+
+    <section class="slide" id="s2">
+      <div class="inner two">
+        <div>
+          <div class="eyebrow">El día, ordenado</div>
+          <h2>Una sola agenda. Cero caos.</h2>
+          <p class="lead">Todo el equipo ve lo mismo: horarios, profesional, servicio, duración, estado del turno y espacios libres.</p>
+          <div class="badges"><span class="badge">Confirmar</span><span class="badge">Reprogramar</span><span class="badge">Cancelar</span><span class="badge">Lista de espera</span></div>
+        </div>
+        <div class="mock">
+          <div class="mock-head"><div class="mock-title">Hoy · Sábado 03</div><div class="pill">Agenda en vivo</div></div>
+          <div class="stats">
+            <div class="stat"><b>18</b><small>confirmadas</small></div>
+            <div class="stat"><b>3</b><small>pendientes</small></div>
+            <div class="stat"><b>2</b><small>espacios libres</small></div>
+          </div>
+          <div class="appt"><time>09:00</time><div class="who"><b>Camila R.</b><span>Soft Gel · 60 min</span></div><div class="ok">Confirmada</div></div>
+          <div class="appt"><time>10:30</time><div class="who"><b>Rocío M.</b><span>Pedicura · 50 min</span></div><div class="ok">Confirmada</div></div>
+          <div class="appt"><time>12:00</time><div class="who"><b>Andrea P.</b><span>Pestañas · 90 min</span></div><div class="wait">Pendiente</div></div>
+          <div class="appt"><time>14:30</time><div class="who"><b>Mariela S.</b><span>Kapping · 70 min</span></div><div class="ok">Confirmada</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <div class="inner">
+        <div class="eyebrow">Reserva sin fricción</div>
+        <h2>La clienta reserva sola. Minina mantiene el control.</h2>
+        <p class="lead">Desde Instagram o WhatsApp, en pocos toques. Sin descargar una app.</p>
+        <div class="steps">
+          <div class="step"><div class="num">01</div><h3>Servicio</h3><p>Elige Soft Gel, acrílico, pestañas, pedicura o el servicio que quiera.</p></div>
+          <div class="step"><div class="num">02</div><h3>Profesional</h3><p>Puede elegir a su favorita o dejar que el sistema muestre la primera disponible.</p></div>
+          <div class="step"><div class="num">03</div><h3>Horario</h3><p>Solo ve horarios realmente disponibles según duración y agenda.</p></div>
+          <div class="step"><div class="num">04</div><h3>Confirmación</h3><p>Recibe el turno por WhatsApp y puede confirmar, mover o cancelar.</p></div>
+        </div>
+      </div>
+      <div class="ghost">01</div>
+    </section>
+
+    <section class="slide" id="s4">
+      <div class="inner two">
+        <div>
+          <div class="eyebrow">Clientas que vuelven</div>
+          <h2>Cada clienta tiene historia.</h2>
+          <p class="lead">Preferencias, servicios, fotos, frecuencia, profesional habitual y notas útiles para atender mejor desde que entra.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">V</div>
+          <div>
+            <h3>Valentina Gómez</h3>
+            <div class="muted" style="font-size:12px">Clienta desde 2025 · VIP</div>
+            <div class="kv">
+              <div><b>14</b><span>visitas</span></div>
+              <div><b>27 d</b><span>promedio entre visitas</span></div>
+              <div><b>Soft Gel</b><span>favorito</span></div>
+            </div>
+            <div class="history"><span>Rosa nude</span><span>Forma almendra</span><span>Prefiere 17:00+</span><span>Última visita 12/09</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <div class="inner">
+        <div class="eyebrow">Gestión real</div>
+        <h2>El negocio se entiende de un vistazo.</h2>
+        <p class="lead">Caja, producción, comisiones, ocupación y servicios más vendidos. Información simple para decidir, no una planilla interminable.</p>
+        <div class="kpis">
+          <div class="kpi"><strong>82%</strong><span>ocupación semanal</span></div>
+          <div class="kpi"><strong>41</strong><span>clientas recurrentes</span></div>
+          <div class="kpi"><strong>Soft Gel</strong><span>servicio más solicitado</span></div>
+          <div class="kpi"><strong>+18%</strong><span>retorno mensual</span></div>
+        </div>
+        <div class="chart">
+          <div class="bars">
+            <div class="bar" style="height:46%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:79%"></div><div class="bar" style="height:73%"></div><div class="bar" style="height:96%"></div><div class="bar" style="height:88%"></div>
+          </div>
+          <div class="smallnote">Vista conceptual · datos ilustrativos</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <div class="inner two">
+        <div>
+          <div class="eyebrow">Automatización con tacto</div>
+          <h2>WhatsApp trabaja mientras ustedes atienden.</h2>
+          <p class="lead">Confirmaciones, recordatorios, recuperación de clientas y promociones sin perder el tono humano de Minina.</p>
+        </div>
+        <div class="messages">
+          <div class="msg"><b>Minina ✨</b><br>Hola, Sofi. Te esperamos mañana a las 15:30 para tu Soft Gel. ¿Confirmamos tu turno?</div>
+          <div class="msg"><b>Se liberó un horario</b><br>Tenemos un espacio hoy a las 18:00 para pedicura. Si querés, podés tomarlo desde acá.</div>
+          <div class="msg"><b>Te extrañamos 💗</b><br>Hace un tiempo no te vemos. Esta semana tenemos horarios disponibles con tu profesional habitual.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s7">
+      <div class="inner">
+        <div class="eyebrow">Más que una agenda</div>
+        <h2>Todo lo que Minina necesita para crecer sin complicarse.</h2>
+        <div class="feature-grid">
+          <div class="feature"><div class="icon">◌</div><b>Comisiones</b><span>Producción por profesional y cálculo claro de comisiones.</span></div>
+          <div class="feature"><div class="icon">▦</div><b>Caja</b><span>Efectivo, transferencias, tarjetas, señas y cierres.</span></div>
+          <div class="feature"><div class="icon">◇</div><b>Inventario</b><span>Stock mínimo de geles, acrílicos, pestañas y consumibles.</span></div>
+          <div class="feature"><div class="icon">✦</div><b>Fidelización</b><span>Puntos, beneficios, cumpleaños y clientas frecuentes.</span></div>
+          <div class="feature"><div class="icon">⌁</div><b>Catálogo visual</b><span>Diseños reales del salón para reservar “quiero este”.</span></div>
+          <div class="feature"><div class="icon">↗</div><b>Multi-sucursal</b><span>Preparado para crecer sin cambiar de sistema.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide final" id="s8">
+      <div class="inner">
+        <div class="eyebrow">Hecho a medida</div>
+        <h2>Que Minina se sienta igual de cuidada en el teléfono que dentro del salón.</h2>
+        <p class="lead">Un sistema propio, pensado alrededor de cómo trabajan ustedes. No adaptar el negocio al software: adaptar el software a Minina.</p>
+        <div class="contact">Minina Nails & Co · propuesta de transformación digital</div>
+        <div class="smallnote">Desarrollo · ufotech · Sabemos cosas.</div>
+      </div>
+      <div class="ghost">✦</div>
+    </section>
+  </main>
+
+  <nav class="dots" aria-label="Navegación">
+    <a class="dot on" href="#s1" aria-label="1"></a><a class="dot" href="#s2" aria-label="2"></a><a class="dot" href="#s3" aria-label="3"></a><a class="dot" href="#s4" aria-label="4"></a><a class="dot" href="#s5" aria-label="5"></a><a class="dot" href="#s6" aria-label="6"></a><a class="dot" href="#s7" aria-label="7"></a><a class="dot" href="#s8" aria-label="8"></a>
+  </nav>
+  <div class="hint">Deslizá · usá ↑ ↓ · o las flechas</div>
+
+  <script>
+    const deck = document.getElementById('deck');
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = [...document.querySelectorAll('.dot')];
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting && e.intersectionRatio > .55){
+          const i = slides.indexOf(e.target);
+          dots.forEach((d,n)=>d.classList.toggle('on',n===i));
+          history.replaceState(null,'','#s'+(i+1));
+        }
+      })
+    },{root:deck,threshold:[.55,.7]});
+    slides.forEach(s=>io.observe(s));
+    window.addEventListener('keydown',e=>{
+      if(!['ArrowDown','ArrowUp','PageDown','PageUp',' '].includes(e.key)) return;
+      e.preventDefault();
+      const y = deck.scrollTop + deck.clientHeight*.35;
+      let i = Math.max(0,Math.min(slides.length-1,Math.floor(y/deck.clientHeight)));
+      if(e.key==='ArrowUp'||e.key==='PageUp') i--; else i++;
+      i=Math.max(0,Math.min(slides.length-1,i));
+      slides[i].scrollIntoView({behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
