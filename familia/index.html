@@ -54,6 +54,8 @@ body{background:var(--paper);color:var(--ink)}
 .kicker{font-size:13px;color:#8490a3;font-weight:650}
 @media(min-width:1020px){.meal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.shell{padding:12px 13px 100px}.hero{padding:24px 20px}.meal-grid{grid-template-columns:1fr;gap:10px}.meal-day{padding:15px}.panel{padding:17px}.shop-summary{padding:19px}.meal-name{font-size:15px}.shopgroup .check{padding:14px 12px}.top{margin-top:4px}}
+</style><style>
+.child-welcome{border-radius:24px;background:linear-gradient(120deg,#eff3ff,#fdf3ed);padding:24px;margin-bottom:16px}.child-welcome h2{font-size:27px;margin:6px 0}.child-task{display:flex;align-items:center;gap:15px;background:white;border:1px solid #e2e8f3;border-radius:16px;padding:20px;margin:10px 0;min-height:78px;font-size:17px;font-weight:700}.child-task input{width:28px;height:28px;accent-color:#4b70d8}.alert-food{background:#fff6e6;border:1px solid #f4dfb8;border-radius:16px;padding:15px;margin:13px 0}.alert-food strong{color:#714d22}.pantry-row{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid #edf0f4;padding:11px 0}.pantry-row input{width:90px;border:1px solid #cbd6e8;border-radius:9px;padding:9px}.print-heading{display:none}@media print{body{background:white!important}.top,.tabs,.hero,.btn,.footer,.child-welcome button,.no-print{display:none!important}.shell{max-width:100%;padding:0}.panel{border:0;box-shadow:none}.print-heading{display:block}.child-task{break-inside:avoid;border:1px solid #888;font-size:16px}#content{display:block}}
 </style></head><body><main class="shell"><header class="top"><div class="logo">🏠 Familia <div class="sub">Nuestra casa, entre todos</div></div><div id="who"></div></header><section id="login" class="panel modal"><h2>Ingresar a Familia</h2><p class="muted">Cada integrante tiene su propia cuenta. Los cambios se comparten en tiempo real al actualizar.</p><form id="loginForm"><label class="field">¿Quién sos?<select id="loginUser"><option value="nico">Nico</option><option value="euge">Euge</option><option value="marti">Marti</option><option value="pia">Pía</option></select></label><label class="field">PIN<input type="password" id="loginPin" required minlength="6" autocomplete="current-password"></label><button class="btn primary">Ingresar</button><p id="loginError" class="error"></p></form></section><div id="app" class="hide"><section class="hero"><h1>El hogar se organiza mejor en equipo.</h1><p id="intro">Menú, tareas y compras compartidas.</p></section><nav class="tabs" id="tabs"><button data-tab="home" class="on">Hoy</button><button data-tab="menu">Menú semanal</button><button data-tab="shop">Supermercado</button><button data-tab="recipes">Recetas</button><button data-tab="chores">Tareas</button><button data-tab="settings">Perfiles</button></nav><section id="content"></section><p class="muted">Familia guarda los datos en el servidor. Las modificaciones simultáneas se protegen contra conflictos.</p></div></main><script>
 'use strict';
 const PEOPLE={nico:'Nico',euge:'Euge',marti:'Marti',pia:'Pía'}, DAYS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'], AISLES=['Verdulería','Carnicería','Lácteos y huevos','Panadería','Almacén','Conservas','Limpieza','Mascotas','Otros'];
@@ -109,4 +111,58 @@ function eligibility(task,id,v){save(s=>{const t=s.tasks.find(x=>x.id===task);if
 function settings(){return '<div class="panel"><h2>🔒 Perfiles y acceso</h2><p class="muted">Cada persona tiene un PIN. Los adultos pueden establecer el PIN de los demás integrantes.</p><form onsubmit="setPin(event)"><label class="field">Integrante<select name="user">'+Object.entries(PEOPLE).filter(([id])=>admin()||id===user).map(([id,n])=>'<option value="'+id+'">'+esc(n)+'</option>').join('')+'</select></label><label class="field">Nuevo PIN (mínimo 6 caracteres)<input name="pin" type="password" minlength="6" required autocomplete="new-password"></label><button class="btn primary">Actualizar PIN</button></form></div>'}
 async function setPin(e){e.preventDefault();let f=new FormData(e.target);try{await req('pin','POST',{user:f.get('user'),pin:f.get('pin')});alert('PIN actualizado; deberá iniciarse sesión nuevamente.');if(f.get('user')===user)await logout();else e.target.reset()}catch(e){alert(e.message)}}
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();enter()});$('tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)navigate(b.dataset.tab)});if(token)refresh();
+
+/* Family roles, food shortages and printable weekly chores */
+const CHILD_CHORES={
+ marti:['Ordenar su habitación','Ordenar la sala','Limpiar y guardar los cubiertos','Poner y retirar la mesa','Colocar ropa en el lavarropas (sin encenderlo)'],
+ pia:['Guardar sus juguetes','Ordenar su habitación','Poner servilletas en la mesa','Guardar sus cosas']
+};
+const CHILD_EMOJI={'Ordenar su habitación':'🛏️','Ordenar la sala':'🛋️','Limpiar y guardar los cubiertos':'🍴','Poner y retirar la mesa':'🍽️','Colocar ropa en el lavarropas (sin encenderlo)':'🧺','Guardar sus juguetes':'🧸','Poner servilletas en la mesa':'🍽️','Guardar sus cosas':'🎒'};
+function childKey(who,day,title){return 'child|'+week()+'|'+who+'|'+day+'|'+title}
+function childTasks(who,day){const base=CHILD_CHORES[who]||[];return base.filter((_,i)=>i<2||((day+i)%3===0))}
+function childUI(who){
+ const day=offset===0?today():0;
+ const taskNames=childTasks(who,day),done=taskNames.filter(t=>state.taskDone[childKey(who,day,t)]).length;
+ return '<div class="child-welcome"><div class="kicker">MIS RESPONSABILIDADES</div><h2>¡Hola, '+esc(PEOPLE[who])+'! 👋</h2><p>Hoy completaste '+done+' de '+taskNames.length+' tareas. Cada ayuda cuenta.</p></div><div class="panel"><h2>✅ Mis tareas de hoy</h2>'+taskNames.map(t=>'<label class="child-task"><input type="checkbox" '+(state.taskDone[childKey(who,day,t)]?'checked':'')+' onchange="toggleChildTask(\''+who+'\','+day+',\''+encodeURIComponent(t)+'\',this.checked)"><span>'+esc(CHILD_EMOJI[t]||'✨')+' '+esc(t)+'</span></label>').join('')+'</div>';
+}
+function toggleChildTask(who,d,title,v){
+ if(user!==who&&!admin())return;
+ const task=decodeURIComponent(title);
+ save(x=>{x.taskDone[childKey(who,d,task)]=v});
+}
+function printPlan(who){
+ const currentTab=tab;tab='print';const old=$('content').innerHTML;
+ $('content').innerHTML='<h1 class="print-heading">Familia · Responsabilidades de '+esc(PEOPLE[who])+' · Semana '+esc(week())+'</h1><div class="panel"><h2>Mi semana · '+esc(PEOPLE[who])+'</h2>'+DAYS.map((day,d)=>'<section style="margin:15px 0 22px;break-inside:avoid"><h3>'+day+'</h3>'+childTasks(who,d).map(t=>'<div class="child-task"><span style="display:inline-block;width:28px;height:28px;border:2px solid #777;margin-right:12px;vertical-align:middle"></span>'+esc(t)+'</div>').join('')+'</section>').join('')+'</div>';
+ window.print();$('content').innerHTML=old;tab=currentTab;
+}
+function render(){
+ if(!state)return;
+ const isChild=!admin();
+ document.querySelector('.hero').style.display=isChild?'none':'';
+ document.querySelector('#tabs').style.display=isChild?'none':'';
+ if(isChild){$('content').innerHTML=childUI(user);return}
+ [...document.querySelectorAll('#tabs button')].forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ $('intro').textContent='Hola, '+PEOPLE[user]+' · Todo listo para compartir.';
+ $('content').innerHTML=({home,menu,shop,recipes,chores,settings})[tab]();
+}
+function prepStatus(){
+ const d=today(),r=meal(d,'almuerzo');if(!r)return '';
+ const p=state.pantry||{},missing=(r.ingredients||[]).filter(i=>(Number(p[i.name.toLowerCase()+'|'+i.unit])||0)<i.qty*4/(r.servings||4));
+ return '<div class="alert-food"><strong>🍲 Almuerzo de hoy: '+esc(r.name)+'</strong><p style="margin:7px 0">'+(missing.length?'Falta confirmar o comprar: '+missing.map(i=>esc(i.name)).join(', '):'Todos los ingredientes aparecen disponibles en casa.')+'</p><button class="btn" onclick="navigate(\'shop\')">Ver lista de compras →</button></div>';
+}
+function home(){
+ const d=offset===0?today():0,r1=meal(d,'almuerzo'),r2=meal(d,'cena'),pending=shoppingItems().filter(x=>!state.shopping[week()+'|'+x.key]).length;
+ return prepStatus()+'<div class="grid"><article class="panel"><h2>🍽️ Hoy comemos</h2><div class="item">Almuerzo <strong>'+esc(r1?.name||'Por elegir')+'</strong></div><div class="item">Cena <strong>'+esc(r2?.name||'Por elegir')+'</strong></div><button class="btn" onclick="navigate(\'menu\')">Organizar menú →</button></article><article class="panel"><h2>🛒 Compras pendientes</h2><div class="counter">'+pending+'</div><p class="muted">Productos por comprar esta semana</p><button class="btn primary" onclick="navigate(\'shop\')">Abrir supermercado</button></article><article class="panel"><h2>✅ Responsabilidades de la familia</h2><button class="btn" onclick="navigate(\'chores\')">Ver tareas y planillas →</button></article></div>';
+}
+function pantryUI(){
+ const items=shoppingItems(), p=state.pantry||{};
+ return '<div class="panel"><div class="week-heading"><div><h2>🏠 Lo que ya tenemos en casa</h2><p class="muted">Ingresá cantidades disponibles. Los faltantes del almuerzo se calculan a partir de estas existencias.</p></div></div><div class="grid">'+items.map(i=>'<label class="pantry-row"><span>'+esc(i.name)+' <small class="muted">('+esc(i.unit)+')</small></span><input aria-label="Cantidad de '+esc(i.name)+'" type="number" min="0" step=".01" value="'+(Number(p[i.name.toLowerCase()+'|'+i.unit])||0)+'" onchange="setPantry(\''+encodeURIComponent(i.name.toLowerCase()+'|'+i.unit)+'\',this.value)"></label>').join('')+'</div></div>';
+}
+function setPantry(key,v){save(x=>{x.pantry=x.pantry||{};x.pantry[decodeURIComponent(key)]=Math.max(0,Number(v)||0)})}
+const oldShop=shop;
+shop=function(){return oldShop()+pantryUI()}
+function chores(){
+ return '<div class="panel"><h2>🧹 Responsabilidades familiares</h2><p class="muted">Las tareas de cada niña son sencillas y se pueden marcar desde su perfil. Para Marti podés imprimir una planilla semanal.</p>'+['marti','pia'].map(who=>'<div class="item"><div class="row"><strong>'+esc(PEOPLE[who])+'</strong><button class="btn" onclick="printPlan(\''+who+'\')">🖨️ Imprimir semana</button></div>'+childTasks(who,today()).map(t=>'<div class="child-task">'+esc(CHILD_EMOJI[t]||'✨')+' '+esc(t)+'</div>').join('')+'</div>').join('')+'</div><div class="panel"><h2>Responsabilidades de adultos</h2>'+taskList()+'</div>';
+}
+
 </script></body></html>
