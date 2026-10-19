@@ -250,4 +250,47 @@ render=function(){
   document.querySelectorAll('#tabs button').forEach(b=>{let k=b.dataset.tab;if(map[k])b.textContent=({home:'⌂ ',menu:'🍲 ',shop:'🛒 ',recipes:'📖 ',chores:'✓ ',settings:'⚙ '})[k]+map[k]});
  }
 };
+</script>
+<style>
+.task-week-grid{display:grid;grid-template-columns:repeat(7,minmax(190px,1fr));gap:10px;overflow-x:auto;padding:4px 1px 13px}
+.task-day{border:1px solid #e2e8f2;border-radius:17px;background:#fff;padding:14px;min-width:190px}
+.task-day.today{border-color:#7895e3;background:#f8faff}
+.task-day h3{margin:0 0 12px;font-size:16px}
+.task-entry{border-top:1px solid #edf0f6;padding:12px 0}
+.task-entry label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.task-entry select{width:100%;min-height:40px;background:#f7f9fd;border:1px solid #dbe3ef;border-radius:10px;padding:8px}
+.task-summary{display:flex;gap:10px;flex-wrap:wrap;margin:13px 0}
+.task-summary span{padding:8px 12px;background:#edf3fc;border-radius:99px;font-size:13px;font-weight:700;color:#47659e}
+@media(max-width:760px){.task-week-grid{grid-template-columns:repeat(7,205px)}}
+</style>
+<script>
+function assignedPerson(task,d){const key=week()+'|'+d+'|'+task.id;return state.assignments[key]||''}
+function assign(task,d){const who=assignedPerson(task,d);return task.eligible.includes(who)?who:null}
+function assignDayTask(d,id,who){
+ if(!admin())return;
+ save(s=>{const key=week()+'|'+d+'|'+decodeURIComponent(id);if(who)s.assignments[key]=who;else delete s.assignments[key]});
+}
+function tasksByUser(who,d){
+ return state.tasks.filter(t=>assign(t,d)===who).map(t=>({task:t,key:week()+'|'+d+'|'+t.id}));
+}
+function childUI(who){
+ const d=today(),list=tasksByUser(who,d),done=list.filter(x=>state.taskDone[x.key]).length;
+ return '<section class="child-welcome"><div class="kicker">MIS RESPONSABILIDADES DE HOY</div><h2>¡Hola, '+esc(PEOPLE[who])+'! 👋</h2><p>'+done+' de '+list.length+' tareas completas</p></section><div class="panel"><h2>Mis tareas · '+DAYS[d]+'</h2>'+(list.length?list.map(x=>'<label class="child-task"><input type="checkbox" '+(state.taskDone[x.key]?'checked':'')+' onchange="toggleTask(\''+encodeURIComponent(x.key)+'\',this.checked)"><span>✨ '+esc(x.task.title)+'</span></label>').join(''):'<p class="muted">¡Hoy no tenés tareas asignadas! 🎉</p>')+'</div>';
+}
+function chores(){
+ const counts=Object.entries(PEOPLE).map(([who,name])=>'<span>'+esc(name)+': '+tasksByUser(who,today()).length+' hoy</span>').join('');
+ return '<section class="panel"><div class="week-heading"><div><div class="app-headline">ORGANIZACIÓN DEL HOGAR</div><h2>Responsabilidades por día</h2></div><div class="week-arrows"><button class="btn" onclick="move(-1)">←</button><button class="btn" onclick="move(1)">→</button></div></div><p class="muted">Elegí quién hace cada tarea cada día. Sin rotaciones automáticas ni tareas asignadas por sorpresa.</p><div class="task-summary">'+counts+'</div><div class="task-week-grid">'+DAYS.map((day,d)=>'<section class="task-day '+(d===today()&&offset===0?'today':'')+'"><h3>'+day+'</h3>'+state.tasks.map(t=>{const who=assign(t,d),done=!!state.taskDone[week()+'|'+d+'|'+t.id];return '<div class="task-entry"><label>'+esc(t.title)+'</label><select aria-label="Asignar '+esc(t.title)+' para '+day+'" onchange="assignDayTask('+d+',\''+encodeURIComponent(t.id)+'\',this.value)"><option value="">Sin asignar</option>'+t.eligible.map(id=>'<option value="'+id+'" '+(who===id?'selected':'')+'>'+esc(PEOPLE[id])+'</option>').join('')+'</select>'+(who?'<small class="muted">'+(done?'✓ Completada':'○ Pendiente')+'</small>':'')+'</div>'}).join('')+'</section>').join('')+'</div></section><div class="panel"><h2>➕ Nueva responsabilidad</h2><p class="muted">Creá una tarea nueva y luego asignala en los días que corresponda.</p><form onsubmit="newHouseTask(event)" class="row" style="flex-wrap:wrap"><input required name="title" placeholder="Ej.: limpiar lo de Athena" style="min-height:44px;flex:1;min-width:180px;border-radius:12px;border:1px solid #dfe5ef;padding:10px"><button class="btn primary" type="submit">Agregar tarea</button></form></div><div class="panel"><h2>Planillas para imprimir</h2><div class="quick-actions"><button class="btn" onclick="printPlan(\'marti\')">🖨️ Semana de Marti</button><button class="btn" onclick="printPlan(\'pia\')">🖨️ Semana de Pía</button></div></div><div class="panel"><h2>Quién puede realizar cada tarea</h2><p class="muted">Podés ajustar quiénes están habilitados antes de asignar.</p>'+state.tasks.map(t=>'<div class="item"><strong>'+esc(t.title)+'</strong><div class="row" style="justify-content:flex-start;flex-wrap:wrap;margin-top:9px">'+Object.entries(PEOPLE).map(([id,name])=>'<label><input type="checkbox" '+(t.eligible.includes(id)?'checked':'')+' onchange="eligibility(\''+esc(t.id)+'\',\''+id+'\',this.checked)"> '+esc(name)+'</label>').join(' ')+'</div></div>').join('')+'</div>';
+}
+function printPlan(who){
+ const old=$('content').innerHTML;
+ $('content').innerHTML='<h1 class="print-heading">Familia · '+esc(PEOPLE[who])+' · Semana del '+esc(week())+'</h1><div class="panel"><h2>Mi semana · '+esc(PEOPLE[who])+'</h2>'+DAYS.map((day,d)=>'<section style="margin:15px 0 22px;break-inside:avoid"><h3>'+day+'</h3>'+(tasksByUser(who,d).map(x=>'<div class="child-task">□ '+esc(x.task.title)+'</div>').join('')||'<p>Sin tareas</p>')+'</section>').join('')+'</div>';
+ window.print();$('content').innerHTML=old;
+}
+
+function newHouseTask(e){
+ e.preventDefault();const title=String(new FormData(e.target).get('title')||'').trim();
+ if(!title||title.length>90)return;
+ const id='custom-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);
+ save(s=>{s.tasks.push({id,title,eligible:['nico','euge','marti','pia'],frequency:'daily'})});
+}
 </script></body></html>
