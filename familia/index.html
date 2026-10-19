@@ -56,6 +56,59 @@ body{background:var(--paper);color:var(--ink)}
 @media(max-width:760px){.shell{padding:12px 13px 100px}.hero{padding:24px 20px}.meal-grid{grid-template-columns:1fr;gap:10px}.meal-day{padding:15px}.panel{padding:17px}.shop-summary{padding:19px}.meal-name{font-size:15px}.shopgroup .check{padding:14px 12px}.top{margin-top:4px}}
 </style><style>
 .child-welcome{border-radius:24px;background:linear-gradient(120deg,#eff3ff,#fdf3ed);padding:24px;margin-bottom:16px}.child-welcome h2{font-size:27px;margin:6px 0}.child-task{display:flex;align-items:center;gap:15px;background:white;border:1px solid #e2e8f3;border-radius:16px;padding:20px;margin:10px 0;min-height:78px;font-size:17px;font-weight:700}.child-task input{width:28px;height:28px;accent-color:#4b70d8}.alert-food{background:#fff6e6;border:1px solid #f4dfb8;border-radius:16px;padding:15px;margin:13px 0}.alert-food strong{color:#714d22}.pantry-row{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid #edf0f4;padding:11px 0}.pantry-row input{width:90px;border:1px solid #cbd6e8;border-radius:9px;padding:9px}.print-heading{display:none}@media print{body{background:white!important}.top,.tabs,.hero,.btn,.footer,.child-welcome button,.no-print{display:none!important}.shell{max-width:100%;padding:0}.panel{border:0;box-shadow:none}.print-heading{display:block}.child-task{break-inside:avoid;border:1px solid #888;font-size:16px}#content{display:block}}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+:root{font-family:'DM Sans',system-ui,sans-serif;--ink:#263348;--muted:#8190a5;--brand:#4067ca;--canvas:#f6f7fb;--line:#e9edf3;--shadow:0 14px 50px rgba(34,48,75,.045)}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--canvas);color:var(--ink);letter-spacing:-.015em}
+h1,h2,h3,.logo{font-family:'Outfit','DM Sans',sans-serif;letter-spacing:-.035em}
+.shell{max-width:1200px;padding:25px 30px 110px}
+.top{padding:5px 0 15px;margin:0 0 12px}.logo{font-size:29px;font-weight:800;line-height:1.1}.logo .sub{letter-spacing:0;font:500 12px 'DM Sans',sans-serif;margin-top:6px}
+.hero{border-radius:26px;background:#273e73;background-image:radial-gradient(ellipse at 87% 11%,rgba(143,180,251,.32),transparent 43%),linear-gradient(125deg,#26385c,#3d5795);padding:29px 33px;box-shadow:0 12px 30px #314e8225}
+.hero h1{font-size:clamp(27px,3.5vw,36px)}.hero p{font-size:14px;color:#e0e6f3}
+.tabs{border:1px solid #e9edf4;border-radius:17px;padding:6px;background:white;gap:3px;box-shadow:var(--shadow);margin:18px 0 17px}
+.tabs button{border-radius:12px;padding:13px 15px;color:#64718a;font-weight:700;background:transparent}
+.tabs button.on{background:#e9eefb!important;color:#315ab4!important;box-shadow:none!important}
+.panel{border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow);background:#fff}
+.panel h2{font-size:22px;color:#273950}
+.btn{border-radius:12px;padding:11px 16px;font-weight:700}.primary{background:#456fcd!important}
+.btn:focus-visible,.tabs button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #96b5f8;outline-offset:2px}
+.field input,.field select,.field textarea{border-radius:12px;min-height:46px;border-color:#dce4f0}
+.field textarea{min-height:90px}
+.app-headline{font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:#8193b0;font-weight:800;margin-bottom:9px}
+.dash-hero{padding:28px 30px;border-radius:25px;background:linear-gradient(115deg,#fff2df,#fff9f0 60%,#ffe9cc);border:1px solid #f3e4cc;margin-bottom:16px}
+.dash-hero .eyebrow{font-size:12px;font-weight:800;color:#be854b;letter-spacing:.12em}
+.dash-hero h2{font-size:clamp(27px,4vw,43px);margin:8px 0;color:#584636;line-height:1.14}
+.dash-hero .desc{color:#917b62;font-size:14px;margin-bottom:15px}
+.dash-hero .btn{background:#fff;border-color:#e7d6ba}
+.dash-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:15px}
+.dash-tile{background:#fff;border:1px solid var(--line);padding:22px;border-radius:21px;box-shadow:var(--shadow)}
+.dash-tile h3{font-size:19px;margin:8px 0}.dash-tile p{color:#7d8a9f;font-size:13px}
+.tile-top{display:flex;justify-content:space-between;align-items:center}.tile-emoji{font-size:26px;background:#f0f4ff;width:52px;height:52px;border-radius:16px;display:grid;place-items:center}
+.count-xl{font-size:38px;font-family:Outfit,sans-serif;font-weight:800;line-height:1;color:#284caa}
+.quick-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.food-status{font-size:13px;color:#806f55;background:#fffaf0;border:1px solid #f4e7c9;padding:12px 15px;border-radius:13px;margin-top:15px}
+.food-status strong{color:#76552a}
+.meal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.meal-day{transition:border-color .18s,box-shadow .18s}.meal-day:hover{border-color:#b5c4ec;box-shadow:0 7px 20px #355ab511}
+.meal-name{font-size:17px}.meal-kind{font-size:12px}.meal-info{font-size:12px}
+.meal-day.today{background:#f9fbff}.meal-day-head strong{font-size:17px}
+.shop-summary{box-shadow:0 12px 25px #405a8c1b}
+.shopgroup .check{cursor:pointer}.shopgroup .check:hover{background:#f5f8fe}
+.recipe-toolbar{display:flex;gap:10px;align-items:center;margin:0 0 16px}
+.recipe-search{height:49px;border:1px solid #dbe4f3;border-radius:13px;width:100%;padding:0 16px}
+.recipe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.recipe-card{border:1px solid #e6ebf3;border-radius:18px;overflow:hidden;background:white;box-shadow:var(--shadow)}
+.recipe-cover{height:95px;display:flex;align-items:center;justify-content:space-between;padding:20px;background:linear-gradient(120deg,#f6ebda,#fdf8f0)}
+.recipe-cover b{font-size:40px}.recipe-cover small{font-size:12px;color:#977d59;font-weight:700}
+.recipe-body{padding:16px}.recipe-body h3{font-size:17px;line-height:1.25;margin:0 0 7px}.recipe-body p{font-size:12px;color:#8a96a7;margin:0 0 13px}
+.recipe-body details{border-top:1px solid #edf1f5;padding-top:12px;font-size:13px;line-height:1.6}.recipe-body summary{cursor:pointer;color:#4166b7;font-weight:700}
+.child-welcome{background:linear-gradient(115deg,#ecf3ff,#fff5ef);padding:29px}.child-welcome h2{font-size:35px}.child-task{transition:all .15s}.child-task:has(input:checked){background:#f2faf5;border-color:#ccebd8}.child-task input{width:30px;height:30px}
+#login{max-width:480px;margin:60px auto;padding:32px}.error{color:#b93030}
+@media(min-width:1020px){.meal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:790px){.shell{padding:13px 13px 100px}.hero{padding:22px 20px}.dash-grid{grid-template-columns:1fr}.recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:18px}.tabs{position:sticky;top:8px;z-index:10;justify-content:space-between;overflow-x:auto}.tabs button{padding:11px 12px;font-size:12px}.dash-hero{padding:22px}.dash-hero h2{font-size:30px}}
+@media(max-width:520px){.recipe-grid{grid-template-columns:1fr}.meal-grid{grid-template-columns:1fr}.tabs{gap:2px}.tabs button{font-size:12px;padding:11px 13px}.hero h1{font-size:27px}.top{padding:0 3px 10px}.logo{font-size:26px}}
+@media print{.tabs,.hero,.top,.quick-actions{display:none!important}}
 </style></head><body><main class="shell"><header class="top"><div class="logo">🏠 Familia <div class="sub">Nuestra casa, entre todos</div></div><div id="who"></div></header><section id="login" class="panel modal"><h2>Ingresar a Familia</h2><p class="muted">Cada integrante tiene su propia cuenta. Los cambios se comparten en tiempo real al actualizar.</p><form id="loginForm"><label class="field">¿Quién sos?<select id="loginUser"><option value="nico">Nico</option><option value="euge">Euge</option><option value="marti">Marti</option><option value="pia">Pía</option></select></label><label class="field">PIN<input type="password" id="loginPin" required minlength="6" autocomplete="current-password"></label><button class="btn primary">Ingresar</button><p id="loginError" class="error"></p></form></section><div id="app" class="hide"><section class="hero"><h1>El hogar se organiza mejor en equipo.</h1><p id="intro">Menú, tareas y compras compartidas.</p></section><nav class="tabs" id="tabs"><button data-tab="home" class="on">Hoy</button><button data-tab="menu">Menú semanal</button><button data-tab="shop">Supermercado</button><button data-tab="recipes">Recetas</button><button data-tab="chores">Tareas</button><button data-tab="settings">Perfiles</button></nav><section id="content"></section><p class="muted">Familia guarda los datos en el servidor. Las modificaciones simultáneas se protegen contra conflictos.</p></div></main><script>
 'use strict';
 const PEOPLE={nico:'Nico',euge:'Euge',marti:'Marti',pia:'Pía'}, DAYS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'], AISLES=['Verdulería','Carnicería','Lácteos y huevos','Panadería','Almacén','Conservas','Limpieza','Mascotas','Otros'];
@@ -165,4 +218,36 @@ function chores(){
  return '<div class="panel"><h2>🧹 Responsabilidades familiares</h2><p class="muted">Las tareas de cada niña son sencillas y se pueden marcar desde su perfil. Para Marti podés imprimir una planilla semanal.</p>'+['marti','pia'].map(who=>'<div class="item"><div class="row"><strong>'+esc(PEOPLE[who])+'</strong><button class="btn" onclick="printPlan(\''+who+'\')">🖨️ Imprimir semana</button></div>'+childTasks(who,today()).map(t=>'<div class="child-task">'+esc(CHILD_EMOJI[t]||'✨')+' '+esc(t)+'</div>').join('')+'</div>').join('')+'</div><div class="panel"><h2>Responsabilidades de adultos</h2>'+taskList()+'</div>';
 }
 
+
+let recipeTerm='';
+function recipeIcon(name){let n=(name||'').toLowerCase();return /pollo/.test(n)?'🍗':/milanesa|bife|carne|asado|hamburg/.test(n)?'🥩':/arroz/.test(n)?'🍚':/fideos|pasta|tallar|ñoqui|lasa/.test(n)?'🍝':/sopa|vori|puchero|guiso|locro|jopará/.test(n)?'🍲':/pescado|atún/.test(n)?'🐟':/verdura|ensalada|tortilla/.test(n)?'🥬':'🍽️'}
+function renderRecipesFiltered(){
+ const target=document.getElementById('recipeCards');if(!target)return;
+ const items=state.recipes.filter(r=>r.type==='almuerzo'&&r.name.toLocaleLowerCase('es').includes(recipeTerm.toLocaleLowerCase('es')));
+ target.innerHTML=items.map(r=>'<article class="recipe-card"><div class="recipe-cover"><b>'+recipeIcon(r.name)+'</b><small>'+esc(r.category||'Casero')+'</small></div><div class="recipe-body"><h3>'+esc(r.name)+'</h3><p>🍽️ '+Number(r.servings||4)+' porciones · '+r.ingredients.length+' ingredientes</p><details><summary>Ingredientes y preparación</summary><p>'+r.ingredients.map(i=>esc(i.name)+' · '+i.qty+' '+esc(i.unit)).join('<br>')+'</p><p>'+esc(r.steps||'Sin preparación cargada')+'</p></details></div></article>').join('')||'<p class="muted">Todavía no hay recetas que coincidan con la búsqueda.</p>';
+}
+function recipes(){
+ const form=admin()?'<details class="add-shop panel"><summary>＋ Agregar receta al recetario</summary><form onsubmit="addRecipe(event)" class="grid"><label class="field">Nombre<input name="name" required></label><input type="hidden" name="type" value="almuerzo"><label class="field">Categoría<select name="category"><option>proteína</option><option>vegetariano</option><option>legumbres</option></select></label><label class="field">Porciones<input name="servings" type="number" min="1" max="30" value="4"></label><label class="field">Ingredientes (nombre;cantidad;unidad;pasillo)<textarea name="ingredients" required placeholder="Tomate;4;un;Verdulería"></textarea></label><label class="field">Preparación<textarea name="steps" required></textarea></label><button class="btn primary">Guardar receta</button></form></details>':'';
+ return '<div class="panel"><div class="app-headline">EL RECETARIO DE CASA</div><h2>¿Qué cocinamos?</h2><div class="recipe-toolbar"><input class="recipe-search" type="search" placeholder="Buscar milanesa, vori vori, guiso..." value="'+esc(recipeTerm)+'" oninput="recipeTerm=this.value;renderRecipesFiltered()" aria-label="Buscar recetas"></div><div class="recipe-grid" id="recipeCards"></div></div>'+form;
+}
+function missingFor(day){
+ const r=meal(day,'almuerzo');if(!r)return {recipe:null,missing:[]};const p=state.pantry||{};
+ const missing=(r.ingredients||[]).map(i=>{const wanted=Number(i.qty||0)*4/Math.max(1,Number(r.servings||4)),has=p[i.name.toLowerCase()+'|'+i.unit];return {...i,missing:Math.max(0,wanted-(Number(has)||0)),unknown:has===undefined}}).filter(i=>i.missing>0);
+ return {recipe:r,missing};
+}
+function home(){
+ const day=today(),todayData=missingFor(day),tomorrowData=missingFor((day+1)%7),pending=[...shoppingItems(),...customItems()].filter(x=>!state.shopping[week()+'|'+(x.key||'extra:'+x.id)]).length;
+ const mealName=todayData.recipe?.name||'Elegí un almuerzo';
+ const status=todayData.missing.length?'<div class="food-status"><strong>Revisar ingredientes · '+todayData.missing.length+'</strong><p style="margin:5px 0 0">'+todayData.missing.slice(0,4).map(i=>esc(i.name)+(i.unknown?' (sin confirmar)':'')).join(' · ')+'</p></div>':'<div class="food-status"><strong>✅ Ingredientes cubiertos según inventario</strong></div>';
+ return '<section class="dash-hero"><div class="eyebrow">🍲 EL ALMUERZO DE HOY</div><h2>'+esc(mealName)+'</h2><div class="desc">Una comida planificada para compartir en familia.</div><button class="btn" onclick="navigate(\'menu\')">Ver la semana →</button>'+status+'</section><div class="dash-grid"><article class="dash-tile"><div class="tile-top"><span class="app-headline">LISTA COMPARTIDA</span><span class="tile-emoji">🛒</span></div><div class="count-xl">'+pending+'</div><h3>Productos por comprar</h3><p>Marcá lo que vas poniendo en el carrito. La lista se comparte entre ustedes.</p><button class="btn primary" onclick="navigate(\'shop\')">Abrir supermercado →</button></article><article class="dash-tile"><div class="tile-top"><span class="app-headline">MAÑANA</span><span class="tile-emoji">🥗</span></div><h3>'+esc(tomorrowData.recipe?.name||'Por planificar')+'</h3><p>'+tomorrowData.missing.length+' ingredientes por revisar para el próximo almuerzo.</p><button class="btn" onclick="navigate(\'menu\')">Organizar almuerzos →</button></article><article class="dash-tile"><div class="tile-top"><span class="app-headline">RESPONSABILIDADES</span><span class="tile-emoji">✨</span></div><h3>Entre todos es más fácil</h3><p>Revisá las tareas de las chicas y prepará las planillas para Marti.</p><button class="btn" onclick="navigate(\'chores\')">Ver responsabilidades →</button></article><article class="dash-tile"><div class="tile-top"><span class="app-headline">EN CASA</span><span class="tile-emoji">🏠</span></div><h3>Revisá la despensa</h3><p>Actualizá las cantidades para que los avisos de faltantes sean más precisos.</p><button class="btn" onclick="navigate(\'shop\')">Ver existencias →</button></article></div>';
+}
+const familiaOldRender=render;
+render=function(){
+ familiaOldRender();
+ if(state&&admin()&&tab==='recipes')renderRecipesFiltered();
+ if(state&&admin()){
+  const map={home:'Hoy',menu:'Almuerzos',shop:'Supermercado',recipes:'Recetas',chores:'Tareas',settings:'Ajustes'};
+  document.querySelectorAll('#tabs button').forEach(b=>{let k=b.dataset.tab;if(map[k])b.textContent=({home:'⌂ ',menu:'🍲 ',shop:'🛒 ',recipes:'📖 ',chores:'✓ ',settings:'⚙ '})[k]+map[k]});
+ }
+};
 </script></body></html>
