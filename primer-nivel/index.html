@@ -13,8 +13,24 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%23ffebe4'/%3E%3Cpath d='M17 46V18l30 28V18' fill='none' stroke='%23cf776a' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css?v=2">
   <script src="./app.js?v=2" defer></script>
+
+<style id="cancelled-proposal-styles">
+:root{--cancel-red:#c84c4d;--cancel-ink:#8e3544}
+body{overflow-x:hidden}
+.proposal-cancelled-site{filter:blur(2.65px) saturate(.68);opacity:.70;user-select:none}
+#proposal-cancelled-banner{position:relative;z-index:1300;display:flex;align-items:center;justify-content:center;gap:17px;flex-wrap:wrap;background:#fff0ed;color:#8e3544;border-bottom:1px solid #efc7be;padding:15px 24px;font:700 13px/1.5 'DM Sans',system-ui,sans-serif;letter-spacing:.01em;text-align:center}
+#proposal-cancelled-banner strong{font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+#proposal-cancelled-banner a{display:inline-block;border:1px solid #daaca8;border-radius:999px;padding:7px 13px;color:#813d49;text-decoration:none;background:#fff8f6;font-weight:700}
+#proposal-cancelled-stamp{position:fixed;left:50%;top:47%;z-index:1400;pointer-events:none;user-select:none;transform:translate(-50%,-50%) rotate(-17deg);width:max-content;max-width:92vw;text-align:center;padding:20px 36px;border:7px solid rgba(182,52,61,.92);border-radius:16px;box-shadow:0 10px 40px rgba(115,50,61,.13),inset 0 0 0 2px rgba(182,52,61,.32);color:#b6343d;background:rgba(255,250,248,.65);font:850 clamp(25px,5.5vw,71px)/1.1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;backdrop-filter:blur(2px)}
+#proposal-cancelled-stamp small{display:block;margin-top:8px;font:750 clamp(10px,1.3vw,16px)/1.5 'DM Sans',system-ui,sans-serif;letter-spacing:.20em}
+@media(max-width:600px){#proposal-cancelled-banner{gap:8px;padding:13px 14px}#proposal-cancelled-banner strong{width:100%}#proposal-cancelled-stamp{width:88vw;white-space:normal;padding:16px 11px;border-width:5px;border-radius:12px;font-size:clamp(24px,7.5vw,38px)}#proposal-cancelled-stamp small{font-size:11px}}
+@media(print){.proposal-cancelled-site{filter:blur(2px) grayscale(.65)!important;opacity:.7!important}#proposal-cancelled-stamp{position:fixed;display:block!important}#proposal-cancelled-banner{display:flex!important}}
+</style>
 </head>
 <body>
+<div id="proposal-cancelled-banner" role="status"><strong>Propuesta cancelada</strong><span>Esta propuesta comercial ya no se encuentra vigente.</span><a href="/">Volver a Nicolás Pintos</a></div>
+<div id="proposal-cancelled-stamp" aria-hidden="true">CANCELADO<small>Propuesta no vigente</small></div>
+
   <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
@@ -37,7 +53,7 @@
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
     <symbol id="i-network" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4H5v4m7-4h7v4"/></symbol>
   </svg>
-  <header class="header" id="inicio">
+  <header class="header proposal-cancelled-site" id="inicio">
     <div class="wrap header-inner">
       <a class="brand" href="#inicio" aria-label="NEXO, inicio">
         <span class="brand-mark">N</span>
@@ -54,7 +70,7 @@
       <button type="button" class="menu-toggle" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span class="icon"><svg><use href="#i-menu"/></svg></span></button>
     </div>
   </header>
-  <main>
+  <main class="proposal-cancelled-site">
     <section class="hero" aria-labelledby="heroTitle">
       <div class="wrap hero-grid">
         <div>
@@ -243,7 +259,7 @@
       </div>
     </section>
   </main>
-  <footer class="footer"><div class="wrap footer-inner"><div class="footer-sign"><span class="mini-n">N</span><span><strong>NEXO · Nicolás Pintos</strong><small>Ufotech · Soluciones de infraestructura y automatización</small></span></div><div class="footer-right"><span>Propuesta preparada para Producciones Primer Nivel</span><span>2026</span><button type="button" id="shareBtn">Compartir propuesta ↗</button></div></div></footer>
+  <footer class="footer proposal-cancelled-site"><div class="wrap footer-inner"><div class="footer-sign"><span class="mini-n">N</span><span><strong>NEXO · Nicolás Pintos</strong><small>Ufotech · Soluciones de infraestructura y automatización</small></span></div><div class="footer-right"><span>Propuesta preparada para Producciones Primer Nivel</span><span>2026</span><button type="button" id="shareBtn">Compartir propuesta ↗</button></div></div></footer>
   <div role="status" aria-live="polite" id="toast" class="toast"></div>
 </body>
 </html>
