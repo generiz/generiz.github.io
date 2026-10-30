@@ -53,6 +53,10 @@
     .notice{width:min(610px,100%);text-align:center;border:1px solid #fff;box-shadow:0 38px 95px #68748c30,0 10px 30px #8e879015;background:#ffffffeb;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:30px;padding:62px 55px 60px}
     .symbol{width:72px;height:72px;border-radius:23px;background:#fff0ec;display:grid;place-items:center;margin:0 auto 28px;box-shadow:inset 0 0 0 1px #f8dcd5}
     .symbol svg{width:35px;height:35px;stroke:#bf6b62;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .alien-wrap{display:flex;justify-content:center;align-items:center;min-height:158px;margin:0 auto 24px}
+    .alien-image{width:min(235px,80%);max-height:185px;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(46,60,70,.12))}
+    .alien-fallback{width:185px;height:auto;filter:drop-shadow(0 10px 8px rgba(46,60,70,.10))}
+    .alien-image[hidden],.alien-fallback[hidden]{display:none}
     .overline{display:inline-flex;gap:9px;align-items:center;text-transform:uppercase;color:#ae736e;letter-spacing:.13em;font-weight:800;font-size:11px;margin-bottom:20px}
     .overline:before{content:"";width:7px;height:7px;background:#d48a81;border-radius:50%}
     h1{font-size:clamp(36px,5.6vw,58px);line-height:1.08;letter-spacing:-.065em;font-weight:800;margin:0 0 22px;color:#25324a}
@@ -88,12 +92,24 @@
     <header class="topbar"><div class="brand"><span class="brand-icon">N</span><span>NEXO</span></div><div class="top-status">Propuesta comercial</div></header>
     <main class="center">
       <section class="notice" role="status" aria-labelledby="cancel-title">
-        <div class="symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 8.5l7 7m0-7-7 7"></path></svg></div>
+        <div class="alien-wrap">
+          <img class="alien-image" src="https://sistema.ufotech.com.py/static/img/error-404-alien-searching.png" alt="Alien de Ufotech buscando la página" loading="eager" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <svg class="alien-fallback" viewBox="0 0 210 174" role="img" aria-label="Alien verde triste" hidden>
+            <ellipse cx="105" cy="160" rx="69" ry="9" fill="#d9d4db" opacity=".38"/>
+            <path d="M66 114Q53 137 73 151h64q21-14 8-37" fill="#80bda8" stroke="#416c67" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M88 44Q64 17 68 7M122 44q22-27 18-37" stroke="#72a99c" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <ellipse cx="68" cy="8" rx="9" ry="7" fill="#75ad9d"/><ellipse cx="140" cy="8" rx="9" ry="7" fill="#75ad9d"/>
+            <path d="M105 27C64 27 40 54 45 94s34 47 60 47 56-11 60-47-19-67-60-67Z" fill="#9dd8b7" stroke="#416c67" stroke-width="4"/>
+            <path d="M65 74c16-17 29 0 22 17-5 12-21 12-26 2-3-7 0-14 4-19Zm80 0c-16-17-29 0-22 17 5 12 21 12 26 2 3-7 0-14-4-19Z" fill="#3d4d64"/>
+            <path d="M93 116q12-12 24 0" fill="none" stroke="#547667" stroke-width="4" stroke-linecap="round"/>
+            <path d="M146 94q-6 11 0 17 6-6 0-17Z" fill="#83b6ed"/>
+            <path d="M55 130q-24-12-30 4m130-4q24-12 30 4" fill="none" stroke="#6fa997" stroke-width="8" stroke-linecap="round"/>
+            <path d="M80 151l-8 13m58-13 8 13" fill="none" stroke="#497b70" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="overline">Estado de la propuesta</div>
         <h1 id="cancel-title">Propuesta<br>cancelada</h1>
         <p>Esta propuesta comercial ha sido retirada y ya no se encuentra disponible.</p>
-        <hr>
-        <div class="recipient">Producciones Primer Nivel</div>
       </section>
     </main>
     <footer class="footer">Nicolás Pintos · Ufotech</footer>
