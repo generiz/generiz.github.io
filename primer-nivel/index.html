@@ -1,220 +1,249 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fbfcff">
-<meta name="description" content="NEXO para Producciones Primer Nivel. Diagnóstico y recuperación de infraestructura, reorganización del servidor TrueNAS SCALE, acceso a carpetas desde cualquier lugar y administración automatizada.">
-<meta property="og:title" content="NEXO — Propuesta para Producciones Primer Nivel">
-<meta property="og:description" content="Primero recuperamos el control. Después, hacemos que todo funcione mejor.">
-<meta property="og:type" content="website">
-<title>NEXO — Propuesta para Producciones Primer Nivel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='19' fill='%23e9edff'/%3E%3Cpath d='M17 45V19L47 45V19' stroke='%23596dcd' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
-<style>
-:root{--ink:#29334b;--soft:#627088;--sub:#8a96aa;--blue:#536bc6;--blue2:#4057ad;--lilac:#efedff;--lav:#d9d4fb;--peach:#fff0e9;--coral:#dd8c7d;--sky:#eef5ff;--butter:#fff7e4;--paper:#ffffff;--border:#e5e9f3;--line:#e8ecf4;--shadow:0 20px 60px rgba(73,89,140,.08);--max:1200px}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:94px}
-body{margin:0;color:var(--ink);background:var(--paper);font-family:"DM Sans",system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.6}
-a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #748bea;outline-offset:3px}
-.wrap{width:min(calc(100% - 72px),var(--max));margin-inline:auto}
-.icon{width:21px;height:21px;display:inline-flex;align-items:center;justify-content:center;flex:none}.icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.topline{height:5px;background:linear-gradient(90deg,#f3bcae 0%,#e5dafa 39%,#b8d3f7 74%,#c9e5e9 100%)}
-.site-header{position:relative;z-index:30;background:rgba(255,255,255,.94);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:84px}
-.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:15px;color:var(--blue);background:var(--lilac);font-family:Manrope,sans-serif;font-size:27px;font-weight:800;letter-spacing:-.1em;padding-right:4px}
-.brand-copy{display:flex;flex-direction:column;line-height:1.3}.brand-copy strong{font-family:Manrope,sans-serif;font-weight:800;font-size:15px;letter-spacing:.13em}.brand-copy small{font-size:10px;color:#8a92a8;margin-top:3px;font-weight:700;letter-spacing:.035em}
-.nav-links{display:flex;align-items:center;gap:31px;color:#57647f;font-size:12px;font-weight:700}.nav-links a:hover{color:var(--blue)}.nav-cta{border:1px solid #cfd6f2;background:#fff;color:var(--blue);font-weight:800;border-radius:999px;padding:11px 17px;font-size:12px;display:flex;align-items:center;gap:7px;white-space:nowrap}.nav-cta:hover{background:var(--lilac)}.menu-toggle{display:none;border:1px solid var(--border);color:var(--blue);border-radius:12px;background:white;padding:9px}
-.hero{position:relative;overflow:hidden;background:linear-gradient(118deg,#fff 0%,#f8faff 57%,#f5f3ff 100%)}
-.hero::before{content:"";position:absolute;width:740px;height:740px;border-radius:50%;right:-340px;top:-310px;background:radial-gradient(circle,#eae5ff 0%,rgba(235,230,255,0) 68%)}
-.hero::after{content:"";position:absolute;width:650px;height:650px;bottom:-550px;left:-240px;background:radial-gradient(circle,#fcebe6,transparent 70%);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1fr .94fr;gap:72px;align-items:center;min-height:666px;padding-block:80px 102px;position:relative;z-index:1}
-.pill{display:inline-flex;align-items:center;gap:9px;color:#6477b8;background:#f0f2ff;border:1px solid #e1e5ff;border-radius:999px;padding:8px 13px;font-size:11px;font-weight:800;letter-spacing:.065em;text-transform:uppercase}
-.pill .small-dot{height:6px;width:6px;background:#8292d9;border-radius:50%}
-h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Manrope,"DM Sans",sans-serif}h1{font-size:clamp(47px,5.3vw,78px);font-weight:700;letter-spacing:-.072em;line-height:1.12;margin:25px 0}
-h1 em{font-style:normal;color:var(--blue)}
-.hero-lead{font-size:17px;color:#67758d;line-height:1.8;max-width:565px;margin:0 0 29px}
-.hero-points{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 32px}.hero-point{display:inline-flex;align-items:center;gap:7px;border-radius:100px;padding:8px 12px;background:rgba(255,255,255,.84);border:1px solid #e7eaf5;font-size:11px;font-weight:800;color:#626f87}.hero-point .icon{width:15px;height:15px;color:#6f81ce}
-.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:12px;padding:14px 20px;min-height:50px;font-size:13px;font-weight:800;border:1px solid transparent;transition:transform .2s,background .2s,box-shadow .2s}
-.button:hover{transform:translateY(-2px)}.button-primary{background:var(--blue);color:white;box-shadow:0 11px 24px rgba(83,107,198,.17)}.button-primary:hover{background:var(--blue2)}.button-secondary{background:white;color:var(--blue);border-color:#d8ddf1}.button-secondary:hover{background:#f8f9ff}
-.hero-actions{display:flex;gap:11px;flex-wrap:wrap}.hero-sign{margin-top:36px;display:flex;align-items:center;gap:12px;color:#8894a7;font-size:11px}.hero-sign::before{content:"";width:28px;height:1px;background:#b7bfd3}
-.hero-art{position:relative;min-height:500px;display:flex;align-items:center}
-.art-splotch{position:absolute;inset:45px 6px 45px 28px;border-radius:52% 48% 49% 51% / 48% 50% 50% 52%;background:linear-gradient(150deg,#e1e4ff 0%,#f4eafb 52%,#fdece7 100%);transform:rotate(-9deg)}
-.art-outline{position:absolute;width:355px;height:355px;border-radius:50%;border:1px solid #cdd6f5;right:7px;top:15px}
-.soft-star{position:absolute;color:#b1bbed;font-size:36px;font-weight:300;line-height:1}.star-one{top:19px;right:115px}.star-two{bottom:18px;left:50px;font-size:26px;color:#d9a9bd}
-.explorer{position:relative;width:94%;margin-left:auto;background:#fff;border:1px solid #e5e8f4;border-radius:20px;overflow:hidden;box-shadow:0 35px 80px rgba(82,94,158,.16);transform:rotate(-2deg)}
-.explorer-top{display:flex;align-items:center;justify-content:space-between;padding:13px 19px;background:#f8f9fe;border-bottom:1px solid #e9ecf5}.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;background:#d7dded;border-radius:50%;display:block}.dots i:first-child{background:#f0b7b1}.dots i:nth-child(2){background:#f5dca4}.dots i:nth-child(3){background:#b9d9cf}
-.explorer-top small{font-size:10px;color:#95a0b3;letter-spacing:.07em;font-weight:800;text-transform:uppercase}
-.explorer-body{padding:24px}.explorer-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#a0a9bd;font-weight:800}
-.explorer-title{display:flex;align-items:center;gap:10px;font-family:Manrope;font-size:21px;font-weight:800;letter-spacing:-.045em;margin:6px 0 19px}.explorer-title .icon{color:var(--blue);width:25px;height:25px}
-.folder-row{border-top:1px solid #edf0f6;padding:12px 2px;display:flex;align-items:center;gap:12px}.folder-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#edf2ff;color:#7789d6}.folder-icon.pink{background:#fff0f1;color:#d99cad}.folder-icon.yellow{background:#fff6df;color:#d8ad67}
-.folder-name{font-weight:800;font-size:12px}.folder-meta{display:block;font-size:10px;color:#a2acba}.folder-end{margin-left:auto;font-size:10px;color:#a3aec0}
-.explorer-foot{display:flex;gap:8px;align-items:center;padding:12px 24px;background:#f7f9ff;font-size:10px;color:#7c89a4;font-weight:700;border-top:1px solid #ebeff8}.explorer-foot .status{width:7px;height:7px;background:#8cbcb8;border-radius:50%}
-.art-note{position:absolute;left:0;bottom:17px;background:#fff;border:1px solid #e4e6f7;box-shadow:0 12px 42px rgba(90,101,155,.13);border-radius:14px;padding:15px 19px;display:flex;align-items:center;gap:12px;transform:rotate(2deg)}.art-note .icon{color:var(--blue);width:25px;height:25px}.art-note strong{display:block;font-size:12px;font-weight:800}.art-note small{display:block;font-size:10px;color:#8e9cb2}
-.hero-ribbon{border-top:1px solid #eceef8;position:relative;z-index:1;background:#ffffffa6}.ribbon-inner{display:flex;gap:32px;justify-content:space-between;align-items:center;min-height:78px}.ribbon-label{font-size:10px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:#9da5b7}.ribbon-list{display:flex;gap:24px;flex-wrap:wrap}.ribbon-list span{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:800;color:#718098}.ribbon-list .icon{width:17px;height:17px;color:#8f9ad3}
-.section{padding:110px 0}.section.alt{background:#f9faff}.section.soft{background:#fcf8f6}.section.lav{background:#f7f6ff}
-.eyebrow{display:block;color:#8290cc;text-transform:uppercase;letter-spacing:.15em;font-size:10px;font-weight:800;margin-bottom:19px}.eyebrow.coral{color:#c88d84}
-.section-title{font-size:clamp(34px,4.3vw,58px);font-weight:700;line-height:1.16;letter-spacing:-.066em;margin:0 0 19px;max-width:780px}
-.section-title .colored{color:var(--blue)}.section-lead{font-size:15px;line-height:1.9;color:#738099;max-width:590px;margin:0}
-.section-head-row{display:grid;grid-template-columns:1fr 410px;gap:70px;align-items:end;margin-bottom:42px}
-.initial-layout{display:grid;grid-template-columns:.86fr 1.14fr;gap:80px;align-items:start}.initial-intro{position:sticky;top:45px}.initial-intro .section-title{max-width:490px}
-.highlight-note{margin-top:33px;border:1px solid #e6e8f6;background:#f8f8ff;border-radius:15px;padding:19px 21px;display:flex;align-items:flex-start;gap:13px;font-size:13px;color:#6a7690;line-height:1.7}.highlight-note .icon{color:#7f87cb;flex:none}
-.initial-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.initial-card{background:white;border:1px solid var(--border);border-radius:17px;padding:27px;min-height:240px;box-shadow:0 8px 22px rgba(74,90,152,.025)}.initial-card .count{font-family:Manrope,sans-serif;color:#a0a8d0;font-size:12px;font-weight:800;letter-spacing:.08em}.initial-card .iconwrap{display:grid;place-items:center;width:47px;height:47px;background:#f0f2ff;color:#6d80c9;border-radius:14px;margin:16px 0}.initial-card:nth-child(2) .iconwrap{background:#fff1ec;color:#d69383}.initial-card:nth-child(3) .iconwrap{background:#f5f0ff;color:#9b86c5}.initial-card:nth-child(4) .iconwrap{background:#edf7fa;color:#74a7b5}.initial-card h3{font-size:17px;letter-spacing:-.045em;margin-bottom:9px}.initial-card p{color:#7b879c;font-size:12px;line-height:1.8;margin:0}
-.process-head{display:grid;grid-template-columns:.9fr 1.1fr;gap:90px;align-items:end;margin-bottom:52px}.process-head p{max-width:470px}
-.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}.timeline::before{content:"";position:absolute;top:31px;left:65px;right:65px;border-top:1px dashed #c9d3ee}.phase{position:relative;padding:0 14px 14px 0}.phase-num{width:63px;height:63px;border-radius:21px;background:white;display:grid;place-items:center;border:1px solid #dfe5f5;color:var(--blue);font-weight:800;font-family:Manrope;font-size:20px;box-shadow:0 6px 22px rgba(84,107,190,.05);margin-bottom:32px}.phase h3{font-size:17px;line-height:1.4;letter-spacing:-.045em;margin:0 0 12px}.phase p{font-size:12px;line-height:1.9;color:#79879d;margin:0}
-.process-bottom{display:flex;align-items:center;gap:14px;margin-top:45px;border-top:1px solid #e7ebf4;padding-top:24px;color:#7d8ca2;font-size:12px}.process-bottom .icon{color:#8595d0}
-.access-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:74px;align-items:center}.access-copy .section-title{max-width:420px}.access-copy .section-lead{max-width:400px}
-.experience-card{background:#fff;border:1px solid #e4e8f6;border-radius:24px;padding:30px;box-shadow:var(--shadow)}.experience-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:26px}.experience-head strong{font-family:Manrope;font-size:16px;letter-spacing:-.03em}.mode-toggle{display:flex;gap:4px;padding:4px;background:#f2f4fb;border-radius:100px}.mode-toggle button{border:0;background:none;color:#8a95ae;padding:9px 13px;border-radius:100px;font-weight:800;font-size:11px}.mode-toggle button.active{color:var(--blue);background:white;box-shadow:0 3px 13px rgba(59,78,142,.10)}
-.filedemo{border:1px solid #e5eaf4;border-radius:15px;overflow:hidden}.filedemo-toolbar{background:#f9faff;display:flex;align-items:center;gap:10px;padding:14px 16px;font-size:12px;font-weight:800}.filedemo-toolbar .icon{color:#7b89cf}.filedemo-toolbar small{margin-left:auto;color:#a1abc0;font-weight:700}
-.filedemo-item{padding:15px 18px;border-top:1px solid #eff1f7;display:flex;align-items:center;gap:13px}.filedemo-item .icon{color:#9c9ed8}.filedemo-item strong{font-size:12px}.filedemo-item span{margin-left:auto;color:#a0abc2;font-size:11px}.filedemo-foot{background:#f6f8ff;display:flex;align-items:center;gap:9px;padding:14px 18px;font-size:11px;color:#6980ba;font-weight:700}.filedemo-foot .icon{width:16px;height:16px}
-.same-path{margin-top:15px;font-size:11px;color:#8e9ab2;line-height:1.7}.same-path b{color:#6275ad}
-.access-bullets{display:grid;gap:13px;margin-top:26px}.access-bullets div{display:flex;gap:10px;align-items:flex-start;color:#728096;font-size:12px;line-height:1.6}.access-bullets .icon{width:17px;height:17px;color:#899bcf}
-.automation-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}.automation-text .section-title{max-width:540px}.mini-points{display:grid;gap:13px;margin-top:30px}.mini-points div{display:flex;align-items:flex-start;gap:13px;font-size:13px;color:#6e7d94}.mini-points .icon{color:#8797d1;flex:none}
-.dashboard{border:1px solid #e3e7f5;border-radius:22px;background:white;overflow:hidden;box-shadow:0 24px 60px rgba(80,91,160,.09)}.dash-top{background:#f8f9ff;padding:18px 23px;border-bottom:1px solid #e8ebf4;display:flex;justify-content:space-between;align-items:center}.dash-top strong{font-family:Manrope;color:#6679be;letter-spacing:.06em;font-size:11px}.dash-top small{font-size:10px;color:#99a5bd}
-.dash-content{padding:24px}.dash-label{color:#9ba8bb;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.dash-heading{display:flex;justify-content:space-between;align-items:center;margin:6px 0 23px;gap:9px}.dash-heading h3{font-size:21px;letter-spacing:-.055em;margin:0}.dash-heading .example-btn{border:0;background:#e8ebff;color:#5c70c1;border-radius:9px;padding:9px 11px;font-weight:800;font-size:10px}
-.dash-list{display:grid;gap:11px}.dash-person{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #eff1f8}.avatar{height:35px;width:35px;display:grid;place-items:center;border-radius:11px;background:#eff0ff;font-size:10px;color:#7684c9;font-weight:800}.avatar.two{background:#fff0eb;color:#c78d81}.avatar.three{background:#e8f5f8;color:#76a4b3}.dash-person strong{display:block;font-size:11px}.dash-person span{display:block;color:#a0aabe;font-size:10px}.dash-person .state{margin-left:auto;color:#7e96aa;font-weight:800;font-size:10px}
-.dash-bottom{background:#fbfbff;border-top:1px solid #e8ebf4;padding:15px 23px;font-size:10px;color:#939eb2}.demo-caption{text-align:center;margin:14px 0 0;color:#a0a8ba;font-size:10px}
-.subscription-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:82px;align-items:start}.subscription-grid .section-title{max-width:530px}.subs-list{display:grid;grid-template-columns:1fr 1fr;gap:15px}.subs-card{background:#fff;border:1px solid #e7e9f3;border-radius:17px;padding:25px}.subs-card .icon{color:#7d8dcb;width:27px;height:27px;margin-bottom:19px}.subs-card h3{font-size:15px;letter-spacing:-.04em;margin-bottom:9px}.subs-card p{font-size:12px;color:#7d889e;line-height:1.8;margin:0}
-.model-note{margin-top:29px;padding:20px;border-left:3px solid #b6b7e9;background:#faf9ff;border-radius:0 12px 12px 0;color:#748097;font-size:13px;line-height:1.8}
-.scope-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:90px;align-items:start}.faq{border-top:1px solid #e5e9f2}.faq details{border-bottom:1px solid #e5e9f2}.faq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;font-family:Manrope;font-weight:700;font-size:14px;cursor:pointer}.faq summary::-webkit-details-marker{display:none}.faq summary .icon{color:#7988ba;transition:transform .2s}.faq details[open] summary .icon{transform:rotate(45deg)}.faq details p{padding:0 31px 24px 0;color:#738096;font-size:12px;line-height:1.9;margin:0}
-.closing{background:linear-gradient(115deg,#f4f4ff 0%,#fff4ef 100%);padding:96px 0}.closing-inner{max-width:890px;text-align:center;margin:auto}.closing .section-title{max-width:none;font-size:clamp(38px,5vw,62px)}.closing p{color:#758298;font-size:15px;line-height:1.9;max-width:670px;margin:0 auto 30px}.closing .buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.footer{border-top:1px solid #e7ebf3;background:#fff}.footer-inner{min-height:125px;display:flex;align-items:center;justify-content:space-between;gap:40px}.footer-brand{display:flex;align-items:center;gap:12px}.footer-brand .brand-mark{width:37px;height:37px;font-size:23px;border-radius:12px}.footer-brand strong{display:block;font-weight:800;font-size:12px}.footer-brand small{display:block;font-size:10px;color:#9aa4b7}.footer-links{display:flex;align-items:center;gap:23px;flex-wrap:wrap;color:#8b97aa;font-size:10px}.footer-links button{background:none;border:0;color:var(--blue);font-size:10px;font-weight:800;padding:7px}
-.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,10px);opacity:0;pointer-events:none;z-index:40;background:#fff;color:#4f5e82;border:1px solid #d7dff0;box-shadow:0 14px 35px #7081bd20;border-radius:13px;padding:13px 18px;font-size:12px;font-weight:800;transition:opacity .2s,transform .2s}.toast.show{transform:translate(-50%,0);opacity:1}
-@media(max-width:1050px){.hero-grid{gap:33px}.art-note{left:-10px}.initial-layout,.process-head,.automation-layout,.subscription-grid,.scope-grid{gap:42px}.access-layout{gap:35px}.nav-links{gap:16px}}
-@media(max-width:830px){.wrap{width:min(calc(100% - 42px),var(--max))}.nav-links{display:none;position:absolute;top:84px;left:0;right:0;background:white;padding:24px;flex-direction:column;align-items:flex-start;border-bottom:1px solid var(--border);box-shadow:0 20px 35px #7081bd18}.nav-links.open{display:flex}.menu-toggle{display:grid;place-items:center}.nav-cta{margin-left:auto}.hero-grid{grid-template-columns:1fr;padding-top:60px;gap:30px}.hero-copy{max-width:740px}.hero-art{max-width:570px;width:100%;margin:auto}.hero-ribbon .ribbon-inner{flex-wrap:wrap;padding:23px 0;gap:14px}.initial-layout,.access-layout,.automation-layout,.subscription-grid,.scope-grid{grid-template-columns:1fr}.initial-intro{position:static}.section-head-row,.process-head{grid-template-columns:1fr;gap:12px}.initial-grid{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr);row-gap:36px}.timeline::before{display:none}.phase-num{margin-bottom:18px}.subs-list{grid-template-columns:1fr 1fr}.section{padding:83px 0}}
-@media(max-width:560px){.wrap{width:min(calc(100% - 34px),var(--max))}.header-inner{min-height:74px}.nav-links{top:74px}.brand-mark{width:39px;height:39px;font-size:23px}.brand-copy strong{font-size:13px}.brand-copy small{font-size:9px}.nav-cta{font-size:0;padding:10px 11px;border-radius:11px}.nav-cta .icon{width:18px;height:18px}.hero-grid{padding:46px 0 60px;min-height:0}.pill{font-size:9px}.hero h1{font-size:clamp(39px,11.7vw,59px);line-height:1.12}.hero-lead{font-size:14px}.hero-points{gap:7px}.hero-point{font-size:10px;padding:7px 9px}.hero-actions .button{width:100%}.hero-sign{margin-top:24px}.hero-art{min-height:385px}.art-splotch{inset:20px 3px}.art-outline{width:260px;height:260px;right:0;top:0}.explorer{width:96%;margin:auto}.explorer-body{padding:16px}.explorer-title{font-size:17px}.folder-row{padding:10px 0}.art-note{bottom:0;left:3px;padding:9px 13px}.art-note .icon{width:19px;height:19px}.ribbon-list{gap:13px}.ribbon-list span{font-size:10px}.section{padding:75px 0}.section-title{font-size:clamp(32px,9.6vw,46px)}.section-lead{font-size:14px}.initial-grid,.timeline,.subs-list{grid-template-columns:1fr}.initial-card{min-height:0;padding:24px}.initial-card .iconwrap{margin:12px 0}.phase{padding:0 0 0 75px;min-height:72px}.phase-num{position:absolute;left:0;top:0;width:57px;height:57px;border-radius:17px}.process-bottom{align-items:flex-start}.experience-card{padding:16px;border-radius:19px}.experience-head{align-items:flex-start;flex-direction:column;gap:12px}.mode-toggle{width:100%}.mode-toggle button{flex:1}.filedemo-toolbar{font-size:11px}.filedemo-toolbar small{font-size:9px}.filedemo-item{gap:10px}.filedemo-item span{font-size:9px}.dash-content{padding:18px}.dash-heading h3{font-size:18px}.subs-card{padding:23px}.closing{padding:75px 0}.footer-inner{flex-direction:column;align-items:flex-start;padding:28px 0;min-height:0;gap:17px}.footer-links{gap:13px}.toast{width:90%;text-align:center}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button{transition:none}.toast{transition:none}}
-@media print{@page{margin:15mm}html{scroll-behavior:auto}body{background:white;font-size:12px}.site-header,.hero-art,.hero-ribbon,.hero-actions,.closing .buttons,.footer-links,.mode-toggle,.toast{display:none!important}.hero{background:white}.hero::before,.hero::after{display:none}.hero-grid{min-height:0;display:block;padding:25px 0}.hero h1{font-size:42px}.section{padding:32px 0;break-inside:auto}.section-title{font-size:30px}.initial-intro{position:static}.initial-card,.subs-card,.phase,.experience-card,.faq details{break-inside:avoid}.art-note{display:none}.wrap{width:100%}.initial-layout,.automation-layout,.access-layout,.subscription-grid,.scope-grid{gap:22px}.closing{background:white;padding:28px 0}.footer-inner{min-height:55px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fffefa">
+  <meta name="description" content="NEXO por Ufotech. Propuesta de recuperación, modernización y administración del servidor TrueNAS SCALE de Producciones Primer Nivel, con acceso a las carpetas desde dentro y fuera de la oficina.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NEXO | Una nueva etapa para Primer Nivel">
+  <meta property="og:description" content="Primero recuperamos el orden de su servidor. Después, conectamos a todo el equipo.">
+  <meta name="color-scheme" content="light">
+  <title>NEXO · Propuesta para Producciones Primer Nivel</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%23ffebe4'/%3E%3Cpath d='M17 46V18l30 28V18' fill='none' stroke='%23cf776a' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css?v=2">
+  <script src="./app.js?v=2" defer></script>
 </head>
 <body>
-<div class="topline"></div>
-<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
- <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
- <symbol id="folder" viewBox="0 0 24 24"><path d="M3 7c0-1.1.9-2 2-2h5l2 2h7c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2Z"/></symbol>
- <symbol id="check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
- <symbol id="shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
- <symbol id="server" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2"/><rect x="3" y="13" width="18" height="8" rx="2"/><path d="M7 7h.01M7 17h.01M12 7h6M12 17h6"/></symbol>
- <symbol id="search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/></symbol>
- <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 8V3h-5M4 16v5h5M4.5 9a8 8 0 0 1 14-2l1.5 1M4 16l1.5 1a8 8 0 0 0 14-2"/></symbol>
- <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2ZM17 5a3 3 0 0 1 0 6M19 20v-2a6 6 0 0 0-2-4.5"/></symbol>
- <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
- <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></symbol>
- <symbol id="bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-12h-7Z"/></symbol>
- <symbol id="activity" viewBox="0 0 24 24"><path d="M2 12h4l3-8 6 16 3-8h4"/></symbol>
- <symbol id="list" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h9M8 12h9M8 16h6"/></symbol>
- <symbol id="cloud" viewBox="0 0 24 24"><path d="M20 17a4 4 0 0 0-.3-8 7 7 0 0 0-13.4-1A4.5 4.5 0 0 0 7.5 17Z"/></symbol>
- <symbol id="monitor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
- <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
- <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
- <symbol id="printer" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6Z"/></symbol>
-</svg>
-<header class="site-header"><div class="wrap header-inner">
- <a class="brand" href="#inicio" aria-label="NEXO, inicio"><span class="brand-mark">N</span><span class="brand-copy"><strong>NEXO</strong><small>Una solución de Ufotech</small></span></a>
- <nav class="nav-links" id="navLinks" aria-label="Navegación principal"><a href="#intervencion">Primera intervención</a><a href="#plan">El proyecto</a><a href="#acceso">Acceso remoto</a><a href="#gestion">Automatización</a><a href="#servicio">Servicio continuo</a></nav>
- <a class="nav-cta" href="#siguiente">Próximos pasos <span class="icon"><svg><use href="#arrow"/></svg></span></a>
- <button id="menuBtn" class="menu-toggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir navegación"><span class="icon"><svg><use href="#menu"/></svg></span></button>
-</div></header>
-<main>
-<section id="inicio" class="hero"><div class="wrap hero-grid">
- <div class="hero-copy">
-  <span class="pill"><span class="small-dot"></span> Propuesta para Producciones Primer Nivel</span>
-  <h1>Primero, recuperar el control.<br><em>Después, avanzar.</em></h1>
-  <p class="hero-lead">Una intervención integral para revisar qué ocurrió con la infraestructura, restablecer la operación del servidor y transformar el almacenamiento compartido en un entorno más simple, accesible y administrable.</p>
-  <div class="hero-points"><span class="hero-point"><span class="icon"><svg><use href="#search"/></svg></span> Diagnóstico y recuperación</span><span class="hero-point"><span class="icon"><svg><use href="#folder"/></svg></span> Carpetas desde cualquier lugar</span><span class="hero-point"><span class="icon"><svg><use href="#bolt"/></svg></span> Automatización</span></div>
-  <div class="hero-actions"><a class="button button-primary" href="#intervencion">Conocer la intervención <span class="icon"><svg><use href="#arrow"/></svg></span></a><a class="button button-secondary" href="#plan">Ver el plan completo</a></div>
-  <div class="hero-sign">Infraestructura, continuidad y gestión · Nicolás Pintos / Ufotech</div>
- </div>
- <div class="hero-art" aria-label="Vista ilustrativa de las carpetas compartidas de la empresa">
-   <div class="art-splotch"></div><div class="art-outline"></div><span class="soft-star star-one">✳</span><span class="soft-star star-two">✳</span>
-   <div class="explorer"><div class="explorer-top"><span class="dots"><i></i><i></i><i></i></span><small>Archivos compartidos</small></div>
-    <div class="explorer-body"><span class="explorer-eyebrow">Servidor de la empresa</span><div class="explorer-title"><span class="icon"><svg><use href="#folder"/></svg></span> Primer Nivel / Equipo</div>
-     <div class="folder-row"><span class="folder-icon"><span class="icon"><svg><use href="#folder"/></svg></span></span><div><strong class="folder-name">Diseño</strong><small class="folder-meta">Proyectos y recursos</small></div><span class="folder-end">Compartida</span></div>
-     <div class="folder-row"><span class="folder-icon pink"><span class="icon"><svg><use href="#folder"/></svg></span></span><div><strong class="folder-name">Producción</strong><small class="folder-meta">Material de trabajo</small></div><span class="folder-end">Compartida</span></div>
-     <div class="folder-row"><span class="folder-icon yellow"><span class="icon"><svg><use href="#folder"/></svg></span></span><div><strong class="folder-name">Administración</strong><small class="folder-meta">Documentación interna</small></div><span class="folder-end">Restringida</span></div>
-    </div><div class="explorer-foot"><span class="status"></span> Un espacio de trabajo organizado</div></div>
-   <div class="art-note"><span class="icon"><svg><use href="#globe"/></svg></span><span><strong>Dentro y fuera de la oficina</strong><small>Las carpetas que el equipo ya conoce</small></span></div>
- </div>
-</div><div class="hero-ribbon"><div class="wrap ribbon-inner"><span class="ribbon-label">Una propuesta de principio a fin</span><div class="ribbon-list"><span><span class="icon"><svg><use href="#search"/></svg></span> Evaluar</span><span><span class="icon"><svg><use href="#refresh"/></svg></span> Reconfigurar</span><span><span class="icon"><svg><use href="#globe"/></svg></span> Conectar</span><span><span class="icon"><svg><use href="#activity"/></svg></span> Acompañar</span></div></div></div></section>
-<section id="intervencion" class="section"><div class="wrap initial-layout">
- <div class="initial-intro"><span class="eyebrow coral">01 / Intervención inicial</span><h2 class="section-title">Antes de innovar, <span class="colored">hay que poner todo en orden.</span></h2><p class="section-lead">El primer trabajo no es instalar una herramienta nueva. Es volver al servidor, conocer su estado real, identificar las causas de los problemas y recuperar una base confiable para toda la operación.</p><div class="highlight-note"><span class="icon"><svg><use href="#list"/></svg></span><span>La intervención comienza con un relevamiento de la configuración actual y un plan de corrección. Cada cambio se valida para preservar los recursos y la información de trabajo.</span></div></div>
- <div class="initial-grid">
-  <article class="initial-card"><span class="count">01 / REVISIÓN</span><div class="iconwrap"><span class="icon"><svg><use href="#search"/></svg></span></div><h3>Entender qué pasó</h3><p>Revisión de cambios recientes, configuraciones, registros disponibles y servicios afectados para determinar qué debe corregirse.</p></article>
-  <article class="initial-card"><span class="count">02 / RECUPERACIÓN</span><div class="iconwrap"><span class="icon"><svg><use href="#lock"/></svg></span></div><h3>Recuperar la administración</h3><p>Restablecimiento de accesos autorizados, control administrativo y documentación de las credenciales y responsables.</p></article>
-  <article class="initial-card"><span class="count">03 / SERVIDOR</span><div class="iconwrap"><span class="icon"><svg><use href="#server"/></svg></span></div><h3>Reconfigurar y estabilizar</h3><p>Verificación y corrección de red, servicios, usuarios, recursos compartidos, permisos y funcionamiento del TrueNAS SCALE.</p></article>
-  <article class="initial-card"><span class="count">04 / VALIDACIÓN</span><div class="iconwrap"><span class="icon"><svg><use href="#check"/></svg></span></div><h3>Probar con el equipo</h3><p>Comprobación de los accesos, carpetas de trabajo, disponibilidad y operaciones esenciales con usuarios de referencia.</p></article>
- </div>
-</div></section>
-<section id="plan" class="section alt"><div class="wrap">
- <div class="process-head"><div><span class="eyebrow">02 / Plan de trabajo</span><h2 class="section-title">Una transformación en <span class="colored">cuatro etapas.</span></h2></div><p class="section-lead">De la recuperación inicial a una infraestructura que sea fácil de utilizar y más sencilla de administrar, sin reemplazar innecesariamente lo que ya funciona.</p></div>
- <div class="timeline"><article class="phase"><span class="phase-num">01</span><h3>Diagnóstico y recuperación</h3><p>Auditar el estado del servidor y del NAS, revisar lo modificado, recuperar los accesos administrativos autorizados y corregir los problemas identificados.</p></article>
-  <article class="phase"><span class="phase-num">02</span><h3>Reorganización del entorno</h3><p>Ordenar usuarios, grupos, carpetas, permisos, servicios y mecanismos de protección, manteniendo la operación habitual de la empresa.</p></article>
-  <article class="phase"><span class="phase-num">03</span><h3>Acceso remoto seguro</h3><p>Conectar las computadoras autorizadas para que sus unidades y carpetas compartidas funcionen también cuando estén fuera de la oficina.</p></article>
-  <article class="phase"><span class="phase-num">04</span><h3>Automatización y seguimiento</h3><p>Incorporar la gestión asistida de altas, bajas y accesos, junto con alertas, tareas programadas y mantenimiento continuo.</p></article></div>
- <div class="process-bottom"><span class="icon"><svg><use href="#shield"/></svg></span> Las etapas se ajustan según los resultados de la revisión y las prioridades acordadas con Primer Nivel.</div>
-</div></section>
-<section id="acceso" class="section"><div class="wrap access-layout">
- <div class="access-copy"><span class="eyebrow coral">03 / Trabajo sin fronteras</span><h2 class="section-title">La misma carpeta.<br><span class="colored">Estés donde estés.</span></h2><p class="section-lead">Diseño, producción y administración seguirán trabajando con sus carpetas compartidas habituales. La conexión privada permitirá acceder desde computadoras autorizadas fuera de la red de la empresa.</p>
-  <div class="access-bullets"><div><span class="icon"><svg><use href="#check"/></svg></span> Acceso directo desde la red local de la oficina.</div><div><span class="icon"><svg><use href="#check"/></svg></span> Acceso privado desde casa o durante un viaje.</div><div><span class="icon"><svg><use href="#check"/></svg></span> Permisos correspondientes al perfil de cada persona.</div></div>
- </div>
- <div class="experience-card"><div class="experience-head"><strong>El mismo lugar de trabajo</strong><div class="mode-toggle" aria-label="Ver modalidades de conexión"><button type="button" id="officeBtn" class="active" aria-pressed="true">En la oficina</button><button type="button" id="remoteBtn" aria-pressed="false">Desde afuera</button></div></div>
-  <div class="filedemo"><div class="filedemo-toolbar"><span class="icon"><svg><use href="#folder"/></svg></span> Unidad Z: / Diseño <small id="locationTag">Red interna</small></div>
-   <div class="filedemo-item"><span class="icon"><svg><use href="#folder"/></svg></span><strong>Campañas</strong><span>Carpeta</span></div>
-   <div class="filedemo-item"><span class="icon"><svg><use href="#folder"/></svg></span><strong>Piezas gráficas</strong><span>Carpeta</span></div>
-   <div class="filedemo-item"><span class="icon"><svg><use href="#folder"/></svg></span><strong>Material compartido</strong><span>Carpeta</span></div>
-   <div class="filedemo-foot"><span class="icon"><svg><use href="#check"/></svg></span><span id="connectionText">Acceso directo a los archivos compartidos</span></div>
-  </div><div class="same-path">Mismas carpetas y permisos; <b>una experiencia de trabajo familiar</b>. Vista ilustrativa de la solución propuesta.</div>
- </div>
-</div></section>
-<section id="gestion" class="section lav"><div class="wrap automation-layout">
- <div class="automation-text"><span class="eyebrow">04 / Gestión y automatización</span><h2 class="section-title">Más fácil para el equipo. <span class="colored">Mucho más simple de administrar.</span></h2><p class="section-lead">NEXO Control propone una administración visual para gestionar personas, áreas y permisos, con procesos repetitivos automatizados y acciones verificadas antes de aplicarse.</p>
-  <div class="mini-points"><div><span class="icon"><svg><use href="#users"/></svg></span> Crear empleados y asignarlos al área correspondiente.</div><div><span class="icon"><svg><use href="#folder"/></svg></span> Habilitar las carpetas y permisos que cada función necesita.</div><div><span class="icon"><svg><use href="#bolt"/></svg></span> Preparar accesos, incorporar equipos y simplificar solicitudes recurrentes.</div><div><span class="icon"><svg><use href="#activity"/></svg></span> Registrar operaciones, alertas y tareas de mantenimiento.</div></div>
- </div>
- <div><div class="dashboard"><div class="dash-top"><strong>✳ NEXO CONTROL</strong><small>Administración de equipo</small></div><div class="dash-content"><span class="dash-label">Primer Nivel / Personas</span><div class="dash-heading"><h3>Colaboradores</h3><span class="example-btn">+ Nuevo empleado</span></div>
-   <div class="dash-list"><div class="dash-person"><span class="avatar">JP</span><div><strong>Juan Pérez</strong><span>Diseño</span></div><span class="state">Autorizado</span></div><div class="dash-person"><span class="avatar two">MG</span><div><strong>María Gómez</strong><span>Producción</span></div><span class="state">Autorizada</span></div><div class="dash-person"><span class="avatar three">LB</span><div><strong>Lucas Benítez</strong><span>Administración</span></div><span class="state">Autorizado</span></div></div>
-  </div><div class="dash-bottom">Áreas · Usuarios · Recursos compartidos · Solicitudes</div></div><p class="demo-caption">Representación de la interfaz de administración prevista.</p></div>
-</div></section>
-<section id="servicio" class="section"><div class="wrap subscription-grid">
- <div><span class="eyebrow coral">05 / Servicio continuo</span><h2 class="section-title">La implementación es el inicio. <span class="colored">La continuidad es el valor.</span></h2><p class="section-lead">Después de estabilizar y conectar la infraestructura, Ufotech acompaña la operación con administración, mantenimiento y mejoras progresivas.</p><div class="model-note">Una intervención de implementación inicial, seguida de un servicio mensual de gestión y acompañamiento técnico, con alcance definido según las necesidades de la empresa.</div></div>
- <div class="subs-list">
-  <article class="subs-card"><span class="icon"><svg><use href="#activity"/></svg></span><h3>Monitoreo de infraestructura</h3><p>Seguimiento de servicios, disponibilidad, capacidad de almacenamiento y eventos relevantes.</p></article>
-  <article class="subs-card"><span class="icon"><svg><use href="#users"/></svg></span><h3>Administración de usuarios</h3><p>Altas, bajas, cambios de permisos y gestión de accesos de los colaboradores.</p></article>
-  <article class="subs-card"><span class="icon"><svg><use href="#refresh"/></svg></span><h3>Prevención y recuperación</h3><p>Revisión de snapshots, tareas programadas y estrategia de respaldos según la capacidad existente.</p></article>
-  <article class="subs-card"><span class="icon"><svg><use href="#cloud"/></svg></span><h3>Soporte y mejoras</h3><p>Asistencia remota, actualización planificada de configuraciones y evolución gradual de las automatizaciones.</p></article>
- </div>
-</div></section>
-<section class="section soft" id="alcance"><div class="wrap scope-grid">
- <div><span class="eyebrow">06 / Consideraciones del proyecto</span><h2 class="section-title">Una solución pensada para <span class="colored">la realidad de Primer Nivel.</span></h2><p class="section-lead">El diseño definitivo parte del servidor existente, el volumen de archivos, las condiciones de la red y los procesos que realmente necesita el equipo.</p></div>
- <div class="faq"><details open><summary>¿Qué se revisa en el servidor actual? <span class="icon"><svg><use href="#plus"/></svg></span></summary><p>TrueNAS SCALE, acceso administrativo, almacenamiento, servicios activos, configuraciones de red, comparticiones SMB, usuarios, permisos, registros disponibles y protección de datos. La reconstrucción de cambios anteriores depende de la información que aún conserve el sistema.</p></details>
-  <details><summary>¿Se conservarán los archivos y carpetas? <span class="icon"><svg><use href="#plus"/></svg></span></summary><p>La intervención prioriza conservar datos, estructura de trabajo y rutas habituales. Se realizan verificaciones y se acuerdan las correcciones antes de aplicar cambios significativos.</p></details>
-  <details><summary>¿Cómo se conectará el personal desde afuera? <span class="icon"><svg><use href="#plus"/></svg></span></summary><p>Se configurará un acceso privado para los usuarios y dispositivos autorizados, con el cliente remoto correspondiente. La experiencia y el rendimiento dependerán también de la conectividad y del tamaño de los archivos.</p></details>
-  <details><summary>¿Qué se puede automatizar? <span class="icon"><svg><use href="#plus"/></svg></span></summary><p>La creación de usuarios y departamentos, asignaciones de permisos, preparación de accesos, alertas y tareas recurrentes. La implementación se hará por etapas, según la versión y compatibilidad del TrueNAS SCALE.</p></details>
-  <details><summary>¿Y los respaldos de la empresa? <span class="icon"><svg><use href="#plus"/></svg></span></summary><p>Se evaluarán los mecanismos existentes y se establecerá una política de protección y recuperación. Cuando sea necesario almacenamiento externo adicional, se dimensionará según los datos y la retención requerida.</p></details>
- </div>
-</div></section>
-<section id="siguiente" class="closing"><div class="wrap closing-inner"><span class="eyebrow">El siguiente paso</span><h2 class="section-title">Volver a tener el control del servidor. Y construir desde ahí.</h2><p>Comenzamos con una intervención técnica integral y un diagnóstico real del entorno. Con esa base, reorganizamos los servicios, habilitamos el trabajo remoto e incorporamos una administración más ágil y automatizada para Primer Nivel.</p><div class="buttons"><a href="#intervencion" class="button button-primary">Revisar la primera intervención <span class="icon"><svg><use href="#arrow"/></svg></span></a><button id="printBtn" class="button button-secondary" type="button"><span class="icon"><svg><use href="#printer"/></svg></span> Guardar propuesta en PDF</button></div></div></section>
-</main>
-<footer class="footer"><div class="wrap footer-inner"><div class="footer-brand"><span class="brand-mark">N</span><span><strong>Nicolás Pintos · Ufotech</strong><small>Infraestructura, automatización y gestión de sistemas</small></span></div><div class="footer-links"><span>Propuesta para Producciones Primer Nivel</span><span>© 2026 NEXO</span><button id="shareBtn" type="button">Compartir enlace ↗</button></div></div></footer>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>
-(function(){
- const $=id=>document.getElementById(id);
- const menu=$('menuBtn'), nav=$('navLinks');
- menu.addEventListener('click',()=>{const open=!nav.classList.contains('open');nav.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));});
- nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');}));
- function setMode(remote){
-   $('officeBtn').classList.toggle('active',!remote);$('remoteBtn').classList.toggle('active',remote);
-   $('officeBtn').setAttribute('aria-pressed',String(!remote));$('remoteBtn').setAttribute('aria-pressed',String(remote));
-   $('locationTag').textContent=remote?'Conexión privada':'Red interna';
-   $('connectionText').textContent=remote?'Acceso desde un equipo autorizado fuera de la oficina':'Acceso directo a los archivos compartidos';
- }
- $('officeBtn').addEventListener('click',()=>setMode(false));$('remoteBtn').addEventListener('click',()=>setMode(true));
- $('printBtn').addEventListener('click',()=>window.print());
- let toastTimeout;function notice(message){const t=$('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>t.classList.remove('show'),3300);}
- $('shareBtn').addEventListener('click',async()=>{try{if(navigator.share){await navigator.share({title:document.title,url:location.href});return;}if(navigator.clipboard&&location.protocol==='https:'){await navigator.clipboard.writeText(location.href);notice('Enlace copiado para compartir.');return;}notice('La propuesta está disponible en esta dirección.');}catch(e){if(e.name!=='AbortError')notice('No se pudo compartir el enlace.');}});
-})();
-</script>
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="3.5" width="18" height="7" rx="2"/><rect x="3" y="13.5" width="18" height="7" rx="2"/><path d="M7 7h.01M7 17h.01M11 7h7M11 17h7"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2H3Zm12-15a3 3 0 0 1 0 6m2 3a5 5 0 0 1 4 5v1h-3"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2L12 2Z"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="M8 22h8M12 18v4"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M9 20v-7h6v7"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="5.5"/><path d="m12 11 9-9m-4 4 3 3m-6 0 3 3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 10h18c0-2-3-3-3-10Z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 7a6 6 0 0 0-7 7L2 19l3 3 5-5a6 6 0 0 0 7-7l-4 4-3-3 4-4Z"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6v-7Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 10v7M12 7h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4H5v4m7-4h7v4"/></symbol>
+  </svg>
+  <header class="header" id="inicio">
+    <div class="wrap header-inner">
+      <a class="brand" href="#inicio" aria-label="NEXO, inicio">
+        <span class="brand-mark">N</span>
+        <span class="brand-word"><strong>NEXO</strong><small>Una solución de Ufotech</small></span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+        <a href="#intervencion">Intervención inicial</a>
+        <a href="#acceso">Acceso remoto</a>
+        <a href="#gestion">Gestión</a>
+        <a href="#implementacion">Implementación</a>
+        <a href="#acompanamiento">Acompañamiento</a>
+      </nav>
+      <a class="nav-cta" href="#implementacion">Ver el plan <span class="icon"><svg><use href="#i-arrow"/></svg></span></a>
+      <button type="button" class="menu-toggle" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span class="icon"><svg><use href="#i-menu"/></svg></span></button>
+    </div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="kicker"><span class="dot"></span> Propuesta para Producciones Primer Nivel</span>
+          <h1 id="heroTitle">Sus archivos.<br>Su equipo.<br><em>Sin distancias.</em></h1>
+          <p class="hero-text">Una nueva etapa para su infraestructura de trabajo. Comenzamos revisando qué ocurrió con el servidor actual, recuperando una administración ordenada y reconfigurando lo necesario. Después, conectamos sus carpetas, sus colaboradores y sus procesos en una experiencia simple y segura.</p>
+          <div class="hero-actions">
+            <a class="button-primary" href="#intervencion">Conocer la propuesta <span class="icon"><svg><use href="#i-arrow"/></svg></span></a>
+            <a class="button-secondary" href="#acceso">Así funcionará <span class="icon"><svg><use href="#i-chevron"/></svg></span></a>
+          </div>
+          <div class="hero-meta"><span>Infraestructura · Conectividad · Automatización</span><span class="rule"></span><span>Nicolás Pintos / Ufotech</span></div>
+        </div>
+        <div class="hero-visual" aria-label="Vista conceptual de las carpetas de trabajo compartidas">
+          <div class="visual-blob" aria-hidden="true"></div>
+          <div class="visual-squiggle" aria-hidden="true"></div>
+          <div class="float-note one"><span class="note-icon"><span class="icon"><svg><use href="#i-server"/></svg></span></span><span><strong>El servidor de siempre</strong><small>Revisión y puesta a punto</small></span></div>
+          <div class="explorer">
+            <div class="explorer-top"><div class="window-dots" aria-hidden="true"><b></b><b></b><b></b></div><span class="window-label">Espacio de trabajo · Primer Nivel</span></div>
+            <div class="explorer-body">
+              <div class="explorer-heading"><span class="drive-ico"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><span><strong>Archivos compartidos</strong><small>Unidad de red · Equipo de trabajo</small></span></div>
+              <div class="file-row"><span class="file-ico"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><span class="file-label"><strong>Diseño</strong><small>Recursos del departamento</small></span><span class="file-flag">Carpeta</span></div>
+              <div class="file-row"><span class="file-ico blue"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><span class="file-label"><strong>Producción</strong><small>Trabajos y materiales</small></span><span class="file-flag">Carpeta</span></div>
+              <div class="file-row"><span class="file-ico yellow"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><span class="file-label"><strong>Administración</strong><small>Documentación del área</small></span><span class="file-flag">Carpeta</span></div>
+              <div class="file-row"><span class="file-ico blue"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><span class="file-label"><strong>Proyectos</strong><small>Espacios compartidos</small></span><span class="file-flag">Carpeta</span></div>
+            </div>
+          </div>
+          <div class="float-note two"><span class="note-icon"><span class="icon"><svg><use href="#i-monitor"/></svg></span></span><span><strong>Donde esté el equipo</strong><small>Acceso privado y autorizado</small></span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bar-strip">
+      <div class="wrap bar-inner">
+        <p>El punto de partida es lo que la empresa ya utiliza. La mejora está en cómo lo recuperamos, conectamos y administramos.</p>
+        <div class="bar-items"><span>TrueNAS SCALE</span><span>Carpetas de Windows</span><span>Acceso local y remoto</span><span>Gestión centralizada</span></div>
+      </div>
+    </div>
+
+    <section class="section problem" id="intervencion">
+      <div class="wrap">
+        <div class="problem-header">
+          <span class="kicker"><span class="dot"></span> 01 / Intervención inicial</span>
+          <h2 class="section-title" style="margin-top:20px">Antes de sumar funciones,<br>ponemos el servidor en orden.</h2>
+          <p class="section-lead">La primera tarea será volver al entorno de Primer Nivel, conocer su estado actual y determinar qué cambió. A partir de ese diagnóstico técnico se realizará la recuperación y reconfiguración necesaria para establecer una base confiable.</p>
+        </div>
+        <div class="feature-hero">
+          <div class="feature-hero-copy">
+            <span class="anchor-tag"><span class="icon"><svg><use href="#i-wrench"/></svg></span> Trabajo sobre infraestructura existente</span>
+            <h3>Una intervención completa, no un simple acceso remoto.</h3>
+            <p>Retomaremos la administración autorizada del TrueNAS SCALE, revisaremos sus servicios y carpetas compartidas, corregiremos la configuración que lo requiera y probaremos la operación con los equipos de la oficina.</p>
+            <p class="small-note">El plan definitivo se ajustará a los hallazgos, al estado de los discos y a las credenciales o claves disponibles.</p>
+          </div>
+          <div class="audit-list">
+            <article class="audit-item"><span class="audit-number">01</span><h4>Diagnóstico del entorno</h4><p>Servidor, pools, red, servicios, recursos y capacidad disponible.</p></article>
+            <article class="audit-item"><span class="audit-number">02</span><h4>Revisión de modificaciones</h4><p>Cuentas, accesos, carpetas, servicios y cambios recientes.</p></article>
+            <article class="audit-item"><span class="audit-number">03</span><h4>Administración y resguardo</h4><p>Acceso autorizado, configuración actual y verificación de respaldos.</p></article>
+            <article class="audit-item"><span class="audit-number">04</span><h4>Reconfiguración de servicios</h4><p>SMB, permisos, usuarios, grupos y conectividad necesaria.</p></article>
+            <article class="audit-item"><span class="audit-number">05</span><h4>Pruebas y estabilización</h4><p>Lectura, escritura, disponibilidad y funcionamiento en red local.</p></article>
+            <article class="audit-item"><span class="audit-number">06</span><h4>Preparación para automatizar</h4><p>Dejar una base administrable para nuevos accesos y procesos.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section access" id="acceso">
+      <div class="wrap">
+        <div class="section-header">
+          <div><span class="kicker"><span class="dot"></span> 02 / Conectividad</span><h2 class="section-title">Las mismas carpetas.<br>También fuera de la oficina.</h2></div>
+          <p class="section-note">La experiencia familiar de sus unidades compartidas de Windows, sin convertir cada traslado o trabajo remoto en un intercambio manual de archivos.</p>
+        </div>
+        <div class="access-board">
+          <div class="access-copy">
+            <h3>Un solo espacio de trabajo, dos formas de conectarse.</h3>
+            <p>Desde la oficina, conexión directa a la red. Desde otra ubicación, conexión privada y autenticada al mismo NAS. Se conservarán las unidades y rutas actuales siempre que la configuración y compatibilidad de los equipos lo permitan.</p>
+            <div class="switcher" role="tablist" aria-label="Ubicación del colaborador">
+              <button type="button" role="tab" id="officeBtn" aria-selected="true" aria-controls="accessPanel" class="switch-button"><span class="icon"><svg><use href="#i-monitor"/></svg></span> En la oficina</button>
+              <button type="button" role="tab" id="remoteBtn" aria-selected="false" aria-controls="accessPanel" class="switch-button"><span class="icon"><svg><use href="#i-home"/></svg></span> Desde afuera</button>
+            </div>
+            <div class="access-stat"><strong>Acceso según el perfil del colaborador.</strong><br>Los permisos del servidor se respetan dentro y fuera de la empresa.</div>
+          </div>
+          <div class="access-preview" id="accessPanel" role="tabpanel" aria-label="Ejemplo de acceso a carpetas">
+            <div class="preview-toolbar"><span class="preview-path" id="pathHint">Red de la empresa · Diseño (Z:)</span><span class="preview-status" id="connectionStatus" aria-live="polite">Conexión local</span></div>
+            <p class="preview-title">Diseño (Z:) — Archivos del departamento</p>
+            <table class="preview-table"><caption class="sr-only">Ejemplo de carpetas del departamento Diseño</caption><tbody>
+              <tr><td><span class="folder"><span class="icon"><svg><use href="#i-folder"/></svg></span> Proyectos activos</span></td><td>Carpeta compartida</td></tr>
+              <tr><td><span class="folder"><span class="icon"><svg><use href="#i-folder"/></svg></span> Recursos gráficos</span></td><td>Carpeta compartida</td></tr>
+              <tr><td><span class="folder"><span class="icon"><svg><use href="#i-folder"/></svg></span> Entregas</span></td><td>Carpeta compartida</td></tr>
+              <tr><td><span class="folder"><span class="icon"><svg><use href="#i-folder"/></svg></span> Archivo histórico</span></td><td>Carpeta compartida</td></tr>
+            </tbody></table>
+            <div class="preview-foot" id="connectionDesc" aria-live="polite">El equipo accede directamente al NAS desde la red de la empresa.</div>
+          </div>
+        </div>
+        <div class="access-points">
+          <article><h4>Continuidad en la forma de trabajar</h4><p>El personal sigue trabajando con carpetas y unidades de red, sin adoptar una herramienta distinta para cada archivo.</p></article>
+          <article><h4>Accesos individuales</h4><p>Cada persona utiliza credenciales propias y recibe permisos acordes con su función y departamento.</p></article>
+          <article><h4>Conexión privada</h4><p>Acceso externo por dispositivos autorizados y Cloudflare Zero Trust, sin publicar el servicio SMB directamente en Internet.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section capabilities" id="gestion">
+      <div class="wrap">
+        <div class="section-header">
+          <div><span class="kicker"><span class="dot"></span> 03 / Gestión inteligente</span><h2 class="section-title">Menos tareas manuales.<br>Más tiempo para producir.</h2></div>
+        </div>
+        <div class="cap-grid">
+          <article class="cap-card"><span class="cap-icon"><span class="icon"><svg><use href="#i-users"/></svg></span></span><h3>Personas y departamentos</h3><p>Altas, bajas y cambios de colaboradores asociados a las áreas de la empresa.</p></article>
+          <article class="cap-card"><span class="cap-icon"><span class="icon"><svg><use href="#i-folder"/></svg></span></span><h3>Carpetas y permisos</h3><p>Administración de carpetas SMB, grupos y autorizaciones de lectura o escritura.</p></article>
+          <article class="cap-card"><span class="cap-icon"><span class="icon"><svg><use href="#i-spark"/></svg></span></span><h3>Automatizaciones</h3><p>Procesos repetitivos para preparar usuarios, aplicar permisos y gestionar tareas programadas.</p></article>
+          <article class="cap-card"><span class="cap-icon"><span class="icon"><svg><use href="#i-bell"/></svg></span></span><h3>Monitoreo y alertas</h3><p>Visibilidad sobre el estado del almacenamiento, los servicios y las incidencias relevantes.</p></article>
+        </div>
+        <div class="platform-slab">
+          <div class="platform-copy">
+            <span class="pill">NEXO Control · Plataforma de gestión</span>
+            <h3 style="margin-top:20px">Administrar un nuevo ingreso debería ser sencillo.</h3>
+            <p>Cuando se incorpora alguien a Diseño, por ejemplo, el responsable autorizado podrá solicitar su alta desde una interfaz clara. El sistema preparará el usuario, su grupo, los permisos correspondientes y el procedimiento de acceso a las carpetas.</p>
+            <p style="margin-top:12px">Las tareas automatizadas se ejecutarán con validaciones y registro de cambios, manteniendo el control de las operaciones sensibles.</p>
+            <div class="platform-highlights"><span>Usuarios</span><span>Grupos y permisos</span><span>Acceso remoto</span><span>Flujos de aprobación</span></div>
+          </div>
+          <div class="app-example" aria-label="Vista ilustrativa de NEXO Control">
+            <div class="app-example-title">Nuevo colaborador <span>Gestión de accesos</span></div>
+            <div class="app-field"><label>Nombre</label><div>Juan Pérez</div></div>
+            <div class="app-field"><label>Departamento</label><div>Diseño</div></div>
+            <div class="app-approvals"><div>Carpeta asignada<br><strong>Diseño</strong></div><div>Permisos<br><strong>Lectura y escritura</strong></div></div>
+            <div class="app-bottom"><span class="icon"><svg><use href="#i-check"/></svg></span> Preparación y aplicación según autorización</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section roadmap" id="implementacion">
+      <div class="wrap">
+        <div class="roadmap-head">
+          <span class="kicker"><span class="dot"></span> 04 / Plan de implementación</span>
+          <h2 class="section-title">Una puesta en marcha<br>por etapas, con prioridades claras.</h2>
+          <p class="section-lead">El trabajo comienza sobre el servidor existente. Las nuevas funciones se incorporan después de verificar que los servicios y las carpetas actuales estén en condiciones de operar.</p>
+        </div>
+        <div class="roadmap-grid">
+          <article class="roadmap-item"><b>ETAPA 01</b><h3>Relevamiento e investigación</h3><p>Ingreso técnico autorizado, inventario, revisión de cambios y diagnóstico del estado de TrueNAS SCALE.</p></article>
+          <article class="roadmap-item"><b>ETAPA 02</b><h3>Recuperación y reconfiguración</h3><p>Regularización administrativa, servicios SMB, estructura de usuarios, carpetas, permisos y pruebas locales.</p></article>
+          <article class="roadmap-item"><b>ETAPA 03</b><h3>Acceso remoto seguro</h3><p>Configuración de conectividad privada y acceso a las unidades de red desde los equipos habilitados.</p></article>
+          <article class="roadmap-item"><b>ETAPA 04</b><h3>Automatización y gestión</h3><p>Habilitación de NEXO Control, procedimientos de altas y bajas, tareas programadas y alertas.</p></article>
+          <article class="roadmap-item"><b>ETAPA 05</b><h3>Validación y entrega</h3><p>Pruebas funcionales, revisión con usuarios responsables, documentación operativa y transición al soporte.</p></article>
+        </div>
+        <div class="roadmap-foot"><span class="icon"><svg><use href="#i-info"/></svg></span><span>El alcance técnico final dependerá de lo encontrado durante la intervención inicial: estado del almacenamiento, versión instalada, claves disponibles, rendimiento de Internet y compatibilidad de los equipos.</span></div>
+      </div>
+    </section>
+
+    <section class="section service" id="acompanamiento">
+      <div class="wrap service-grid">
+        <div>
+          <span class="kicker"><span class="dot"></span> 05 / Servicio continuo</span>
+          <h2 class="section-title">Una solución que también se acompaña.</h2>
+          <p class="section-lead">Después de la implementación, la infraestructura necesita seguimiento, mantenimiento y una respuesta técnica cuando cambia la operación de la empresa. NEXO propone un servicio mensual administrado para mantener esa continuidad.</p>
+          <div class="service-sign"><span class="avatar">NP</span><span><strong>Nicolás Pintos</strong><span>Ufotech · Infraestructura, sistemas y automatización</span></span></div>
+        </div>
+        <div class="service-points">
+          <article class="service-point"><span class="check"><span class="icon"><svg><use href="#i-check"/></svg></span></span><div><h3>Administración cotidiana</h3><p>Altas, bajas y cambios de usuarios, departamentos, carpetas y permisos dentro del alcance contratado.</p></div></article>
+          <article class="service-point"><span class="check"><span class="icon"><svg><use href="#i-check"/></svg></span></span><div><h3>Supervisión de la infraestructura</h3><p>Seguimiento del NAS, disponibilidad de servicios, capacidad de almacenamiento y alertas configuradas.</p></div></article>
+          <article class="service-point"><span class="check"><span class="icon"><svg><use href="#i-check"/></svg></span></span><div><h3>Mantenimiento de accesos</h3><p>Gestión de conectividad privada y revisión de las configuraciones utilizadas por el personal remoto.</p></div></article>
+          <article class="service-point"><span class="check"><span class="icon"><svg><use href="#i-check"/></svg></span></span><div><h3>Mejora de procesos</h3><p>Ajustes de automatizaciones, revisión de tareas programadas y recomendaciones de continuidad operativa.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="conditions" id="alcance">
+      <div class="wrap conditions-grid">
+        <div>
+          <span class="kicker"><span class="dot"></span> Alcance y criterios técnicos</span>
+          <h2>Una solución adaptada a la operación real de la empresa.</h2>
+          <p>La infraestructura existente es el centro de la propuesta. Las decisiones sobre acceso, automatización y protección de datos se tomarán después de conocer su estado real.</p>
+        </div>
+        <div class="accordions">
+          <details open><summary>Infraestructura existente <span class="plus" aria-hidden="true">+</span></summary><p>Se trabajará sobre el TrueNAS SCALE de Primer Nivel y su entorno de red. Las ampliaciones o reemplazos físicos que resulten necesarios se evaluarán tras el diagnóstico.</p></details>
+          <details><summary>Conectividad y experiencia remota <span class="plus" aria-hidden="true">+</span></summary><p>El acceso externo requiere conectividad estable, dispositivos habilitados y autenticación. El rendimiento de archivos grandes depende especialmente del enlace de Internet de la empresa y de la ubicación remota.</p></details>
+          <details><summary>Permisos y administración <span class="plus" aria-hidden="true">+</span></summary><p>La empresa mantendrá el control de las cuentas principales y autorizará los cambios. La organización de usuarios y permisos se definirá con los responsables de cada área.</p></details>
+          <details><summary>Continuidad y respaldos <span class="plus" aria-hidden="true">+</span></summary><p>Se revisarán las copias de seguridad y los mecanismos disponibles de snapshots. Si se necesita respaldo externo adicional o nuevos dispositivos de almacenamiento, se incorporarán según un plan específico.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="siguiente">
+      <div class="wrap closing-inner">
+        <div><span class="kicker"><span class="dot"></span> El primer paso es concreto</span><h2>Volvamos al servidor.<br>Construyamos a partir de ahí.</h2><p>Revisar, recuperar, ordenar y poner en marcha. Después, hacer que el equipo trabaje con sus archivos desde donde los necesite.</p></div>
+        <div class="closing-actions"><a class="button-primary" href="#implementacion">Revisar las etapas <span class="icon"><svg><use href="#i-arrow"/></svg></span></a><button class="button-secondary" type="button" id="printBtn"><span class="icon"><svg><use href="#i-printer"/></svg></span> Guardar propuesta</button></div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><div class="footer-sign"><span class="mini-n">N</span><span><strong>NEXO · Nicolás Pintos</strong><small>Ufotech · Soluciones de infraestructura y automatización</small></span></div><div class="footer-right"><span>Propuesta preparada para Producciones Primer Nivel</span><span>2026</span><button type="button" id="shareBtn">Compartir propuesta ↗</button></div></div></footer>
+  <div role="status" aria-live="polite" id="toast" class="toast"></div>
 </body>
 </html>
